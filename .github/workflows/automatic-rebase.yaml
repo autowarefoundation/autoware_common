@@ -17,7 +17,7 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v2
         with:
           token: ${{ steps.generate-token.outputs.token }}
