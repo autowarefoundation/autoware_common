@@ -41,13 +41,13 @@ jobs:
         run: |
           set -e
           if [ -f "lcov/total_coverage.info" ] || [ -f "coveragepy/.coverage" ]; then
-            echo ::set-output name=files_exists::"true"
+            echo ::set-output name=exists::"true"
           else
-            echo ::set-output name=files_exists::"false"
+            echo ::set-output name=exists::"false"
           fi
 
       - name: Upload coverage to Codecov
-        if: ${{ steps.check-files.outputs.files_exists == "true" }}
+        if: ${{ steps.check-files.outputs.exists == "true" }}
         uses: codecov/codecov-action@v2
         with:
           files: lcov/total_coverage.info,coveragepy/.coverage
