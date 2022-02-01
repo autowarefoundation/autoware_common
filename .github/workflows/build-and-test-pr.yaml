@@ -36,12 +36,22 @@ jobs:
           target-packages: ${{ steps.get-modified-packages.outputs.modified-packages }}
           build-depends-repos: build_depends.repos
 
+      - name: Check file existence
+        id: check_files
+        run: |
+          set -e
+          if [ -f "lcov/total_coverage.info" ] || [ -f "coveragepy/.coverage" ]; then
+            echo ::set-output name=files_exists::"true"
+          else
+            echo ::set-output name=files_exists::"false"
+          fi
+
       - name: Upload coverage to Codecov
-        if: ${{ steps.get-modified-packages.outputs.modified-packages != '' }}
+        if: ${{ steps.check_files.outputs.files_exists == "true" }}
         uses: codecov/codecov-action@v2
         with:
           files: lcov/total_coverage.info,coveragepy/.coverage
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           verbose: true
 
   clang-tidy:
