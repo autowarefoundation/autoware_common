@@ -36,7 +36,7 @@ jobs:
           target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
           build-depends-repos: build_depends.repos
 
-      - name: Check the coverage file existence
+      - name: Check the existence of coverage files
         id: check-file-existence
         uses: autowarefoundation/autoware-github-actions/check-file-existence@tier4/proposal
         with:
