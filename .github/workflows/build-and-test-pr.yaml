@@ -37,17 +37,16 @@ jobs:
           build-depends-repos: build_depends.repos
 
       - name: Check the coverage file existence
-        id: check-files
-        run: |
-          set -e
-          if [ -f "lcov/total_coverage.info" ] || [ -f "coveragepy/.coverage" ]; then
-            echo ::set-output name=exists::"true"
-          else
-            echo ::set-output name=exists::"false"
-          fi
+        id: check-file-existence
+        uses: autowarefoundation/autoware-github-actions/check-file-existence@tier4/proposal
+        with:
+          file-path: |
+            lcov/total_coverage.info
+            coveragepy/.coverage
+          condition: or
 
-      - name: Upload coverage to Codecov
-        if: ${{ steps.check-files.outputs.exists == "true" }}
+      - name: Upload coverage to CodeCov
+        if: steps.check-file-existence.outputs.exists == "true"
         uses: codecov/codecov-action@v2
         with:
           files: lcov/total_coverage.info,coveragepy/.coverage
