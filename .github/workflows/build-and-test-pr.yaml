@@ -40,7 +40,7 @@ jobs:
         id: check-file-existence
         uses: autowarefoundation/autoware-github-actions/check-file-existence@tier4/proposal
         with:
-          file-path: |
+          files: |
             lcov/total_coverage.info
             coveragepy/.coverage
           condition: or
