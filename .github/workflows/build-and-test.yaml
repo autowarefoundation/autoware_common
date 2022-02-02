@@ -46,7 +46,7 @@ jobs:
           condition: or
 
       - name: Upload coverage to CodeCov
-        if: steps.check-file-existence.outputs.exists == "true"
+        if: ${{ steps.check-file-existence.outputs.exists == 'true' }}
         uses: codecov/codecov-action@v2
         with:
           files: lcov/total_coverage.info,coveragepy/.coverage
