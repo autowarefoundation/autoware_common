@@ -17,3 +17,12 @@
     - source: .yamllint.yaml
     - source: CPPLINT.cfg
     - source: setup.cfg
+
+- repository: autowarefoundation/autoware.universe
+  files:
+    - source: .github/workflows/build-and-test-arm.yaml
+    - source: .github/workflows/build-and-test-arm-pr.yaml
+    - source: .github/workflows/build-and-test.yaml
+    - source: .github/workflows/build-and-test-pr.yaml
+    - source: .github/workflows/check-build-depends.yaml
+    - source: .github/workflows/pre-commit.yaml
