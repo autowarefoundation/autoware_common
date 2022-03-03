@@ -19,6 +19,6 @@ jobs:
         with:
           token: ${{ steps.generate-token.outputs.token }}
           config: .github/sync-files-reverse-reference.yaml
-          pr-branch: sync-files-of-reverse-references
+          pr-branch: sync-files-reverse-reference
           pr-title: "chore: sync files of reverse references"
           pr-commit-message: "chore: sync files of reverse references"
