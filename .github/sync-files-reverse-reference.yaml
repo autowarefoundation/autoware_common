@@ -7,3 +7,4 @@
     - source: .github/workflows/check-build-depends.yaml
     - source: .github/workflows/clang-tidy-pr-comments.yaml
     - source: .github/workflows/sync-files.yaml
+    - source: codecov.yaml
