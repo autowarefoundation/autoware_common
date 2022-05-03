@@ -23,6 +23,11 @@ macro(autoware_package)
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
   endif()
 
+  # Ignore PCL errors in Clang
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-gnu-anonymous-struct -Wno-nested-anon-types)
+  endif()
+
   # Set ROS_DISTRO macros
   set(ROS_DISTRO $ENV{ROS_DISTRO})
   if(${ROS_DISTRO} STREQUAL "rolling")
