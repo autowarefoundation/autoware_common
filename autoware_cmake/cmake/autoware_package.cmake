@@ -31,6 +31,9 @@ macro(autoware_package)
   # Ignore Boost deprecated messages
   add_compile_definitions(BOOST_ALLOW_DEPRECATED_HEADERS)
 
+  # Ignore unnecessary CMake warnings
+  set(__dummy__ ${CMAKE_EXPORT_COMPILE_COMMANDS})
+
   # Set ROS_DISTRO macros
   set(ROS_DISTRO $ENV{ROS_DISTRO})
   if(${ROS_DISTRO} STREQUAL "rolling")
