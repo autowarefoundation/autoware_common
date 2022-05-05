@@ -28,14 +28,17 @@ macro(autoware_package)
     add_compile_options(-Wno-gnu-anonymous-struct -Wno-nested-anon-types)
   endif()
 
+  # Ignore Boost deprecated messages
+  add_compile_definitions(BOOST_ALLOW_DEPRECATED_HEADERS)
+
   # Set ROS_DISTRO macros
   set(ROS_DISTRO $ENV{ROS_DISTRO})
   if(${ROS_DISTRO} STREQUAL "rolling")
-    add_definitions(-DROS_DISTRO_ROLLING)
+    add_compile_definitions(ROS_DISTRO_ROLLING)
   elseif(${ROS_DISTRO} STREQUAL "galactic")
-    add_definitions(-DROS_DISTRO_GALACTIC)
+    add_compile_definitions(ROS_DISTRO_GALACTIC)
   elseif(${ROS_DISTRO} STREQUAL "humble")
-    add_definitions(-DROS_DISTRO_HUMBLE)
+    add_compile_definitions(ROS_DISTRO_HUMBLE)
   endif()
 
   # Find dependencies
