@@ -44,12 +44,6 @@ macro(autoware_package)
     add_compile_definitions(ROS_DISTRO_HUMBLE)
   endif()
 
-  # Set common system includes
-  find_package(Eigen3 REQUIRED)
-  include_directories(SYSTEM
-    ${EIGEN3_INCLUDE_DIR}
-  )
-
   # Find dependencies
   find_package(ament_cmake_auto REQUIRED)
   ament_auto_find_build_dependencies()
