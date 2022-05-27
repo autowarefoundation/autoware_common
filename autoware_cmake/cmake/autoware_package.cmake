@@ -48,6 +48,11 @@ macro(autoware_package)
   find_package(ament_cmake_auto REQUIRED)
   ament_auto_find_build_dependencies()
 
+  # Set common system includes
+  include_directories(SYSTEM
+    ${EIGEN3_INCLUDE_DIR}
+  )
+
   # Find test dependencies
   if(BUILD_TESTING)
     find_package(ament_lint_auto REQUIRED)
