@@ -1,9 +1,27 @@
 - repository: autowarefoundation/autoware.universe
   files:
     - source: .github/workflows/build-and-test.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: .github/workflows/build-and-test-differential.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: .github/workflows/build-and-test-differential-self-hosted.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: .github/workflows/build-and-test-self-hosted.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: .github/workflows/check-build-depends.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: .github/workflows/clang-tidy-pr-comments.yaml
+      post-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
+        sd "build_depends.humble.repos" "build_depends.repos" {dest}
     - source: codecov.yaml
