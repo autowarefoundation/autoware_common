@@ -42,7 +42,7 @@ void expect_eq_vector(const std::vector<int> & input, const std::vector<int> & e
   }
 }
 
-TEST(arange_Test, arange_double)
+TEST(range, arange_double)  // NOLINT for gtest
 {
   using autoware_utils::arange;
 
@@ -70,17 +70,17 @@ TEST(arange_Test, arange_double)
   // invalid cases
   {
     // step == 0
-    EXPECT_THROW(arange(0.0, 5.0, 0.0), std::invalid_argument);
-    EXPECT_THROW(arange(0.0, -5.0, 0.0), std::invalid_argument);
+    EXPECT_THROW(arange(0.0, 5.0, 0.0), std::invalid_argument);   // NOLINT for gtest
+    EXPECT_THROW(arange(0.0, -5.0, 0.0), std::invalid_argument);  // NOLINT for gtest
 
     // positive step but start > stop.
-    EXPECT_THROW(arange(0.0, -1.0, 0.1), std::invalid_argument);
+    EXPECT_THROW(arange(0.0, -1.0, 0.1), std::invalid_argument);  // NOLINT for gtest
     // negative step but start < stop.
-    EXPECT_THROW(arange(0.0, 1.0, -0.1), std::invalid_argument);
+    EXPECT_THROW(arange(0.0, 1.0, -0.1), std::invalid_argument);  // NOLINT for gtest
   }
 }
 
-TEST(arange_Test, arange_float)
+TEST(range, arange_float)  // NOLINT for gtest
 {
   using autoware_utils::arange;
 
@@ -109,17 +109,17 @@ TEST(arange_Test, arange_float)
   // invalid cases
   {
     // step == 0
-    EXPECT_THROW(arange(0.0f, 5.0f, 0.0f), std::invalid_argument);
-    EXPECT_THROW(arange(0.0f, -5.0f, 0.0f), std::invalid_argument);
+    EXPECT_THROW(arange(0.0f, 5.0f, 0.0f), std::invalid_argument);   // NOLINT for gtest
+    EXPECT_THROW(arange(0.0f, -5.0f, 0.0f), std::invalid_argument);  // NOLINT for gtest
 
     // positive step but start > stop.
-    EXPECT_THROW(arange(0.0f, -1.0f, 0.1f), std::invalid_argument);
+    EXPECT_THROW(arange(0.0f, -1.0f, 0.1f), std::invalid_argument);  // NOLINT for gtest
     // negative step but start < stop.
-    EXPECT_THROW(arange(0.0f, 1.0f, -0.1f), std::invalid_argument);
+    EXPECT_THROW(arange(0.0f, 1.0f, -0.1f), std::invalid_argument);  // NOLINT for gtest
   }
 }
 
-TEST(arange_Test, arange_int)
+TEST(range, arange_int)  // NOLINT for gtest
 {
   using autoware_utils::arange;
 
@@ -142,17 +142,17 @@ TEST(arange_Test, arange_int)
   // invalid cases
   {
     // step == 0
-    EXPECT_THROW(arange(0, 5, 0), std::invalid_argument);
-    EXPECT_THROW(arange(0, -5, 0), std::invalid_argument);
+    EXPECT_THROW(arange(0, 5, 0), std::invalid_argument);   // NOLINT for gtest
+    EXPECT_THROW(arange(0, -5, 0), std::invalid_argument);  // NOLINT for gtest
 
     // positive step but start > stop.
-    EXPECT_THROW(arange(0, -3, 1), std::invalid_argument);
+    EXPECT_THROW(arange(0, -3, 1), std::invalid_argument);  // NOLINT for gtest
     // negative step but start < stop.
-    EXPECT_THROW(arange(0, 3, -1), std::invalid_argument);
+    EXPECT_THROW(arange(0, 3, -1), std::invalid_argument);  // NOLINT for gtest
   }
 }
 
-TEST(test_linspace, linspace_double)
+TEST(range, linspace_double)  // NOLINT for gtest
 {
   using autoware_utils::linspace;
 
@@ -180,7 +180,7 @@ TEST(test_linspace, linspace_double)
   }
 }
 
-TEST(test_linspace, linspace_float)
+TEST(range, linspace_float)  // NOLINT for gtest
 {
   using autoware_utils::linspace;
 
@@ -209,7 +209,7 @@ TEST(test_linspace, linspace_float)
   }
 }
 
-TEST(test_linspace, linspace_int)
+TEST(range, linspace_int)  // NOLINT for gtest
 {
   using autoware_utils::linspace;
 

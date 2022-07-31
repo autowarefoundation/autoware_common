@@ -14,6 +14,8 @@
 
 #include "autoware_utils/autoware_utils.hpp"
 
+#include <rclcpp/rclcpp.hpp>
+
 #include <gtest/gtest.h>
 
 int main(int argc, char * argv[])

@@ -18,7 +18,7 @@
 
 using autoware_utils::pi;
 
-TEST(unit_conversion, deg2rad)
+TEST(unit_conversion, deg2rad)  // NOLINT for gtest
 {
   using autoware_utils::deg2rad;
 
@@ -31,7 +31,7 @@ TEST(unit_conversion, deg2rad)
   EXPECT_DOUBLE_EQ(deg2rad(360), 2 * pi);
 }
 
-TEST(unit_conversion, rad2deg)
+TEST(unit_conversion, rad2deg)  // NOLINT for gtest
 {
   using autoware_utils::rad2deg;
 
@@ -44,7 +44,7 @@ TEST(unit_conversion, rad2deg)
   EXPECT_DOUBLE_EQ(rad2deg(2 * pi), 360);
 }
 
-TEST(unit_conversion, kmph2mps)
+TEST(unit_conversion, kmph2mps)  // NOLINT for gtest
 {
   using autoware_utils::kmph2mps;
 
@@ -54,7 +54,7 @@ TEST(unit_conversion, kmph2mps)
   EXPECT_DOUBLE_EQ(kmph2mps(180), 50);
 }
 
-TEST(unit_conversion, mps2kmph)
+TEST(unit_conversion, mps2kmph)  // NOLINT for gtest
 {
   using autoware_utils::mps2kmph;
 

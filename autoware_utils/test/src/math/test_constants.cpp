@@ -16,14 +16,14 @@
 
 #include <gtest/gtest.h>
 
-TEST(constants, pi)
+TEST(constants, pi)  // NOLINT for gtest
 {
   using autoware_utils::pi;
 
   EXPECT_DOUBLE_EQ(pi, 3.14159265358979323846);
 }
 
-TEST(constants, gravity)
+TEST(constants, gravity)  // NOLINT for gtest
 {
   using autoware_utils::gravity;
 

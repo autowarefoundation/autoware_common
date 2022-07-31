@@ -16,9 +16,9 @@
 
 #include <gtest/gtest.h>
 
-TEST(normalization, normalizeDegree)
+TEST(normalization, normalize_degree)  // NOLINT for gtest
 {
-  using autoware_utils::normalizeDegree;
+  using autoware_utils::normalize_degree;
 
   // -180 <= deg < 180
   {
@@ -27,11 +27,11 @@ TEST(normalization, normalizeDegree)
     constexpr double v_mid = 0;
     constexpr double v_max = 180;
 
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_min - eps), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_min), v_min);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_mid), v_mid);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_max - eps), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_max), v_min);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_min - eps), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_min), v_min);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_mid), v_mid);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_max - eps), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_max), v_min);
   }
 
   // 0 <= deg < 360
@@ -41,17 +41,17 @@ TEST(normalization, normalizeDegree)
     constexpr double v_mid = 180;
     constexpr double v_max = 360;
 
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_min - eps, 0), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_min, 0), v_min);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_mid, 0), v_mid);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_max - eps, 0), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeDegree(v_max, 0), v_min);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_min - eps, 0), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_min, 0), v_min);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_mid, 0), v_mid);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_max - eps, 0), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_degree(v_max, 0), v_min);
   }
 }
 
-TEST(normalization, normalizeRadian)
+TEST(normalization, normalize_radian)  // NOLINT for gtest
 {
-  using autoware_utils::normalizeRadian;
+  using autoware_utils::normalize_radian;
 
   // -M_PI <= deg < M_PI
   {
@@ -60,11 +60,11 @@ TEST(normalization, normalizeRadian)
     constexpr double v_mid = 0;
     constexpr double v_max = M_PI;
 
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_min - eps), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_min), v_min);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_mid), v_mid);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_max - eps), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_max), v_min);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_min - eps), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_min), v_min);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_mid), v_mid);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_max - eps), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_max), v_min);
   }
 
   // 0 <= deg < 2 * M_PI
@@ -74,10 +74,10 @@ TEST(normalization, normalizeRadian)
     constexpr double v_mid = M_PI;
     constexpr double v_max = 2 * M_PI;
 
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_min - eps, 0), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_min, 0), v_min);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_mid, 0), v_mid);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_max - eps, 0), v_max - eps);
-    EXPECT_DOUBLE_EQ(normalizeRadian(v_max, 0), v_min);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_min - eps, 0), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_min, 0), v_min);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_mid, 0), v_mid);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_max - eps, 0), v_max - eps);
+    EXPECT_DOUBLE_EQ(normalize_radian(v_max, 0), v_min);
   }
 }
