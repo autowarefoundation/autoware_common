@@ -1,4 +1,4 @@
-// Copyright 2020 Tier IV, Inc.
+// Copyright 2020 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TIER4_AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_
-#define TIER4_AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_
+#ifndef AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_
+#define AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_
 
-#include "tier4_autoware_utils/math/constants.hpp"
+#include "autoware_utils/math/constants.hpp"
 
-namespace tier4_autoware_utils
+namespace autoware_utils
 {
 constexpr double deg2rad(const double deg) { return deg * pi / 180.0; }
 constexpr double rad2deg(const double rad) { return rad * 180.0 / pi; }
 
 constexpr double kmph2mps(const double kmph) { return kmph * 1000.0 / 3600.0; }
 constexpr double mps2kmph(const double mps) { return mps * 3600.0 / 1000.0; }
-}  // namespace tier4_autoware_utils
+}  // namespace autoware_utils
 
-#endif  // TIER4_AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_
+#endif  // AUTOWARE_UTILS__MATH__UNIT_CONVERSION_HPP_

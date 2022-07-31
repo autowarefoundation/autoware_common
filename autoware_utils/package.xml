@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>tier4_autoware_utils</name>
+  <name>autoware_utils</name>
   <version>0.1.0</version>
-  <description>The tier4_autoware_utils package</description>
-  <maintainer email="horibe.takamasa@gmail.com">Takamasa Horibe</maintainer>
+  <description>The autoware_utils package</description>
   <maintainer email="kenji.miyake@tier4.jp">Kenji Miyake</maintainer>
   <license>Apache License 2.0</license>
 

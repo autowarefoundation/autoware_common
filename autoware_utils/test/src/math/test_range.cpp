@@ -1,4 +1,4 @@
-// Copyright 2021 Tier IV, Inc.
+// Copyright 2021 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "tier4_autoware_utils/math/range.hpp"
+#include "autoware_utils/math/range.hpp"
 
 #include <gtest/gtest.h>
 
@@ -44,7 +44,7 @@ void expect_eq_vector(const std::vector<int> & input, const std::vector<int> & e
 
 TEST(arange_Test, arange_double)
 {
-  using tier4_autoware_utils::arange;
+  using autoware_utils::arange;
 
   // general cases
   {
@@ -82,7 +82,7 @@ TEST(arange_Test, arange_double)
 
 TEST(arange_Test, arange_float)
 {
-  using tier4_autoware_utils::arange;
+  using autoware_utils::arange;
 
   // general cases
   {
@@ -121,7 +121,7 @@ TEST(arange_Test, arange_float)
 
 TEST(arange_Test, arange_int)
 {
-  using tier4_autoware_utils::arange;
+  using autoware_utils::arange;
 
   // general cases
   {
@@ -154,7 +154,7 @@ TEST(arange_Test, arange_int)
 
 TEST(test_linspace, linspace_double)
 {
-  using tier4_autoware_utils::linspace;
+  using autoware_utils::linspace;
 
   // general cases
   {
@@ -182,7 +182,7 @@ TEST(test_linspace, linspace_double)
 
 TEST(test_linspace, linspace_float)
 {
-  using tier4_autoware_utils::linspace;
+  using autoware_utils::linspace;
 
   // general cases
   {
@@ -211,7 +211,7 @@ TEST(test_linspace, linspace_float)
 
 TEST(test_linspace, linspace_int)
 {
-  using tier4_autoware_utils::linspace;
+  using autoware_utils::linspace;
 
   // general cases
   {

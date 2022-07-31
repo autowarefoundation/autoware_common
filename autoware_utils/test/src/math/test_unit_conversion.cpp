@@ -1,4 +1,4 @@
-// Copyright 2020 Tier IV, Inc.
+// Copyright 2020 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "tier4_autoware_utils/math/unit_conversion.hpp"
+#include "autoware_utils/math/unit_conversion.hpp"
 
 #include <gtest/gtest.h>
 
-using tier4_autoware_utils::pi;
+using autoware_utils::pi;
 
 TEST(unit_conversion, deg2rad)
 {
-  using tier4_autoware_utils::deg2rad;
+  using autoware_utils::deg2rad;
 
   EXPECT_DOUBLE_EQ(deg2rad(-720), -4 * pi);
   EXPECT_DOUBLE_EQ(deg2rad(0), 0);
@@ -33,7 +33,7 @@ TEST(unit_conversion, deg2rad)
 
 TEST(unit_conversion, rad2deg)
 {
-  using tier4_autoware_utils::rad2deg;
+  using autoware_utils::rad2deg;
 
   EXPECT_DOUBLE_EQ(rad2deg(-4 * pi), -720);
   EXPECT_DOUBLE_EQ(rad2deg(0), 0);
@@ -46,7 +46,7 @@ TEST(unit_conversion, rad2deg)
 
 TEST(unit_conversion, kmph2mps)
 {
-  using tier4_autoware_utils::kmph2mps;
+  using autoware_utils::kmph2mps;
 
   EXPECT_DOUBLE_EQ(kmph2mps(0), 0);
   EXPECT_DOUBLE_EQ(kmph2mps(36), 10);
@@ -56,7 +56,7 @@ TEST(unit_conversion, kmph2mps)
 
 TEST(unit_conversion, mps2kmph)
 {
-  using tier4_autoware_utils::mps2kmph;
+  using autoware_utils::mps2kmph;
 
   EXPECT_DOUBLE_EQ(mps2kmph(0), 0);
   EXPECT_DOUBLE_EQ(mps2kmph(10), 36);

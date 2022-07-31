@@ -1,4 +1,4 @@
-// Copyright 2020 Tier IV, Inc.
+// Copyright 2020 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "tier4_autoware_utils/math/normalization.hpp"
+#include "autoware_utils/math/normalization.hpp"
 
 #include <gtest/gtest.h>
 
 TEST(normalization, normalizeDegree)
 {
-  using tier4_autoware_utils::normalizeDegree;
+  using autoware_utils::normalizeDegree;
 
   // -180 <= deg < 180
   {
@@ -51,7 +51,7 @@ TEST(normalization, normalizeDegree)
 
 TEST(normalization, normalizeRadian)
 {
-  using tier4_autoware_utils::normalizeRadian;
+  using autoware_utils::normalizeRadian;
 
   // -M_PI <= deg < M_PI
   {

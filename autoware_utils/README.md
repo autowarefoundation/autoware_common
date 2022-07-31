@@ -1,4 +1,4 @@
-# tier4_autoware_utils
+# autoware_utils
 
 ## Purpose
 

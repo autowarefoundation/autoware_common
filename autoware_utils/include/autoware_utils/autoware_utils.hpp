@@ -1,4 +1,4 @@
-// Copyright 2020 Tier IV, Inc.
+// Copyright 2020 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,4 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "tier4_autoware_utils/tier4_autoware_utils.hpp"
+#ifndef AUTOWARE_UTILS__AUTOWARE_UTILS_HPP_
+#define AUTOWARE_UTILS__AUTOWARE_UTILS_HPP_
+
+#include "autoware_utils/math/constants.hpp"
+#include "autoware_utils/math/normalization.hpp"
+#include "autoware_utils/math/range.hpp"
+#include "autoware_utils/math/unit_conversion.hpp"
+
+#endif  // AUTOWARE_UTILS__AUTOWARE_UTILS_HPP_

@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "autoware_utils/math/constants.hpp"
+#ifndef AUTOWARE_UTILS__MATH__CONSTANTS_HPP_
+#define AUTOWARE_UTILS__MATH__CONSTANTS_HPP_
 
-#include <gtest/gtest.h>
-
-TEST(constants, pi)
+namespace autoware_utils
 {
-  using autoware_utils::pi;
+constexpr double pi = 3.14159265358979323846;  // To be replaced by std::numbers::pi in C++20
+constexpr double gravity = 9.80665;
+}  // namespace autoware_utils
 
-  EXPECT_DOUBLE_EQ(pi, 3.14159265358979323846);
-}
-
-TEST(constants, gravity)
-{
-  using autoware_utils::gravity;
-
-  EXPECT_DOUBLE_EQ(gravity, 9.80665);
-}
+#endif  // AUTOWARE_UTILS__MATH__CONSTANTS_HPP_

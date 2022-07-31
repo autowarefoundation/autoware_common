@@ -1,4 +1,4 @@
-// Copyright 2020 Tier IV, Inc.
+// Copyright 2020 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TIER4_AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_
-#define TIER4_AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_
+#ifndef AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_
+#define AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_
 
-#include "tier4_autoware_utils/math/constants.hpp"
+#include "autoware_utils/math/constants.hpp"
 
 #include <cmath>
 
-namespace tier4_autoware_utils
+namespace autoware_utils
 {
 inline double normalizeDegree(const double deg, const double min_deg = -180)
 {
@@ -45,6 +45,6 @@ inline double normalizeRadian(const double rad, const double min_rad = -pi)
   return value - std::copysign(2 * pi, value);
 }
 
-}  // namespace tier4_autoware_utils
+}  // namespace autoware_utils
 
-#endif  // TIER4_AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_
+#endif  // AUTOWARE_UTILS__MATH__NORMALIZATION_HPP_

@@ -1,4 +1,4 @@
-// Copyright 2021 Tier IV, Inc.
+// Copyright 2021 TIER IV, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TIER4_AUTOWARE_UTILS__MATH__RANGE_HPP_
-#define TIER4_AUTOWARE_UTILS__MATH__RANGE_HPP_
+#ifndef AUTOWARE_UTILS__MATH__RANGE_HPP_
+#define AUTOWARE_UTILS__MATH__RANGE_HPP_
 
 #include <cmath>
 #include <limits>
 #include <stdexcept>
 #include <vector>
 
-namespace tier4_autoware_utils
+namespace autoware_utils
 {
 template <class T>
 std::vector<T> arange(const T start, const T stop, const T step = 1)
@@ -73,6 +73,6 @@ std::vector<double> linspace(const T start, const T stop, const size_t num)
   return out;
 }
 
-}  // namespace tier4_autoware_utils
+}  // namespace autoware_utils
 
-#endif  // TIER4_AUTOWARE_UTILS__MATH__RANGE_HPP_
+#endif  // AUTOWARE_UTILS__MATH__RANGE_HPP_
