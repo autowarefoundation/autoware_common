@@ -20,11 +20,16 @@
 #include "lanelet2_extension/utility/utilities.hpp"
 
 #include <Eigen/Eigen>
-#include <tier4_autoware_utils/tier4_autoware_utils.hpp>
+#include <autoware_utils/autoware_utils.hpp>
 
 #include <lanelet2_core/geometry/Lanelet.h>
 #include <lanelet2_routing/RoutingGraph.h>
 #include <tf2/utils.h>
+#ifdef ROS_DISTRO_GALACTIC
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#else
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#endif
 
 #include <deque>
 #include <limits>
@@ -746,7 +751,7 @@ bool query::getClosestLanelet(
       lanelet::ConstLineString3d segment = getClosestSegment(search_point, llt.centerline());
       double segment_angle = std::atan2(
         segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-      double angle_diff = std::abs(tier4_autoware_utils::normalizeRadian(segment_angle - pose_yaw));
+      double angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
       if (angle_diff < min_angle) {
         min_angle = angle_diff;
         *closest_lanelet_ptr = llt;

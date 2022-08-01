@@ -21,8 +21,6 @@
 #include "lanelet2_extension/utility/utilities.hpp"
 
 #include <Eigen/Eigen>
-#include <tier4_autoware_utils/geometry/geometry.hpp>
-#include <tier4_autoware_utils/ros/marker_helper.hpp>
 
 #include <visualization_msgs/msg/marker.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
