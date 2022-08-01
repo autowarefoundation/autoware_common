@@ -31,9 +31,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace utils
+namespace lanelet::utils
 {
 namespace
 {
@@ -55,7 +53,7 @@ namespace
 [[maybe_unused]] void getContactingLanelets(
   const lanelet::LaneletMapPtr lanelet_map,
   const lanelet::traffic_rules::TrafficRulesPtr traffic_rules,
-  const lanelet::BasicPoint2d search_point, std::vector<int> * contacting_lanelet_ids)
+  const lanelet::BasicPoint2d & search_point, std::vector<int> * contacting_lanelet_ids)
 {
   if (!lanelet_map) {
     std::cerr << "No lanelet map is set!" << std::endl;
@@ -162,7 +160,7 @@ std::vector<lanelet::BasicPoint3d> resamplePoints(
       back_point + (direction_vector * (target_length - back_length) / segment_length);
 
     // Add to list
-    resampled_points.push_back(target_point);
+    resampled_points.emplace_back(target_point);
   }
 
   return resampled_points;
@@ -222,9 +220,11 @@ lanelet::LineString3d getLineStringFromArcLength(
   return lanelet::LineString3d(lanelet::InvalId, points);
 }
 
-lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets lanelets)
+lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets)
 {
-  lanelet::Points3d lefts, rights, centers;
+  lanelet::Points3d lefts;
+  lanelet::Points3d rights;
+  lanelet::Points3d centers;
   for (const auto & llt : lanelets) {
     for (const auto & pt : llt.leftBound()) {
       lefts.push_back(lanelet::Point3d(pt));
@@ -679,11 +679,7 @@ bool isInLanelet(
 {
   constexpr double eps = 1.0e-9;
   const lanelet::BasicPoint2d p(current_pose.position.x, current_pose.position.y);
-  if (boost::geometry::distance(p, lanelet.polygon2d().basicPolygon()) < radius + eps) {
-    return true;
-  }
-  return false;
+  return boost::geometry::distance(p, lanelet.polygon2d().basicPolygon()) < radius + eps;
 }
 
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils

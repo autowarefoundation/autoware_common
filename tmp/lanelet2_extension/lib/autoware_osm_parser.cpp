@@ -45,7 +45,8 @@ std::unique_ptr<LaneletMap> AutowareOsmParser::parse(
 
   // rerun align function in just in case
   for (Lanelet & lanelet : map->laneletLayer) {
-    LineString3d new_left, new_right;
+    LineString3d new_left;
+    LineString3d new_right;
     std::tie(new_left, new_right) = geometry::align(lanelet.leftBound(), lanelet.rightBound());
     lanelet.setLeftBound(new_left);
     lanelet.setRightBound(new_right);
@@ -57,7 +58,7 @@ std::unique_ptr<LaneletMap> AutowareOsmParser::parse(
 namespace
 {
 RegisterParser<AutowareOsmParser> regParser;
-}
+}  // namespace
 
 void AutowareOsmParser::parseVersions(
   const std::string & filename, std::string * format_version, std::string * map_version)

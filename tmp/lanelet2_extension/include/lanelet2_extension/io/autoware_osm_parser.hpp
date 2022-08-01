@@ -22,9 +22,7 @@
 #include <memory>
 #include <string>
 
-namespace lanelet
-{
-namespace io_handlers
+namespace lanelet::io_handlers
 {
 class AutowareOsmParser : public OsmParser
 {
@@ -40,7 +38,7 @@ public:
    * @return          [returns LaneletMap]
    */
   std::unique_ptr<LaneletMap> parse(
-    const std::string & filename, ErrorMessages & errors) const;  // NOLINT
+    const std::string & filename, ErrorMessages & errors) const override;
 
   /**
    * [parseVersions parses MetaInfo tags from osm file]
@@ -56,7 +54,6 @@ public:
   static constexpr const char * name() { return "autoware_osm_handler"; }
 };
 
-}  // namespace io_handlers
-}  // namespace lanelet
+}  // namespace lanelet::io_handlers
 
 #endif  // LANELET2_EXTENSION__IO__AUTOWARE_OSM_PARSER_HPP_

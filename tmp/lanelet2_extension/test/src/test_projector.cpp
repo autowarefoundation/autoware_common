@@ -15,16 +15,17 @@
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
 
 #include <gtest/gtest.h>
-#include <math.h>
 
-class TestSuite : public ::testing::Test
+#include <cmath>
+
+class TestSuite : public ::testing::Test  // NOLINT for gtest
 {
 public:
-  TestSuite() {}
-  ~TestSuite() {}
+  TestSuite() = default;
+  ~TestSuite() override = default;
 };
 
-TEST(TestSuite, ForwardProjection)
+TEST(TestSuite, ForwardProjection)  // NOLINT for gtest
 {
   lanelet::projection::MGRSProjector projector;
   // lat/lon in Tokyo
@@ -49,7 +50,7 @@ TEST(TestSuite, ForwardProjection)
   ASSERT_DOUBLE_EQ(rounded_y_mm, 46063.748) << "Forward projected y value should be " << 46063.748;
 }
 
-TEST(TestSuite, ReverseProjection)
+TEST(TestSuite, ReverseProjection)  // NOLINT for gtest
 {
   lanelet::projection::MGRSProjector projector;
   lanelet::BasicPoint3d mgrs_point;

@@ -25,7 +25,7 @@ using lanelet::LineString3d;
 using lanelet::Point3d;
 using lanelet::utils::getId;
 
-class TestSuite : public ::testing::Test
+class TestSuite : public ::testing::Test  // NOLINT for gtest
 {
 public:
   TestSuite() : sample_map_ptr(new lanelet::LaneletMap())
@@ -59,7 +59,8 @@ public:
     sample_route1.segments.push_back(map_segment1);
     sample_route2.segments.push_back(map_segment2);
   }
-  ~TestSuite() {}
+
+  ~TestSuite() override = default;
 
   lanelet::LaneletMapPtr sample_map_ptr;
   autoware_auto_planning_msgs::msg::HADMapRoute sample_route1;  // valid route
@@ -68,7 +69,7 @@ public:
 private:
 };
 
-TEST_F(TestSuite, isRouteValid)
+TEST_F(TestSuite, isRouteValid)  // NOLINT for gtest
 {
   autoware_auto_mapping_msgs::msg::HADMapBin bin_msg;
 

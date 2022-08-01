@@ -23,9 +23,7 @@
 #include <memory>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 struct AutowareRoleNameString
 {
@@ -83,14 +81,6 @@ private:
 };
 static lanelet::RegisterRegulatoryElement<AutowareTrafficLight> regAutowareTraffic;
 
-// moved to lanelet2_extension/lib/autoware_traffic_light.cpp to avoid multiple
-// definition errors
-/*
-#if __cplusplus < 201703L
-constexpr char AutowareTrafficLight::RuleName[];      // instantiate string in
-cpp file #endif
-*/
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__AUTOWARE_TRAFFIC_LIGHT_HPP_

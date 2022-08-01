@@ -33,11 +33,7 @@
 #include <string>
 #include <utility>
 
-namespace lanelet
-{
-namespace utils
-{
-namespace conversion
+namespace lanelet::utils::conversion
 {
 void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_auto_mapping_msgs::msg::HADMapBin * msg)
 {
@@ -72,7 +68,7 @@ void fromBinMsg(const autoware_auto_mapping_msgs::msg::HADMapBin & msg, lanelet:
   ss << data_str;
   boost::archive::binary_iarchive oa(ss);
   oa >> *map;
-  lanelet::Id id_counter;
+  lanelet::Id id_counter = 0;
   oa >> id_counter;
   lanelet::utils::registerId(id_counter);
   // *map = std::move(laneletMap);
@@ -189,6 +185,4 @@ void toGeomMsgPoly(const lanelet::ConstPolygon3d & ll_poly, geometry_msgs::msg::
   }
 }
 
-}  // namespace conversion
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils::conversion

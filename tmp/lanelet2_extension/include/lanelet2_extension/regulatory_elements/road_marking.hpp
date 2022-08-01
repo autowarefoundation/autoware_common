@@ -60,7 +60,7 @@ private:
   // the following lines are required so that lanelet2 can create this object
   // when loading a map with this regulatory element
   friend class lanelet::RegisterRegulatoryElement<RoadMarking>;
-  RoadMarking(Id id, const AttributeMap & attributes, const LineString3d & roadMarking);
+  RoadMarking(Id id, const AttributeMap & attributes, const LineString3d & road_marking);
   explicit RoadMarking(const lanelet::RegulatoryElementDataPtr & data);
 };
 static lanelet::RegisterRegulatoryElement<RoadMarking> regRoadMarking;

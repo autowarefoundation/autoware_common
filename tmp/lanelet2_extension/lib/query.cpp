@@ -40,9 +40,7 @@
 
 using lanelet::utils::to2D;
 
-namespace lanelet
-{
-namespace utils
+namespace lanelet::utils
 {
 // returns all lanelets in laneletLayer - don't know how to convert
 // PrimitiveLayer<Lanelets> -> std::vector<Lanelets>
@@ -54,23 +52,21 @@ lanelet::ConstLanelets query::laneletLayer(const lanelet::LaneletMapConstPtr & l
     return lanelets;
   }
 
-  for (auto li = ll_map->laneletLayer.begin(); li != ll_map->laneletLayer.end(); li++) {
-    lanelets.push_back(*li);
+  for (const auto & li : ll_map->laneletLayer) {
+    lanelets.push_back(li);
   }
 
   return lanelets;
 }
 
 lanelet::ConstLanelets query::subtypeLanelets(
-  const lanelet::ConstLanelets lls, const char subtype[])
+  const lanelet::ConstLanelets & lls, const char subtype[])
 {
   lanelet::ConstLanelets subtype_lanelets;
 
-  for (auto li = lls.begin(); li != lls.end(); li++) {
-    lanelet::ConstLanelet ll = *li;
-
+  for (const auto & ll : lls) {
     if (ll.hasAttribute(lanelet::AttributeName::Subtype)) {
-      lanelet::Attribute attr = ll.attribute(lanelet::AttributeName::Subtype);
+      const lanelet::Attribute & attr = ll.attribute(lanelet::AttributeName::Subtype);
       if (attr.value() == subtype) {
         subtype_lanelets.push_back(ll);
       }
@@ -80,43 +76,41 @@ lanelet::ConstLanelets query::subtypeLanelets(
   return subtype_lanelets;
 }
 
-lanelet::ConstLanelets query::crosswalkLanelets(const lanelet::ConstLanelets lls)
+lanelet::ConstLanelets query::crosswalkLanelets(const lanelet::ConstLanelets & lls)
 {
   return query::subtypeLanelets(lls, lanelet::AttributeValueString::Crosswalk);
 }
 
-lanelet::ConstLanelets query::walkwayLanelets(const lanelet::ConstLanelets lls)
+lanelet::ConstLanelets query::walkwayLanelets(const lanelet::ConstLanelets & lls)
 {
   return query::subtypeLanelets(lls, lanelet::AttributeValueString::Walkway);
 }
 
-lanelet::ConstLanelets query::roadLanelets(const lanelet::ConstLanelets lls)
+lanelet::ConstLanelets query::roadLanelets(const lanelet::ConstLanelets & lls)
 {
   return query::subtypeLanelets(lls, lanelet::AttributeValueString::Road);
 }
 
-lanelet::ConstLanelets query::shoulderLanelets(const lanelet::ConstLanelets lls)
+lanelet::ConstLanelets query::shoulderLanelets(const lanelet::ConstLanelets & lls)
 {
   return query::subtypeLanelets(lls, "road_shoulder");
 }
 
 std::vector<lanelet::TrafficLightConstPtr> query::trafficLights(
-  const lanelet::ConstLanelets lanelets)
+  const lanelet::ConstLanelets & lanelets)
 {
   std::vector<lanelet::TrafficLightConstPtr> tl_reg_elems;
 
-  for (auto i = lanelets.begin(); i != lanelets.end(); i++) {
-    lanelet::ConstLanelet ll = *i;
+  for (const auto & ll : lanelets) {
     std::vector<lanelet::TrafficLightConstPtr> ll_tl_re =
       ll.regulatoryElementsAs<lanelet::TrafficLight>();
 
     // insert unique tl into array
-    for (auto tli = ll_tl_re.begin(); tli != ll_tl_re.end(); tli++) {
-      lanelet::TrafficLightConstPtr tl_ptr = *tli;
+    for (const auto & tl_ptr : ll_tl_re) {
       lanelet::Id id = tl_ptr->id();
       bool unique_id = true;
-      for (auto ii = tl_reg_elems.begin(); ii != tl_reg_elems.end(); ii++) {
-        if (id == (*ii)->id()) {
+      for (const auto & tl_reg_elem : tl_reg_elems) {
+        if (id == tl_reg_elem->id()) {
           unique_id = false;
           break;
         }
@@ -130,23 +124,21 @@ std::vector<lanelet::TrafficLightConstPtr> query::trafficLights(
 }
 
 std::vector<lanelet::AutowareTrafficLightConstPtr> query::autowareTrafficLights(
-  const lanelet::ConstLanelets lanelets)
+  const lanelet::ConstLanelets & lanelets)
 {
   std::vector<lanelet::AutowareTrafficLightConstPtr> tl_reg_elems;
 
-  for (auto i = lanelets.begin(); i != lanelets.end(); i++) {
-    lanelet::ConstLanelet ll = *i;
+  for (const auto & ll : lanelets) {
     std::vector<lanelet::AutowareTrafficLightConstPtr> ll_tl_re =
       ll.regulatoryElementsAs<lanelet::autoware::AutowareTrafficLight>();
 
     // insert unique tl into array
-    for (auto tli = ll_tl_re.begin(); tli != ll_tl_re.end(); tli++) {
-      lanelet::AutowareTrafficLightConstPtr tl_ptr = *tli;
+    for (const auto & tl_ptr : ll_tl_re) {
       lanelet::Id id = tl_ptr->id();
       bool unique_id = true;
 
-      for (auto ii = tl_reg_elems.begin(); ii != tl_reg_elems.end(); ii++) {
-        if (id == (*ii)->id()) {
+      for (const auto & tl_reg_elem : tl_reg_elems) {
+        if (id == tl_reg_elem->id()) {
           unique_id = false;
           break;
         }
@@ -165,8 +157,7 @@ std::vector<lanelet::DetectionAreaConstPtr> query::detectionAreas(
 {
   std::vector<lanelet::DetectionAreaConstPtr> da_reg_elems;
 
-  for (auto i = lanelets.begin(); i != lanelets.end(); i++) {
-    lanelet::ConstLanelet ll = *i;
+  for (const auto & ll : lanelets) {
     std::vector<lanelet::DetectionAreaConstPtr> ll_da_re =
       ll.regulatoryElementsAs<lanelet::autoware::DetectionArea>();
 
@@ -175,8 +166,8 @@ std::vector<lanelet::DetectionAreaConstPtr> query::detectionAreas(
       lanelet::Id id = da_ptr->id();
       bool unique_id = true;
 
-      for (auto ii = da_reg_elems.begin(); ii != da_reg_elems.end(); ii++) {
-        if (id == (*ii)->id()) {
+      for (const auto & da_reg_elem : da_reg_elems) {
+        if (id == da_reg_elem->id()) {
           unique_id = false;
           break;
         }
@@ -195,8 +186,7 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
 {
   std::vector<lanelet::NoStoppingAreaConstPtr> no_reg_elems;
 
-  for (auto i = lanelets.begin(); i != lanelets.end(); i++) {
-    lanelet::ConstLanelet ll = *i;
+  for (const auto & ll : lanelets) {
     std::vector<lanelet::NoStoppingAreaConstPtr> ll_no_re =
       ll.regulatoryElementsAs<lanelet::autoware::NoStoppingArea>();
 
@@ -205,8 +195,8 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
       lanelet::Id id = no_ptr->id();
       bool unique_id = true;
 
-      for (auto ii = no_reg_elems.begin(); ii != no_reg_elems.end(); ii++) {
-        if (id == (*ii)->id()) {
+      for (const auto & no_reg_elem : no_reg_elems) {
+        if (id == no_reg_elem->id()) {
           unique_id = false;
           break;
         }
@@ -226,7 +216,7 @@ lanelet::ConstPolygons3d query::getAllObstaclePolygons(
   lanelet::ConstPolygons3d obstacle_polygons;
   for (const auto & poly : lanelet_map_ptr->polygonLayer) {
     const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type.compare("obstacle") == 0) {
+    if (type == "obstacle") {
       obstacle_polygons.push_back(poly);
     }
   }
@@ -239,7 +229,7 @@ lanelet::ConstPolygons3d query::getAllParkingLots(
   lanelet::ConstPolygons3d parking_lots;
   for (const auto & poly : lanelet_map_ptr->polygonLayer) {
     const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type.compare("parking_lot") == 0) {
+    if (type == "parking_lot") {
       parking_lots.push_back(poly);
     }
   }
@@ -252,8 +242,7 @@ lanelet::ConstLineStrings3d query::getAllPartitions(
   lanelet::ConstLineStrings3d partitions;
   for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
     const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
-    if (
-      type.compare("guard_rail") == 0 || type.compare("fence") == 0 || type.compare("wall") == 0) {
+    if (type == "guard_rail" || type == "fence" || type == "wall") {
       partitions.push_back(ls);
     }
   }
@@ -266,7 +255,7 @@ lanelet::ConstLineStrings3d query::getAllPedestrianMarkings(
   lanelet::ConstLineStrings3d pedestrian_markings;
   for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
     const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type.compare("pedestrian_marking") == 0) {
+    if (type == "pedestrian_marking") {
       pedestrian_markings.push_back(ls);
     }
   }
@@ -279,7 +268,7 @@ lanelet::ConstLineStrings3d query::getAllParkingSpaces(
   lanelet::ConstLineStrings3d parking_spaces;
   for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
     const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type.compare("parking_space") == 0) {
+    if (type == "parking_space") {
       parking_spaces.push_back(ls);
     }
   }
@@ -504,13 +493,13 @@ lanelet::ConstLineStrings3d query::getLinkedParkingSpaces(
 
 // return all stop lines and ref lines from a given set of lanelets
 std::vector<lanelet::ConstLineString3d> query::stopLinesLanelets(
-  const lanelet::ConstLanelets lanelets)
+  const lanelet::ConstLanelets & lanelets)
 {
   std::vector<lanelet::ConstLineString3d> stoplines;
 
-  for (auto lli = lanelets.begin(); lli != lanelets.end(); lli++) {
+  for (const auto & ll : lanelets) {
     std::vector<lanelet::ConstLineString3d> ll_stoplines;
-    ll_stoplines = query::stopLinesLanelet(*lli);
+    ll_stoplines = query::stopLinesLanelet(ll);
     stoplines.insert(stoplines.end(), ll_stoplines.begin(), ll_stoplines.end());
   }
 
@@ -518,7 +507,7 @@ std::vector<lanelet::ConstLineString3d> query::stopLinesLanelets(
 }
 
 // return all stop and ref lines from a given lanelet
-std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::ConstLanelet ll)
+std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::ConstLanelet & ll)
 {
   std::vector<lanelet::ConstLineString3d> stoplines;
 
@@ -526,7 +515,7 @@ std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::C
   std::vector<std::shared_ptr<const lanelet::RightOfWay>> right_of_way_reg_elems =
     ll.regulatoryElementsAs<const lanelet::RightOfWay>();
 
-  if (right_of_way_reg_elems.size() > 0) {
+  if (!right_of_way_reg_elems.empty()) {
     // lanelet has a right of way elem element
     for (auto j = right_of_way_reg_elems.begin(); j < right_of_way_reg_elems.end(); j++) {
       if ((*j)->getManeuver(ll) == lanelet::ManeuverType::Yield) {
@@ -543,7 +532,7 @@ std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::C
   std::vector<std::shared_ptr<const lanelet::TrafficLight>> traffic_light_reg_elems =
     ll.regulatoryElementsAs<const lanelet::TrafficLight>();
 
-  if (traffic_light_reg_elems.size() > 0) {
+  if (!traffic_light_reg_elems.empty()) {
     // lanelet has a traffic light elem element
     for (auto j = traffic_light_reg_elems.begin(); j < traffic_light_reg_elems.end(); j++) {
       lanelet::Optional<lanelet::ConstLineString3d> traffic_light_stopline_opt = (*j)->stopLine();
@@ -556,12 +545,12 @@ std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::C
   std::vector<std::shared_ptr<const lanelet::TrafficSign>> traffic_sign_reg_elems =
     ll.regulatoryElementsAs<const lanelet::TrafficSign>();
 
-  if (traffic_sign_reg_elems.size() > 0) {
+  if (!traffic_sign_reg_elems.empty()) {
     // lanelet has a traffic sign reg elem - can have multiple ref lines (but
     // stop sign shod have 1
     for (auto j = traffic_sign_reg_elems.begin(); j < traffic_sign_reg_elems.end(); j++) {
       lanelet::ConstLineStrings3d traffic_sign_stoplines = (*j)->refLines();
-      if (traffic_sign_stoplines.size() > 0) {
+      if (!traffic_sign_stoplines.empty()) {
         stoplines.push_back(traffic_sign_stoplines.front());
       }
     }
@@ -570,7 +559,7 @@ std::vector<lanelet::ConstLineString3d> query::stopLinesLanelet(const lanelet::C
 }
 
 std::vector<lanelet::ConstLineString3d> query::stopSignStopLines(
-  const lanelet::ConstLanelets lanelets, const std::string & stop_sign_id)
+  const lanelet::ConstLanelets & lanelets, const std::string & stop_sign_id)
 {
   std::vector<lanelet::ConstLineString3d> stoplines;
 
@@ -581,7 +570,7 @@ std::vector<lanelet::ConstLineString3d> query::stopSignStopLines(
     std::vector<std::shared_ptr<const lanelet::TrafficSign>> traffic_sign_reg_elems =
       ll.regulatoryElementsAs<const lanelet::TrafficSign>();
 
-    if (traffic_sign_reg_elems.size() > 0) {
+    if (!traffic_sign_reg_elems.empty()) {
       // lanelet has a traffic sign reg elem - can have multiple ref lines (but
       // stop sign shod have 1
       for (const auto & ts : traffic_sign_reg_elems) {
@@ -593,7 +582,7 @@ std::vector<lanelet::ConstLineString3d> query::stopSignStopLines(
         lanelet::ConstLineStrings3d traffic_sign_stoplines = ts->refLines();
 
         // only add new items
-        if (traffic_sign_stoplines.size() > 0) {
+        if (!traffic_sign_stoplines.empty()) {
           auto id = traffic_sign_stoplines.front().id();
           if (checklist.find(id) == checklist.end()) {
             checklist.insert(id);
@@ -888,5 +877,4 @@ std::vector<lanelet::ConstLanelets> query::getPrecedingLaneletSequences(
   return lanelet_sequences_vec;
 }
 
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils

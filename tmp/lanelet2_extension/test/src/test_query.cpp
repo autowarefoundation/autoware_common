@@ -15,22 +15,25 @@
 #include "lanelet2_extension/utility/query.hpp"
 
 #include <gtest/gtest.h>
-#include <math.h>
+
+#include <cmath>
 
 using lanelet::Lanelet;
 using lanelet::LineString3d;
-using lanelet::LineStringOrPolygon3d;
 using lanelet::Point3d;
 using lanelet::Points3d;
 using lanelet::utils::getId;
 
-class TestSuite : public ::testing::Test
+class TestSuite : public ::testing::Test  // NOLINT for gtest
 {
 public:
   TestSuite() : sample_map_ptr(new lanelet::LaneletMap())
-  {  // NOLINT
+  {
     // create sample lanelets
-    Point3d p1, p2, p3, p4;
+    Point3d p1;
+    Point3d p2;
+    Point3d p3;
+    Point3d p4;
 
     p1 = Point3d(getId(), 0., 0., 0.);
     p2 = Point3d(getId(), 0., 1., 0.);
@@ -38,8 +41,8 @@ public:
     p3 = Point3d(getId(), 1., 0., 0.);
     p4 = Point3d(getId(), 1., 1., 0.);
 
-    LineString3d ls_left(getId(), {p1, p2});   // NOLINT
-    LineString3d ls_right(getId(), {p3, p4});  // NOLINT
+    LineString3d ls_left(getId(), {p1, p2});
+    LineString3d ls_right(getId(), {p3, p4});
 
     Lanelet road_lanelet(getId(), ls_left, ls_right);
     road_lanelet.attributes()[lanelet::AttributeName::Subtype] =
@@ -63,13 +66,12 @@ public:
     p11 = Point3d(getId(), 0., 0., 0.);
     p12 = Point3d(getId(), 1., 0., 0.);
 
-    traffic_light_base = LineString3d(getId(), Points3d{p6, p7});        // NOLINT
-    traffic_light_bulbs = LineString3d(getId(), Points3d{p8, p9, p10});  // NOLINT
-    stop_line = LineString3d(getId(), Points3d{p11, p12});               // NOLINT
+    traffic_light_base = LineString3d(getId(), Points3d{p6, p7});
+    traffic_light_bulbs = LineString3d(getId(), Points3d{p8, p9, p10});
+    stop_line = LineString3d(getId(), Points3d{p11, p12});
 
     auto tl = lanelet::autoware::AutowareTrafficLight::make(
-      getId(), lanelet::AttributeMap(), {traffic_light_base}, stop_line,
-      {traffic_light_bulbs});  // NOLINT
+      getId(), lanelet::AttributeMap(), {traffic_light_base}, stop_line, {traffic_light_bulbs});
 
     road_lanelet.addRegulatoryElement(tl);
 
@@ -77,14 +79,15 @@ public:
     sample_map_ptr->add(road_lanelet);
     sample_map_ptr->add(crosswalk_lanelet);
   }
-  ~TestSuite() {}
+
+  ~TestSuite() override = default;
 
   lanelet::LaneletMapPtr sample_map_ptr;
 
 private:
 };
 
-TEST_F(TestSuite, QueryLanelets)
+TEST_F(TestSuite, QueryLanelets)  // NOLINT for gtest
 {
   lanelet::ConstLanelets all_lanelets = lanelet::utils::query::laneletLayer(sample_map_ptr);
   ASSERT_EQ(2U, all_lanelets.size()) << "failed to retrieve all lanelets";
@@ -101,7 +104,7 @@ TEST_F(TestSuite, QueryLanelets)
   ASSERT_EQ(1U, crosswalk_lanelets.size()) << "failed to retrieve crosswalk lanelets";
 }
 
-TEST_F(TestSuite, QueryTrafficLights)
+TEST_F(TestSuite, QueryTrafficLights)  // NOLINT for gtest
 {
   lanelet::ConstLanelets all_lanelets = lanelet::utils::query::laneletLayer(sample_map_ptr);
 
@@ -112,7 +115,7 @@ TEST_F(TestSuite, QueryTrafficLights)
   ASSERT_EQ(1U, autoware_traffic_lights.size()) << "failed to retrieve autoware traffic lights";
 }
 
-TEST_F(TestSuite, QueryStopLine)
+TEST_F(TestSuite, QueryStopLine)  // NOLINT for gtest
 {
   lanelet::ConstLanelets all_lanelets = lanelet::utils::query::laneletLayer(sample_map_ptr);
   lanelet::ConstLanelets road_lanelets = lanelet::utils::query::roadLanelets(all_lanelets);

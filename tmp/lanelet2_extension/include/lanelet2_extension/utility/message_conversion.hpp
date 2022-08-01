@@ -26,11 +26,7 @@
 #include <lanelet2_routing/RoutingGraph.h>
 #include <lanelet2_traffic_rules/TrafficRulesFactory.h>
 
-namespace lanelet
-{
-namespace utils
-{
-namespace conversion
+namespace lanelet::utils::conversion
 {
 /**
  * [toBinMsg converts lanelet2 map to ROS message. Similar implementation to
@@ -93,8 +89,6 @@ void toGeomMsgPoly(
  */
 void toGeomMsgPt32(const Eigen::Vector3d & src, geometry_msgs::msg::Point32 * dst);
 
-}  // namespace conversion
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils::conversion
 
 #endif  // LANELET2_EXTENSION__UTILITY__MESSAGE_CONVERSION_HPP_

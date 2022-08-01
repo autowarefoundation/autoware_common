@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 
-void loadingAutowareOSMFile(const std::string map_file_path)
+void loadingAutowareOSMFile(const std::string & map_file_path)
 {
   lanelet::LaneletMapPtr lanelet_map;
   lanelet::ErrorMessages errors;
@@ -68,31 +68,32 @@ void usingMGRSProjector()
   // grid
   lanelet::GPSPoint projected_gps_point = projector.reverse(mgrs_point);
   std::cout << projected_gps_point.lat << " " << projected_gps_point.lon << std::endl;
-  lanelet::GPSPoint projected_gps_point2 = projector.reverse(mgrs_point, mgrs_grid);
+  lanelet::GPSPoint projected_gps_point2 =
+    lanelet::projection::MGRSProjector::reverse(mgrs_point, mgrs_grid);
   std::cout << projected_gps_point2.lat << " " << projected_gps_point2.lon << " " << std::endl;
 }
 
-void usingAutowareTrafficLight(const std::string map_file_path)
+void usingAutowareTrafficLight(const std::string & map_file_path)
 {
   lanelet::LaneletMapPtr lanelet_map;
   lanelet::ErrorMessages errors;
   lanelet::projection::MGRSProjector projector;
   lanelet_map = lanelet::load(map_file_path, "autoware_osm_handler", projector, &errors);
 
-  for (auto lanelet : lanelet_map->laneletLayer) {
+  for (const auto & lanelet : lanelet_map->laneletLayer) {
     // You can access to traffic light element as AutowareTrafficLight class
-    auto autoware_traffic_lights =
+    const auto autoware_traffic_lights =
       lanelet.regulatoryElementsAs<lanelet::autoware::AutowareTrafficLight>();
-    for (auto light : autoware_traffic_lights) {
+    for (const auto & light : autoware_traffic_lights) {
       // You can access to the position of each lamps(light bulb) in traffic
       // light
-      for (auto light_bulb_string : light->lightBulbs()) {
+      for (const auto & light_bulb_string : light->lightBulbs()) {
         std::cout << light_bulb_string.id() << std::endl;
       }
       // Since AutowareTrafficLight class is inheriting lanelet::TrafficLight
       // class, you can also access to outline of traffic light by the same
       // method.
-      for (auto light_string : light->trafficLights()) {
+      for (const auto & light_string : light->trafficLights()) {
         std::cout << light_string.id() << std::endl;
       }
     }
@@ -100,8 +101,8 @@ void usingAutowareTrafficLight(const std::string map_file_path)
     // You can also access to same traffic light element as default TrafficLight
     // class
     auto traffic_lights = lanelet.regulatoryElementsAs<lanelet::TrafficLight>();
-    for (auto light : traffic_lights) {
-      for (auto light_string : light->trafficLights()) {
+    for (const auto & light : traffic_lights) {
+      for (const auto & light_string : light->trafficLights()) {
         std::cout << light_string.id() << std::endl;
       }
     }

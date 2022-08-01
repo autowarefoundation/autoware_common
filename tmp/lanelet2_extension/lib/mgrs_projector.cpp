@@ -22,9 +22,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace projection
+namespace lanelet::projection
 {
 MGRSProjector::MGRSProjector(Origin origin) : Projector(origin) {}
 
@@ -83,8 +81,7 @@ GPSPoint MGRSProjector::reverse(const BasicPoint3d & mgrs_point) const
   return gps;
 }
 
-GPSPoint MGRSProjector::reverse(
-  const BasicPoint3d & mgrs_point, const std::string & mgrs_code) const
+GPSPoint MGRSProjector::reverse(const BasicPoint3d & mgrs_point, const std::string & mgrs_code)
 {
   GPSPoint gps{0., 0., mgrs_point.z()};
   BasicPoint3d utm_point{0., 0., gps.ele};
@@ -126,5 +123,4 @@ void MGRSProjector::setMGRSCode(const GPSPoint & gps, const int precision)
   setMGRSCode(mgrs_code);
 }
 
-}  // namespace projection
-}  // namespace lanelet
+}  // namespace lanelet::projection

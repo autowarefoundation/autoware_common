@@ -17,8 +17,8 @@
 #include <gtest/gtest.h>
 #include <lanelet2_core/Attribute.h>
 #include <lanelet2_core/LaneletMap.h>
-#include <math.h>
 
+#include <cmath>
 #include <vector>
 
 using lanelet::LineString3d;
@@ -37,16 +37,22 @@ std::vector<T> convertToVector(T item)
 }
 }  // namespace
 
-class TestSuite : public ::testing::Test
+class TestSuite : public ::testing::Test  // NOLINT for gtest
 {
 public:
-  TestSuite() {}
-  ~TestSuite() {}
+  TestSuite() = default;
+  ~TestSuite() override = default;
 };
 
-TEST(TestSuite, FactoryConstructsTrafficLight)
+TEST(TestSuite, FactoryConstructsTrafficLight)  // NOLINT for gtest
 {
-  Point3d p1, p2, p3, p4, p5, p6, p7;
+  Point3d p1;
+  Point3d p2;
+  Point3d p3;
+  Point3d p4;
+  Point3d p5;
+  Point3d p6;
+  Point3d p7;
   LineStringOrPolygon3d traffic_light_base;
   LineString3d traffic_light_bulbs, stop_line;
 
@@ -78,11 +84,21 @@ TEST(TestSuite, FactoryConstructsTrafficLight)
   EXPECT_TRUE(!!std::dynamic_pointer_cast<lanelet::TrafficLight>(factoryTl));
 }
 
-TEST(TestSuite, TrafficLightWorksAsExpected)
-{  // NOLINT
-  Point3d p1, p2, p3, p4, p5, p6, p7;
-  LineStringOrPolygon3d traffic_light_base, traffic_light_base2;
-  LineString3d traffic_light_bulbs, traffic_light_bulbs2, stop_line;
+TEST(TestSuite, TrafficLightWorksAsExpected)  // NOLINT for gtest
+{
+  Point3d p1;
+  Point3d p2;
+  Point3d p3;
+  Point3d p4;
+  Point3d p5;
+  Point3d p6;
+  Point3d p7;
+
+  LineStringOrPolygon3d traffic_light_base;
+  LineStringOrPolygon3d traffic_light_base2;
+  LineString3d traffic_light_bulbs;
+  LineString3d traffic_light_bulbs2;
+  LineString3d stop_line;
 
   p1 = Point3d(getId(), 0., 1., 4.);
   p2 = Point3d(getId(), 1., 1., 4.);

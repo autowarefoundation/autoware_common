@@ -23,9 +23,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 namespace
 {
@@ -60,9 +58,4 @@ VirtualTrafficLight::VirtualTrafficLight(
 {
 }
 
-#if __cplusplus < 201703L
-constexpr char VirtualTrafficLight::RuleName[];  // instantiate string in cpp file
-#endif
-
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware

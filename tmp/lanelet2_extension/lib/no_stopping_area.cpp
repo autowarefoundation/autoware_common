@@ -23,9 +23,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 namespace
 {
@@ -149,9 +147,4 @@ void NoStoppingArea::setStopLine(const LineString3d & stopLine)
 
 void NoStoppingArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
 
-#if __cplusplus < 201703L
-constexpr char NoStoppingArea::RuleName[];  // instantiate string in cpp file
-#endif
-
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware

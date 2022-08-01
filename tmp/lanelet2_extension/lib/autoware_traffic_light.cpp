@@ -25,9 +25,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 namespace
 {
@@ -110,8 +108,6 @@ LineStringsOrPolygons3d getLsOrPoly(const RuleParameterMap & paramsMap, RoleName
 }
 }  // namespace
 
-constexpr const char AutowareRoleNameString::LightBulbs[];
-
 AutowareTrafficLight::AutowareTrafficLight(const RegulatoryElementDataPtr & data)
 : TrafficLight(data)
 {
@@ -143,9 +139,4 @@ bool AutowareTrafficLight::removeLightBulbs(const LineStringOrPolygon3d & primit
     primitive.asRuleParameter(), &parameters().find(AutowareRoleNameString::LightBulbs)->second);
 }
 
-#if __cplusplus < 201703L
-constexpr char AutowareTrafficLight::RuleName[];  // instantiate string in cpp file
-#endif
-
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware

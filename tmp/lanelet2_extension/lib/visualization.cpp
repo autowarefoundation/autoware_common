@@ -39,7 +39,7 @@ bool exists(const std::unordered_set<T> & set, const T & element)
 }
 
 void adjacentPoints(
-  const int i, const int N, const geometry_msgs::msg::Polygon poly,
+  const int i, const int N, const geometry_msgs::msg::Polygon & poly,
   geometry_msgs::msg::Point32 * p0, geometry_msgs::msg::Point32 * p1,
   geometry_msgs::msg::Point32 * p2)
 {
@@ -69,26 +69,20 @@ void adjacentPoints(
 }
 
 bool isAttributeValue(
-  const lanelet::ConstPoint3d p, const std::string attr_str, const std::string value_str)
+  const lanelet::ConstPoint3d & p, const std::string & attr_str, const std::string & value_str)
 {
-  lanelet::Attribute attr = p.attribute(attr_str);
-  if (attr.value().compare(value_str) == 0) {
-    return true;
-  }
-  return false;
+  const lanelet::Attribute & attr = p.attribute(attr_str);
+  return attr.value() == value_str;
 }
 
 bool isLaneletAttributeValue(
-  const lanelet::ConstLanelet ll, const std::string attr_str, const std::string value_str)
+  const lanelet::ConstLanelet & ll, const std::string & attr_str, const std::string & value_str)
 {
-  lanelet::Attribute attr = ll.attribute(attr_str);
-  if (attr.value().compare(value_str) == 0) {
-    return true;
-  }
-  return false;
+  const lanelet::Attribute & attr = ll.attribute(attr_str);
+  return attr.value() == value_str;
 }
 
-void initLightMarker(visualization_msgs::msg::Marker * marker, const std::string ns)
+void initLightMarker(visualization_msgs::msg::Marker * marker, const std::string & ns)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -109,7 +103,7 @@ void initLightMarker(visualization_msgs::msg::Marker * marker, const std::string
   marker->scale.z = s;
 }
 
-bool inputLightMarker(visualization_msgs::msg::Marker * marker, lanelet::ConstPoint3d p)
+bool inputLightMarker(visualization_msgs::msg::Marker * marker, const lanelet::ConstPoint3d & p)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -149,7 +143,7 @@ bool inputLightMarker(visualization_msgs::msg::Marker * marker, lanelet::ConstPo
   return true;
 }
 
-void initLaneletDirectionMarker(visualization_msgs::msg::Marker * marker, const std::string ns)
+void initLaneletDirectionMarker(visualization_msgs::msg::Marker * marker, const std::string & ns)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -183,7 +177,7 @@ void initLaneletDirectionMarker(visualization_msgs::msg::Marker * marker, const 
 }
 
 void pushLaneletDirectionMarker(
-  visualization_msgs::msg::Marker * marker, const lanelet::ConstLanelet ll)
+  visualization_msgs::msg::Marker * marker, const lanelet::ConstLanelet & ll)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -201,7 +195,8 @@ void pushLaneletDirectionMarker(
   pt[2].y() = 0.0;
   pt[2].z() = 0;
 
-  lanelet::BasicPoint3d pc, pc2;
+  lanelet::BasicPoint3d pc;
+  lanelet::BasicPoint3d pc2;
   lanelet::ConstLineString3d center_ls = ll.centerline();
   lanelet::Attribute attr = ll.attribute("turn_direction");
 
@@ -377,7 +372,9 @@ void visualization::polygon2Triangle(
   std::vector<bool> is_acute_angle;
   is_acute_angle.assign(N, false);
   for (int i = 0; i < N; i++) {
-    geometry_msgs::msg::Point32 p0, p1, p2;
+    geometry_msgs::msg::Point32 p0;
+    geometry_msgs::msg::Point32 p1;
+    geometry_msgs::msg::Point32 p2;
 
     adjacentPoints(i, N, poly, &p0, &p1, &p2);
     is_acute_angle.at(i) = isAcuteAngle(p0, p1, p2);
@@ -388,9 +385,11 @@ void visualization::polygon2Triangle(
     int clipped_vertex = -1;
 
     for (int i = 0; i < N; i++) {
-      bool theta = is_acute_angle.at(i);
-      if (theta == true) {
-        geometry_msgs::msg::Point32 p0, p1, p2;
+      const bool theta = is_acute_angle.at(i);
+      if (theta) {
+        geometry_msgs::msg::Point32 p0;
+        geometry_msgs::msg::Point32 p1;
+        geometry_msgs::msg::Point32 p2;
         adjacentPoints(i, N, poly, &p0, &p1, &p2);
 
         int j_begin = (i + 2) % N;
@@ -471,14 +470,13 @@ void visualization::lanelet2Polygon(
 }
 
 visualization_msgs::msg::MarkerArray visualization::laneletDirectionAsMarkerArray(
-  const lanelet::ConstLanelets lanelets, const std::string & additional_namespace)
+  const lanelet::ConstLanelets & lanelets, const std::string & additional_namespace)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   visualization_msgs::msg::Marker marker;
   initLaneletDirectionMarker(&marker, additional_namespace + "lanelet direction");
 
-  for (auto lli = lanelets.begin(); lli != lanelets.end(); lli++) {
-    lanelet::ConstLanelet ll = *lli;
+  for (const auto & ll : lanelets) {
     if (ll.hasAttribute(std::string("turn_direction"))) {
       pushLaneletDirectionMarker(&marker, ll);
     }
@@ -491,8 +489,8 @@ visualization_msgs::msg::MarkerArray visualization::laneletDirectionAsMarkerArra
 }
 
 visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarkerArray(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> tl_reg_elems,
-  const std_msgs::msg::ColorRGBA c, const rclcpp::Duration duration, const double scale)
+  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
 {
   visualization_msgs::msg::MarkerArray tl_marker_array;
   if (tl_reg_elems.empty()) {
@@ -503,10 +501,7 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
   initLightMarker(&marker_sph, "traffic_light");
   visualization::initTrafficLightTriangleMarker(&marker_tri, "traffic_light_triangle", duration);
 
-  for (auto tli = tl_reg_elems.begin(); tli != tl_reg_elems.end(); tli++) {
-    lanelet::ConstLineStrings3d light_bulbs;
-    lanelet::AutowareTrafficLightConstPtr tl = *tli;
-
+  for (const auto & tl : tl_reg_elems) {
     const auto lights = tl->trafficLights();
     for (const auto & lsp : lights) {
       if (lsp.isLineString()) {  // traffic lights can either polygons or linestrings
@@ -517,10 +512,10 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
 
     tl_marker_array.markers.push_back(marker_tri);
 
-    light_bulbs = tl->lightBulbs();
-    for (auto ls : light_bulbs) {
+    lanelet::ConstLineStrings3d light_bulbs = tl->lightBulbs();
+    for (const auto & ls : light_bulbs) {
       lanelet::ConstLineString3d l = static_cast<lanelet::ConstLineString3d>(ls);
-      for (auto pt : l) {
+      for (const auto & pt : l) {
         if (pt.hasAttribute("color")) {
           if (inputLightMarker(&marker_sph, pt)) {
             tl_marker_array.markers.push_back(marker_sph);
@@ -534,15 +529,12 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
 }
 
 visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> tl_reg_elems,
-  const std_msgs::msg::ColorRGBA c, const rclcpp::Duration duration, const double scale)
+  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
 {
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
 
-  for (auto tli = tl_reg_elems.begin(); tli != tl_reg_elems.end(); tli++) {
-    lanelet::ConstLineStrings3d light_bulbs;
-    lanelet::AutowareTrafficLightConstPtr tl = *tli;
-
+  for (const auto & tl : tl_reg_elems) {
     const auto lights = tl->trafficLights();
     for (const auto & lsp : lights) {
       if (lsp.isLineString()) {  // traffic lights can either polygons or
@@ -554,9 +546,9 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.header.stamp = rclcpp::Time();
         marker.ns = "traffic_light_id";
         marker.id = ls.id();
-        marker.type = marker.TEXT_VIEW_FACING;
+        marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
         marker.lifetime = duration;
-        marker.action = marker.ADD;
+        marker.action = visualization_msgs::msg::Marker::ADD;
         marker.pose.position.x = (ls.front().x() + ls.back().x()) / 2;
         marker.pose.position.y = (ls.front().y() + ls.back().y()) / 2;
         marker.pose.position.z = ls.front().z() + 1.0;
@@ -578,7 +570,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
 
 visualization_msgs::msg::MarkerArray visualization::detectionAreasAsMarkerArray(
   const std::vector<lanelet::DetectionAreaConstPtr> & da_reg_elems,
-  const std_msgs::msg::ColorRGBA c, const rclcpp::Duration duration)
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   visualization_msgs::msg::Marker marker;
@@ -653,7 +645,7 @@ visualization_msgs::msg::MarkerArray visualization::detectionAreasAsMarkerArray(
 
 visualization_msgs::msg::MarkerArray visualization::noStoppingAreasAsMarkerArray(
   const std::vector<lanelet::NoStoppingAreaConstPtr> & no_reg_elems,
-  const std_msgs::msg::ColorRGBA c, const rclcpp::Duration duration)
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   visualization_msgs::msg::Marker marker;
@@ -798,7 +790,8 @@ visualization_msgs::msg::MarkerArray visualization::parkingSpacesAsMarkerArray(
 }
 
 visualization_msgs::msg::MarkerArray visualization::generateLaneletIdMarker(
-  const lanelet::ConstLanelets road_lanelets, const std_msgs::msg::ColorRGBA c, const double scale)
+  const lanelet::ConstLanelets & road_lanelets, const std_msgs::msg::ColorRGBA & c,
+  const double scale)
 {
   visualization_msgs::msg::MarkerArray markers;
   for (const auto & ll : road_lanelets) {
@@ -807,8 +800,8 @@ visualization_msgs::msg::MarkerArray visualization::generateLaneletIdMarker(
     marker.header.stamp = rclcpp::Clock().now();
     marker.ns = "lanelet_id";
     marker.id = ll.id();
-    marker.type = marker.TEXT_VIEW_FACING;
-    marker.action = marker.ADD;
+    marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+    marker.action = visualization_msgs::msg::Marker::ADD;
     const auto centerline = ll.centerline();
     const size_t target_position_index = centerline.size() / 2;
     const auto target_position = centerline[target_position_index];
@@ -848,8 +841,8 @@ visualization_msgs::msg::MarkerArray visualization::obstaclePolygonsAsMarkerArra
 }
 
 visualization_msgs::msg::MarkerArray visualization::lineStringsAsMarkerArray(
-  const std::vector<lanelet::ConstLineString3d> line_strings, const std::string name_space,
-  const std_msgs::msg::ColorRGBA c, const double lss)
+  const std::vector<lanelet::ConstLineString3d> & line_strings, const std::string & name_space,
+  const std_msgs::msg::ColorRGBA & c, const double lss)
 {
   visualization_msgs::msg::MarkerArray ls_marker_array;
   if (line_strings.empty()) {
@@ -859,8 +852,7 @@ visualization_msgs::msg::MarkerArray visualization::lineStringsAsMarkerArray(
   visualization_msgs::msg::Marker ls_marker;
   visualization::initLineStringMarker(&ls_marker, "map", name_space, c);
 
-  for (auto i = line_strings.begin(); i != line_strings.end(); i++) {
-    const lanelet::ConstLineString3d & ls = *i;
+  for (const auto & ls : line_strings) {
     if (!exists(added, ls.id())) {
       visualization::pushLineStringMarker(&ls_marker, ls, c, lss);
       added.insert(ls.id());
@@ -871,15 +863,18 @@ visualization_msgs::msg::MarkerArray visualization::lineStringsAsMarkerArray(
 }
 
 visualization_msgs::msg::MarkerArray visualization::laneletsBoundaryAsMarkerArray(
-  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA c,
+  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
   const bool viz_centerline, const std::string & additional_namespace)
 {
-  double lss = 0.1;  // line string size
-  double lss_center = std::max(lss * 0.1, 0.02);
+  const float lss = 0.1;  // line string size
+  const float lss_center = std::max(lss * 0.1, 0.02);
 
   std::unordered_set<lanelet::Id> added;
-  visualization_msgs::msg::Marker left_line_strip, right_line_strip, start_bound_line_strip,
-    center_line_strip, center_arrows;
+  visualization_msgs::msg::Marker left_line_strip;
+  visualization_msgs::msg::Marker right_line_strip;
+  visualization_msgs::msg::Marker start_bound_line_strip;
+  visualization_msgs::msg::Marker center_line_strip;
+  visualization_msgs::msg::Marker center_arrows;
   visualization::initLineStringMarker(
     &left_line_strip, "map", additional_namespace + "left_lane_bound", c);
   visualization::initLineStringMarker(
@@ -891,9 +886,7 @@ visualization_msgs::msg::MarkerArray visualization::laneletsBoundaryAsMarkerArra
   visualization::initArrowsMarker(
     &center_arrows, "map", additional_namespace + "center_line_arrows", c);
 
-  for (auto li = lanelets.begin(); li != lanelets.end(); li++) {
-    lanelet::ConstLanelet lll = *li;
-
+  for (const auto & lll : lanelets) {
     lanelet::ConstLineString3d left_ls = lll.leftBound();
     lanelet::ConstLineString3d right_ls = lll.rightBound();
     lanelet::ConstLineString3d center_ls = lll.centerline();
@@ -942,8 +935,8 @@ visualization_msgs::msg::MarkerArray visualization::laneletsBoundaryAsMarkerArra
 }
 
 visualization_msgs::msg::MarkerArray visualization::trafficLightsAsTriangleMarkerArray(
-  const std::vector<lanelet::TrafficLightConstPtr> tl_reg_elems, const std_msgs::msg::ColorRGBA c,
-  const rclcpp::Duration duration, const double scale)
+  const std::vector<lanelet::TrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
 {
   // convert to to an array of linestrings and publish as marker array using
   // existing function
@@ -952,12 +945,11 @@ visualization_msgs::msg::MarkerArray visualization::trafficLightsAsTriangleMarke
   visualization_msgs::msg::Marker marker;
   visualization::initTrafficLightTriangleMarker(&marker, "traffic_light_triangle", duration);
 
-  for (auto tli = tl_reg_elems.begin(); tli != tl_reg_elems.end(); tli++) {
-    lanelet::TrafficLightConstPtr tl = *tli;
+  for (const auto & tl : tl_reg_elems) {
     lanelet::LineString3d ls;
 
-    auto lights = tl->trafficLights();
-    for (auto lsp : lights) {
+    const auto lights = tl->trafficLights();
+    for (const auto & lsp : lights) {
       if (lsp.isLineString()) {  // traffic lights can either polygons or linestrings
         lanelet::ConstLineString3d ls = static_cast<lanelet::ConstLineString3d>(lsp);
         visualization::pushTrafficLightTriangleMarker(&marker, ls, c, scale);
@@ -971,7 +963,8 @@ visualization_msgs::msg::MarkerArray visualization::trafficLightsAsTriangleMarke
 }
 
 visualization_msgs::msg::MarkerArray visualization::laneletsAsTriangleMarkerArray(
-  const std::string ns, const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA c)
+  const std::string & ns, const lanelet::ConstLanelets & lanelets,
+  const std_msgs::msg::ColorRGBA & c)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   visualization_msgs::msg::Marker marker;
@@ -1002,11 +995,11 @@ visualization_msgs::msg::MarkerArray visualization::laneletsAsTriangleMarkerArra
   marker.color.b = 1.0f;
   marker.color.a = 0.999;
 
-  for (auto ll : lanelets) {
+  for (const auto & ll : lanelets) {
     std::vector<geometry_msgs::msg::Polygon> triangles;
     lanelet2Triangle(ll, &triangles);
 
-    for (auto tri : triangles) {
+    for (const auto & tri : triangles) {
       geometry_msgs::msg::Point tri0[3];
 
       for (int i = 0; i < 3; i++) {
@@ -1025,7 +1018,8 @@ visualization_msgs::msg::MarkerArray visualization::laneletsAsTriangleMarkerArra
 }
 
 void visualization::initTrafficLightTriangleMarker(
-  visualization_msgs::msg::Marker * marker, const std::string ns, const rclcpp::Duration duration)
+  visualization_msgs::msg::Marker * marker, const std::string & ns,
+  const rclcpp::Duration & duration)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -1057,8 +1051,8 @@ void visualization::initTrafficLightTriangleMarker(
 }
 
 void visualization::pushTrafficLightTriangleMarker(
-  visualization_msgs::msg::Marker * marker, const lanelet::ConstLineString3d ls,
-  const std_msgs::msg::ColorRGBA cl, const double scale)
+  visualization_msgs::msg::Marker * marker, const lanelet::ConstLineString3d & ls,
+  const std_msgs::msg::ColorRGBA & cl, const double scale)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
@@ -1083,8 +1077,8 @@ void visualization::pushTrafficLightTriangleMarker(
   Eigen::Vector3d c = (v[0] + v[1] + v[2] + v[3]) / 4;
 
   if (scale > 0.0 && scale != 1.0) {
-    for (int i = 0; i < 4; i++) {
-      v[i] = (v[i] - c) * scale + c;
+    for (auto & i : v) {
+      i = (i - c) * scale + c;
     }
   }
   geometry_msgs::msg::Point tri0[3];
@@ -1096,19 +1090,19 @@ void visualization::pushTrafficLightTriangleMarker(
   utils::conversion::toGeomMsgPt(v[2], &tri1[1]);
   utils::conversion::toGeomMsgPt(v[3], &tri1[2]);
 
-  for (int i = 0; i < 3; i++) {
-    marker->points.push_back(tri0[i]);
+  for (const auto & i : tri0) {
+    marker->points.push_back(i);
     marker->colors.push_back(cl);
   }
-  for (int i = 0; i < 3; i++) {
-    marker->points.push_back(tri1[i]);
+  for (const auto & i : tri0) {
+    marker->points.push_back(i);
     marker->colors.push_back(cl);
   }
 }
 
 void visualization::initLineStringMarker(
-  visualization_msgs::msg::Marker * marker, const std::string frame_id, const std::string ns,
-  const std_msgs::msg::ColorRGBA c)
+  visualization_msgs::msg::Marker * marker, const std::string & frame_id, const std::string & ns,
+  const std_msgs::msg::ColorRGBA & c)
 {
   if (marker == nullptr) {
     RCLCPP_ERROR_STREAM(
@@ -1137,7 +1131,7 @@ void visualization::initLineStringMarker(
 
 void visualization::pushLineStringMarker(
   visualization_msgs::msg::Marker * marker, const lanelet::ConstLineString3d & ls,
-  const std_msgs::msg::ColorRGBA c, const float lss)
+  const std_msgs::msg::ColorRGBA & c, const float lss)
 {
   if (marker == nullptr) {
     RCLCPP_ERROR_STREAM(
@@ -1190,8 +1184,8 @@ void visualization::pushLineStringMarker(
 }
 
 void visualization::initArrowsMarker(
-  visualization_msgs::msg::Marker * marker, const std::string frame_id, const std::string ns,
-  const std_msgs::msg::ColorRGBA c)
+  visualization_msgs::msg::Marker * marker, const std::string & frame_id, const std::string & ns,
+  const std_msgs::msg::ColorRGBA & c)
 {
   if (marker == nullptr) {
     RCLCPP_ERROR_STREAM(
@@ -1220,7 +1214,7 @@ void visualization::initArrowsMarker(
 
 void visualization::pushArrowsMarker(
   visualization_msgs::msg::Marker * marker, const lanelet::ConstLineString3d & ls,
-  const std_msgs::msg::ColorRGBA c)
+  const std_msgs::msg::ColorRGBA & c)
 {
   if (marker == nullptr) {
     RCLCPP_ERROR_STREAM(

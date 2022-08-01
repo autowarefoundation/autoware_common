@@ -41,11 +41,7 @@ using DetectionAreaConstPtr = std::shared_ptr<const lanelet::autoware::Detection
 using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
 }  // namespace lanelet
 
-namespace lanelet
-{
-namespace utils
-{
-namespace query
+namespace lanelet::utils::query
 {
 /**
  * [laneletLayer converts laneletLayer into lanelet vector]
@@ -61,35 +57,35 @@ lanelet::ConstLanelets laneletLayer(const lanelet::LaneletMapConstPtr & ll_Map);
  * lanelet::AttributeValueString::Road)]
  * @return         [lanelets with given subtype]
  */
-lanelet::ConstLanelets subtypeLanelets(const lanelet::ConstLanelets lls, const char subtype[]);
+lanelet::ConstLanelets subtypeLanelets(const lanelet::ConstLanelets & lls, const char subtype[]);
 
 /**
  * [crosswalkLanelets extracts crosswalk lanelets]
  * @param  lls [input lanelets with various subtypes]
  * @return     [crosswalk lanelets]
  */
-lanelet::ConstLanelets crosswalkLanelets(const lanelet::ConstLanelets lls);
-lanelet::ConstLanelets walkwayLanelets(const lanelet::ConstLanelets lls);
+lanelet::ConstLanelets crosswalkLanelets(const lanelet::ConstLanelets & lls);
+lanelet::ConstLanelets walkwayLanelets(const lanelet::ConstLanelets & lls);
 
 /**
  * [roadLanelets extracts road lanelets]
  * @param  lls [input lanelets with subtype road]
  * @return     [road lanelets]
  */
-lanelet::ConstLanelets roadLanelets(const lanelet::ConstLanelets lls);
+lanelet::ConstLanelets roadLanelets(const lanelet::ConstLanelets & lls);
 
 /**
  * [shoulderLanelets extracts shoulder lanelets]
  * @param  lls [input lanelets with subtype shoulder]
  * @return     [shoulder lanelets]
  */
-lanelet::ConstLanelets shoulderLanelets(const lanelet::ConstLanelets lls);
+lanelet::ConstLanelets shoulderLanelets(const lanelet::ConstLanelets & lls);
 /**
  * [trafficLights extracts Traffic Light regulatory element from lanelets]
  * @param lanelets [input lanelets]
  * @return         [traffic light that are associated with input lanelets]
  */
-std::vector<lanelet::TrafficLightConstPtr> trafficLights(const lanelet::ConstLanelets lanelets);
+std::vector<lanelet::TrafficLightConstPtr> trafficLights(const lanelet::ConstLanelets & lanelets);
 
 /**
  * [autowareTrafficLights extracts Autoware Traffic Light regulatory element
@@ -99,7 +95,7 @@ std::vector<lanelet::TrafficLightConstPtr> trafficLights(const lanelet::ConstLan
  * lanelets]
  */
 std::vector<lanelet::AutowareTrafficLightConstPtr> autowareTrafficLights(
-  const lanelet::ConstLanelets lanelets);
+  const lanelet::ConstLanelets & lanelets);
 
 /**
  * [detectionAreas extracts Detection Area regulatory elements from lanelets]
@@ -182,7 +178,7 @@ lanelet::ConstLanelets getLinkedLanelets(
  * @param lanelets [input lanelets]
  * @return         [stop lines that are associated with input lanelets]
  */
-std::vector<lanelet::ConstLineString3d> stopLinesLanelets(const lanelet::ConstLanelets lanelets);
+std::vector<lanelet::ConstLineString3d> stopLinesLanelets(const lanelet::ConstLanelets & lanelets);
 
 /**
  * [stopLinesLanelet extracts stop lines that are associated with a given
@@ -190,7 +186,7 @@ std::vector<lanelet::ConstLineString3d> stopLinesLanelets(const lanelet::ConstLa
  * @param ll [input lanelet]
  * @return   [stop lines that are associated with input lanelet]
  */
-std::vector<lanelet::ConstLineString3d> stopLinesLanelet(const lanelet::ConstLanelet ll);
+std::vector<lanelet::ConstLineString3d> stopLinesLanelet(const lanelet::ConstLanelet & ll);
 
 /**
  * [stopSignStopLines extracts stoplines that are associated with stop signs]
@@ -199,7 +195,7 @@ std::vector<lanelet::ConstLineString3d> stopLinesLanelet(const lanelet::ConstLan
  * @return             [array of stoplines]
  */
 std::vector<lanelet::ConstLineString3d> stopSignStopLines(
-  const lanelet::ConstLanelets lanelets, const std::string & stop_sign_id = "stop_sign");
+  const lanelet::ConstLanelets & lanelets, const std::string & stop_sign_id = "stop_sign");
 
 ConstLanelets getLaneletsWithinRange(
   const lanelet::ConstLanelets & lanelets, const lanelet::BasicPoint2d & search_point,
@@ -257,8 +253,6 @@ std::vector<lanelet::ConstLanelets> getPrecedingLaneletSequences(
   const routing::RoutingGraphPtr & graph, const lanelet::ConstLanelet & lanelet,
   const double length, const lanelet::ConstLanelets & exclude_lanelets = {});
 
-}  // namespace query
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils::query
 
 #endif  // LANELET2_EXTENSION__UTILITY__QUERY_HPP_

@@ -33,7 +33,7 @@ namespace projection
 class MGRSProjector : public Projector
 {
 public:
-  explicit MGRSProjector(Origin origin = Origin({0.0, 0.0}));  // NOLINT
+  explicit MGRSProjector(Origin origin = Origin({0.0, 0.0}));
 
   /**
    * [MGRSProjector::forward projects gps lat/lon to MGRS 100km grid]
@@ -66,7 +66,7 @@ public:
    * @param  mgrs_code  [MGRS grid code]
    * @return            [projected point in WGS84]
    */
-  GPSPoint reverse(const BasicPoint3d & mgrs_point, const std::string & mgrs_code) const;
+  static GPSPoint reverse(const BasicPoint3d & mgrs_point, const std::string & mgrs_code);
 
   /**
    * [MGRSProjector::setMGRSCode sets MGRS code used for reverse projection]

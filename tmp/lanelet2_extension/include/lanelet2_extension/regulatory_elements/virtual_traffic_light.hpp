@@ -38,12 +38,12 @@ public:
     return Ptr{new VirtualTrafficLight(id, attributes, virtual_traffic_light)};
   }
 
-  ConstLineString3d getVirtualTrafficLight() const
+  [[nodiscard]] ConstLineString3d getVirtualTrafficLight() const
   {
     return getParameters<ConstLineString3d>(RoleName::Refers).front();
   }
 
-  Optional<ConstLineString3d> getStopLine() const
+  [[nodiscard]] Optional<ConstLineString3d> getStopLine() const
   {
     const auto vec = getParameters<ConstLineString3d>(RoleName::RefLine);
     if (vec.empty()) {
@@ -52,12 +52,15 @@ public:
     return vec.front();
   }
 
-  ConstLineString3d getStartLine() const
+  [[nodiscard]] ConstLineString3d getStartLine() const
   {
     return getParameters<ConstLineString3d>("start_line").front();
   }
 
-  ConstLineStrings3d getEndLines() const { return getParameters<ConstLineString3d>("end_line"); }
+  [[nodiscard]] ConstLineStrings3d getEndLines() const
+  {
+    return getParameters<ConstLineString3d>("end_line");
+  }
 
 private:
   // the following lines are required so that lanelet2 can create this object
@@ -65,7 +68,7 @@ private:
   friend class lanelet::RegisterRegulatoryElement<VirtualTrafficLight>;
 
   VirtualTrafficLight(
-    const Id id, const AttributeMap & attributes, const LineString3d & virtualTrafficLight);
+    const Id id, const AttributeMap & attributes, const LineString3d & virtual_traffic_light);
 
   explicit VirtualTrafficLight(const lanelet::RegulatoryElementDataPtr & data);
 };

@@ -21,9 +21,7 @@
 #include <memory>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 class NoStoppingArea : public lanelet::RegulatoryElement
 {
@@ -87,7 +85,6 @@ private:
 };
 static lanelet::RegisterRegulatoryElement<NoStoppingArea> regNoStoppingArea;
 
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__NO_STOPPING_AREA_HPP_

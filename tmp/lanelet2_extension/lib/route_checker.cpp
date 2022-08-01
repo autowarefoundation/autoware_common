@@ -16,11 +16,10 @@
 
 #include <lanelet2_extension/utility/message_conversion.hpp>
 
-namespace lanelet
+namespace lanelet::utils
 {
-namespace utils
-{
-bool route::isRouteValid(const HADMapRoute route_msg, const lanelet::LaneletMapPtr lanelet_map_ptr_)
+bool route::isRouteValid(
+  const HADMapRoute & route_msg, const lanelet::LaneletMapPtr lanelet_map_ptr_)
 {
   for (const auto & route_section : route_msg.segments) {
     for (const auto & primitive : route_section.primitives) {
@@ -40,5 +39,4 @@ bool route::isRouteValid(const HADMapRoute route_msg, const lanelet::LaneletMapP
   return true;
 }
 
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils

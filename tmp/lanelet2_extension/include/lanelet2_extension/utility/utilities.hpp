@@ -27,9 +27,7 @@
 
 #include <map>
 
-namespace lanelet
-{
-namespace utils
+namespace lanelet::utils
 {
 lanelet::LineString3d generateFineCenterline(
   const lanelet::ConstLanelet & lanelet_obj, const double resolution = 5.0);
@@ -82,7 +80,6 @@ bool isInLanelet(
   const geometry_msgs::msg::Pose & current_pose, const lanelet::ConstLanelet & lanelet,
   const double radius = 0.0);
 
-}  // namespace utils
-}  // namespace lanelet
+}  // namespace lanelet::utils
 
 #endif  // LANELET2_EXTENSION__UTILITY__UTILITIES_HPP_

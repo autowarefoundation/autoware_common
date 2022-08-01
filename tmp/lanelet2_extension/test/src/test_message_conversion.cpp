@@ -15,7 +15,8 @@
 #include "lanelet2_extension/utility/query.hpp"
 
 #include <gtest/gtest.h>
-#include <math.h>
+
+#include <cmath>
 
 using lanelet::Lanelet;
 using lanelet::LineString3d;
@@ -23,12 +24,18 @@ using lanelet::Point3d;
 using lanelet::utils::getId;
 using lanelet::utils::conversion::toGeomMsgPt;
 
-class TestSuite : public ::testing::Test
+class TestSuite : public ::testing::Test  // NOLINT for gtest
 {
 public:
   TestSuite() : single_lanelet_map_ptr(new lanelet::LaneletMap())
   {
-    Point3d p1, p2, p3, p4, p5, p6, p7;
+    Point3d p1;
+    Point3d p2;
+    Point3d p3;
+    Point3d p4;
+    Point3d p5;
+    Point3d p6;
+    Point3d p7;
     LineString3d traffic_light_base, traffic_light_bulbs, stop_line;
 
     p1 = Point3d(getId(), 0., 0., 0.);
@@ -37,20 +44,22 @@ public:
     p3 = Point3d(getId(), 1., 0., 0.);
     p4 = Point3d(getId(), 1., 1., 0.);
 
-    LineString3d ls_left(getId(), {p1, p2});   // NOLINT
-    LineString3d ls_right(getId(), {p3, p4});  // NOLINT
+    LineString3d ls_left(getId(), {p1, p2});
+    LineString3d ls_right(getId(), {p3, p4});
 
     Lanelet lanelet(getId(), ls_left, ls_right);
 
     single_lanelet_map_ptr->add(lanelet);
   }
-  ~TestSuite() {}
+
+  ~TestSuite() override = default;
+
   lanelet::LaneletMapPtr single_lanelet_map_ptr;
 
 private:
 };
 
-TEST_F(TestSuite, BinMsgConversion)
+TEST_F(TestSuite, BinMsgConversion)  // NOLINT for gtest
 {
   autoware_auto_mapping_msgs::msg::HADMapBin bin_msg;
   lanelet::LaneletMapPtr regenerated_map(new lanelet::LaneletMap);
@@ -68,7 +77,7 @@ TEST_F(TestSuite, BinMsgConversion)
     << "regenerated map has different id";
 }
 
-TEST_F(TestSuite, ToGeomMsgPt)
+TEST_F(TestSuite, ToGeomMsgPt)  // NOLINT for gtest
 {
   Point3d lanelet_pt(getId(), -0.1, 0.2, 3.0);
 
