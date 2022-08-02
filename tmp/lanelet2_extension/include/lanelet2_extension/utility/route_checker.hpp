@@ -15,6 +15,8 @@
 #ifndef LANELET2_EXTENSION__UTILITY__ROUTE_CHECKER_HPP_
 #define LANELET2_EXTENSION__UTILITY__ROUTE_CHECKER_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_extension/utility/query.hpp>
 #include <rclcpp/rclcpp.hpp>
 
@@ -28,5 +30,7 @@ using autoware_auto_planning_msgs::msg::HADMapRoute;
 
 bool isRouteValid(const HADMapRoute & route, const lanelet::LaneletMapPtr lanelet_map_ptr_);
 }  // namespace lanelet::utils::route
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__UTILITY__ROUTE_CHECKER_HPP_

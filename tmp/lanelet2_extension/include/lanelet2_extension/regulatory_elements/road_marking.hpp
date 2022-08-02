@@ -15,6 +15,8 @@
 #ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__ROAD_MARKING_HPP_
 #define LANELET2_EXTENSION__REGULATORY_ELEMENTS__ROAD_MARKING_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_core/primitives/LineString.h>
 
@@ -67,5 +69,7 @@ static lanelet::RegisterRegulatoryElement<RoadMarking> regRoadMarking;
 
 }  // namespace autoware
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__ROAD_MARKING_HPP_

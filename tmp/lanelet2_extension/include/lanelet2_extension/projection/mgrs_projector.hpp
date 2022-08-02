@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__PROJECTION__MGRS_PROJECTOR_HPP_
 #define LANELET2_EXTENSION__PROJECTION__MGRS_PROJECTOR_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/UTMUPS.hpp>
 
@@ -111,5 +113,7 @@ private:
 
 }  // namespace projection
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__PROJECTION__MGRS_PROJECTOR_HPP_

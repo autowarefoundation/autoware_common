@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/road_marking.hpp"
 
 #include <boost/variant.hpp>
@@ -71,3 +73,5 @@ void RoadMarking::setRoadMarking(const LineString3d & road_marking)
 void RoadMarking::removeRoadMarking() { parameters()[RoleName::Refers] = {}; }
 
 }  // namespace lanelet::autoware
+
+// NOLINTEND(readability-identifier-naming)

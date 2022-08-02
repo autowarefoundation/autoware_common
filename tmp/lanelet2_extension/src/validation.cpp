@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 
@@ -171,3 +173,5 @@ int main(int argc, char * argv[])
 
   return 0;
 }
+
+// NOLINTEND(readability-identifier-naming)

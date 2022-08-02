@@ -14,6 +14,8 @@
 //
 // Authors: Simon Thompson, Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
 
 #include <iostream>
@@ -124,3 +126,5 @@ void MGRSProjector::setMGRSCode(const GPSPoint & gps, const int precision)
 }
 
 }  // namespace lanelet::projection
+
+// NOLINTEND(readability-identifier-naming)

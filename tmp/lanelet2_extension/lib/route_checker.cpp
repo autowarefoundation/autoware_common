@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/utility/route_checker.hpp"
 
 #include <lanelet2_extension/utility/message_conversion.hpp>
@@ -40,3 +42,5 @@ bool route::isRouteValid(
 }
 
 }  // namespace lanelet::utils
+
+// NOLINTEND(readability-identifier-naming)

@@ -14,6 +14,8 @@
 //
 // Authors: Simon Thompson, Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/utility/query.hpp"
 
 #include "lanelet2_extension/utility/message_conversion.hpp"
@@ -878,3 +880,5 @@ std::vector<lanelet::ConstLanelets> query::getPrecedingLaneletSequences(
 }
 
 }  // namespace lanelet::utils
+
+// NOLINTEND(readability-identifier-naming)

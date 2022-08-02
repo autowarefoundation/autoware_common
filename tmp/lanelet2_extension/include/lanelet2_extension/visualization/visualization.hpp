@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__VISUALIZATION__VISUALIZATION_HPP_
 #define LANELET2_EXTENSION__VISUALIZATION__VISUALIZATION_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
 #include "lanelet2_extension/utility/query.hpp"
@@ -269,5 +271,7 @@ visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
 
 }  // namespace lanelet::visualization
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__VISUALIZATION__VISUALIZATION_HPP_

@@ -14,6 +14,8 @@
 //
 // Authors: Simon Thompson, Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/utility/message_conversion.hpp"
 
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
@@ -186,3 +188,5 @@ void toGeomMsgPoly(const lanelet::ConstPolygon3d & ll_poly, geometry_msgs::msg::
 }
 
 }  // namespace lanelet::utils::conversion
+
+// NOLINTEND(readability-identifier-naming)

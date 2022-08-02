@@ -14,6 +14,8 @@
 //
 // Authors: Simon Thompson, Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/visualization/visualization.hpp"
 
 #include "lanelet2_extension/utility/message_conversion.hpp"
@@ -1256,3 +1258,5 @@ void visualization::pushArrowsMarker(
 }
 
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)

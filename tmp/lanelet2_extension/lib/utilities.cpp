@@ -14,6 +14,8 @@
 //
 // Authors: Kenji Miyake, Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/utility/utilities.hpp"
 
 #include "lanelet2_extension/utility/message_conversion.hpp"
@@ -713,3 +715,5 @@ geometry_msgs::msg::Pose getClosestCenterPose(
   return closest_pose;
 }
 }  // namespace lanelet::utils
+
+// NOLINTEND(readability-identifier-naming)

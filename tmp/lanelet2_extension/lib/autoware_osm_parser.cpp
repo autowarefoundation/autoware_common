@@ -14,6 +14,8 @@
 //
 // Authors: Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/io/autoware_osm_parser.hpp"
 
 #include <lanelet2_core/geometry/LineString.h>
@@ -87,3 +89,5 @@ void AutowareOsmParser::parseVersions(
 
 }  // namespace io_handlers
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)

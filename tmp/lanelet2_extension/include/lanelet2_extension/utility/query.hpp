@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__UTILITY__QUERY_HPP_
 #define LANELET2_EXTENSION__UTILITY__QUERY_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 #include "lanelet2_extension/regulatory_elements/detection_area.hpp"
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
@@ -254,5 +256,7 @@ std::vector<lanelet::ConstLanelets> getPrecedingLaneletSequences(
   const double length, const lanelet::ConstLanelets & exclude_lanelets = {});
 
 }  // namespace lanelet::utils::query
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__UTILITY__QUERY_HPP_

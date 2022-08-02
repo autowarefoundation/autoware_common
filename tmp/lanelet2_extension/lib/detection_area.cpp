@@ -14,6 +14,8 @@
 //
 // Authors: Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/detection_area.hpp"
 
 #include <boost/variant.hpp>
@@ -151,3 +153,5 @@ void DetectionArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
 
 }  // namespace autoware
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)

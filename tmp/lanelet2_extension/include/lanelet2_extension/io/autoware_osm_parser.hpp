@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__IO__AUTOWARE_OSM_PARSER_HPP_
 #define LANELET2_EXTENSION__IO__AUTOWARE_OSM_PARSER_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_io/io_handlers/OsmHandler.h>
 
 #include <memory>
@@ -55,5 +57,7 @@ public:
 };
 
 }  // namespace lanelet::io_handlers
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__IO__AUTOWARE_OSM_PARSER_HPP_

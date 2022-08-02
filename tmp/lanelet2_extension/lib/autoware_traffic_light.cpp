@@ -14,6 +14,8 @@
 //
 // Authors: Ryohsuke Mitsudome
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 
 #include <boost/variant.hpp>
@@ -140,3 +142,5 @@ bool AutowareTrafficLight::removeLightBulbs(const LineStringOrPolygon3d & primit
 }
 
 }  // namespace lanelet::autoware
+
+// NOLINTEND(readability-identifier-naming)

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
 
 #include <boost/variant.hpp>
@@ -148,3 +150,5 @@ void NoStoppingArea::setStopLine(const LineString3d & stopLine)
 void NoStoppingArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
 
 }  // namespace lanelet::autoware
+
+// NOLINTEND(readability-identifier-naming)

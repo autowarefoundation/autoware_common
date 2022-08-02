@@ -15,6 +15,8 @@
 #ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__VIRTUAL_TRAFFIC_LIGHT_HPP_
 #define LANELET2_EXTENSION__REGULATORY_ELEMENTS__VIRTUAL_TRAFFIC_LIGHT_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_core/primitives/LineString.h>
 
@@ -77,5 +79,7 @@ static lanelet::RegisterRegulatoryElement<VirtualTrafficLight> regVirtualTraffic
 
 }  // namespace autoware
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__VIRTUAL_TRAFFIC_LIGHT_HPP_

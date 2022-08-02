@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__UTILITY__UTILITIES_HPP_
 #define LANELET2_EXTENSION__UTILITY__UTILITIES_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <rclcpp/rclcpp.hpp>
 
 #include <geometry_msgs/msg/point.hpp>
@@ -83,5 +85,7 @@ geometry_msgs::msg::Pose getClosestCenterPose(
   const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point);
 
 }  // namespace lanelet::utils
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__UTILITY__UTILITIES_HPP_

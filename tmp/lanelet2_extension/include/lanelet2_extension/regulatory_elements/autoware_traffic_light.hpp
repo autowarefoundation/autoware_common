@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__AUTOWARE_TRAFFIC_LIGHT_HPP_
 #define LANELET2_EXTENSION__REGULATORY_ELEMENTS__AUTOWARE_TRAFFIC_LIGHT_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_core/primitives/Lanelet.h>
 
@@ -82,5 +84,7 @@ private:
 static lanelet::RegisterRegulatoryElement<AutowareTrafficLight> regAutowareTraffic;
 
 }  // namespace lanelet::autoware
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__AUTOWARE_TRAFFIC_LIGHT_HPP_

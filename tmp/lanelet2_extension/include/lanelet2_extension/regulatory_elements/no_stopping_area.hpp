@@ -15,6 +15,8 @@
 #ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__NO_STOPPING_AREA_HPP_
 #define LANELET2_EXTENSION__REGULATORY_ELEMENTS__NO_STOPPING_AREA_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_core/primitives/Lanelet.h>
 
@@ -86,5 +88,7 @@ private:
 static lanelet::RegisterRegulatoryElement<NoStoppingArea> regNoStoppingArea;
 
 }  // namespace lanelet::autoware
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__NO_STOPPING_AREA_HPP_

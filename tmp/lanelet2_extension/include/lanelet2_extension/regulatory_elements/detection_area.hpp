@@ -17,6 +17,8 @@
 #ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__DETECTION_AREA_HPP_
 #define LANELET2_EXTENSION__REGULATORY_ELEMENTS__DETECTION_AREA_HPP_
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_core/primitives/Lanelet.h>
 
@@ -91,5 +93,7 @@ static lanelet::RegisterRegulatoryElement<DetectionArea> regDetectionArea;
 
 }  // namespace autoware
 }  // namespace lanelet
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__DETECTION_AREA_HPP_
