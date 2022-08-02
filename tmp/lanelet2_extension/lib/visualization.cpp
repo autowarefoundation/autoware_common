@@ -359,6 +359,7 @@ void visualization::lanelet2Triangle(
   polygon2Triangle(ll_poly, triangles);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 void visualization::polygon2Triangle(
   const geometry_msgs::msg::Polygon & polygon, std::vector<geometry_msgs::msg::Polygon> * triangles)
 {
@@ -1153,11 +1154,11 @@ void visualization::pushLineStringMarker(
   }
   for (auto i = ls.begin(); i + 1 != ls.end(); i++) {
     geometry_msgs::msg::Point p;
-    const float heading =
+    const auto heading =
       static_cast<float>(std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x()));
 
-    const float x_offset = static_cast<float>(lss * 0.5 * std::sin(heading));
-    const float y_offset = static_cast<float>(lss * 0.5 * std::cos(heading));
+    const auto x_offset = static_cast<float>(lss * 0.5 * std::sin(heading));
+    const auto y_offset = static_cast<float>(lss * 0.5 * std::cos(heading));
 
     p.x = (*i).x() + x_offset;
     p.y = (*i).y() - y_offset;
@@ -1236,7 +1237,7 @@ void visualization::pushArrowsMarker(
     return;
   }
   for (auto i = ls.begin(); i + 1 != ls.end(); i++) {
-    const float heading =
+    const auto heading =
       static_cast<float>(std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x()));
 
     const float sin_offset = std::sin(heading);
