@@ -45,7 +45,7 @@ public:
   BasicPoint3d forward(const GPSPoint & gps) const override;
 
   /**
-   * [MGRSProjector::forward projects gpgs lat/lon to MGRS xyz coordinate]
+   * [MGRSProjector::forward projects gps lat/lon to MGRS xyz coordinate]
    * @param  gps       [point with latitude longitude information]
    * @param  precision [resolution of MGRS Grid 0=100km, 1=10km, 2=1km, 3=100m,
    * 4=10m, 5=1m]

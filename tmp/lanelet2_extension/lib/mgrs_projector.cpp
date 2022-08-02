@@ -41,13 +41,13 @@ BasicPoint3d MGRSProjector::forward(const GPSPoint & gps, const int precision) c
   BasicPoint3d mgrs_point{0., 0., gps.ele};
   BasicPoint3d utm_point{0., 0., gps.ele};
   int zone{};
-  bool northp{};
+  bool is_north{};
   std::string mgrs_code;
 
   try {
-    GeographicLib::UTMUPS::Forward(gps.lat, gps.lon, zone, northp, utm_point.x(), utm_point.y());
+    GeographicLib::UTMUPS::Forward(gps.lat, gps.lon, zone, is_north, utm_point.x(), utm_point.y());
     GeographicLib::MGRS::Forward(
-      zone, northp, utm_point.x(), utm_point.y(), gps.lat, precision, mgrs_code);
+      zone, is_north, utm_point.x(), utm_point.y(), gps.lat, precision, mgrs_code);
   } catch (const GeographicLib::GeographicErr & err) {
     std::cerr << err.what() << std::endl;
     return mgrs_point;
@@ -90,13 +90,13 @@ GPSPoint MGRSProjector::reverse(const BasicPoint3d & mgrs_point, const std::stri
 
   int zone{};
   int prec{};
-  bool northp{};
+  bool is_north{};
   try {
     GeographicLib::MGRS::Reverse(
-      mgrs_code, zone, northp, utm_point.x(), utm_point.y(), prec, false);
+      mgrs_code, zone, is_north, utm_point.x(), utm_point.y(), prec, false);
     utm_point.x() += fmod(mgrs_point.x(), pow(10, 5 - prec));
     utm_point.y() += fmod(mgrs_point.y(), pow(10, 5 - prec));
-    GeographicLib::UTMUPS::Reverse(zone, northp, utm_point.x(), utm_point.y(), gps.lat, gps.lon);
+    GeographicLib::UTMUPS::Reverse(zone, is_north, utm_point.x(), utm_point.y(), gps.lat, gps.lon);
   } catch (const GeographicLib::GeographicErr & err) {
     std::cerr << "Failed to convert from MGRS to WGS";
     return gps;
@@ -111,13 +111,13 @@ void MGRSProjector::setMGRSCode(const GPSPoint & gps, const int precision)
 {
   BasicPoint3d utm_point{0., 0., gps.ele};
   int zone{};
-  bool northp{};
+  bool is_north{};
   std::string mgrs_code;
 
   try {
-    GeographicLib::UTMUPS::Forward(gps.lat, gps.lon, zone, northp, utm_point.x(), utm_point.y());
+    GeographicLib::UTMUPS::Forward(gps.lat, gps.lon, zone, is_north, utm_point.x(), utm_point.y());
     GeographicLib::MGRS::Forward(
-      zone, northp, utm_point.x(), utm_point.y(), gps.lat, precision, mgrs_code);
+      zone, is_north, utm_point.x(), utm_point.y(), gps.lat, precision, mgrs_code);
   } catch (const GeographicLib::GeographicErr & err) {
     std::cerr << err.what() << std::endl;
   }

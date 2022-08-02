@@ -5,7 +5,7 @@
 This regulatory element specifies region of interest which vehicle must pay attention whenever it is driving along the associated lanelet. When there are any obstacle in the detection area, vehicle must stop at specified stopline.
 
 - refers: refers to detection area polygon. There could be multiple detection areas registered to a single regulatory element.
-- refline: refers to stop line of the detection area
+- ref_line: refers to stop line of the detection area
 
 ![Detection area](detection_area.png)
 
