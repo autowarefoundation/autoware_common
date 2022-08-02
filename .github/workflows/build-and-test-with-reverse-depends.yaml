@@ -30,6 +30,7 @@ jobs:
       - name: Import depends of reverse depends
         run: |
           yq -i 'del(.repositories.* | select(.url == "https://github.com/autowarefoundation/autoware_common.git"))' reverse_depends/build_depends.repos
+          yq -i 'del(.repositories.* | select(.url == "https://github.com/tier4/autoware_auto_msgs.git"))' reverse_depends/build_depends.repos
           vcs import reverse_depends < reverse_depends/build_depends.repos
 
       - name: Build
