@@ -170,7 +170,7 @@ visualization_msgs::msg::MarkerArray laneletDirectionAsMarkerArray(
  */
 visualization_msgs::msg::MarkerArray lineStringsAsMarkerArray(
   const std::vector<lanelet::ConstLineString3d> & line_strings, const std::string & name_space,
-  const std_msgs::msg::ColorRGBA & c, const double lss);
+  const std_msgs::msg::ColorRGBA & c, const float lss);
 
 /**
  * [autowareTrafficLightsAsMarkerArray creates marker array to visualize traffic

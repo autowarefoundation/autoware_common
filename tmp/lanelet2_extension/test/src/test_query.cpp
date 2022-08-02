@@ -55,8 +55,17 @@ public:
       lanelet::AttributeValueString::Crosswalk;
 
     // create sample traffic light
-    Point3d p5, p6, p7, p8, p9, p10, p11, p12;
-    LineString3d traffic_light_base, traffic_light_bulbs, stop_line;
+    Point3d p5;
+    Point3d p6;
+    Point3d p7;
+    Point3d p8;
+    Point3d p9;
+    Point3d p10;
+    Point3d p11;
+    Point3d p12;
+    LineString3d traffic_light_base;
+    LineString3d traffic_light_bulbs;
+    LineString3d stop_line;
 
     p6 = Point3d(getId(), 0., 1., 4.);
     p7 = Point3d(getId(), 1., 1., 4.);

@@ -134,9 +134,9 @@ void toGeomMsgPt32(const Eigen::Vector3d & src, geometry_msgs::msg::Point32 * ds
     std::cerr << __FUNCTION__ << "pointer is null!" << std::endl;
     return;
   }
-  dst->x = src.x();
-  dst->y = src.y();
-  dst->z = src.z();
+  dst->x = static_cast<float>(src.x());
+  dst->y = static_cast<float>(src.y());
+  dst->z = static_cast<float>(src.z());
 }
 
 geometry_msgs::msg::Point toGeomMsgPt(const geometry_msgs::msg::Point32 & src)

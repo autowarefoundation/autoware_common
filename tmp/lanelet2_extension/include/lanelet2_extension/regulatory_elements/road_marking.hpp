@@ -23,9 +23,7 @@
 #include <memory>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 class RoadMarking : public lanelet::RegulatoryElement
 {
@@ -44,14 +42,14 @@ public:
    * @brief get the relevant road marking
    * @return road marking
    */
-  ConstLineString3d roadMarking() const;
-  LineString3d roadMarking();
+  [[nodiscard]] ConstLineString3d roadMarking() const;
+  [[nodiscard]] LineString3d roadMarking();
 
   /**
    * @brief add a new road marking
    * @param primitive road marking to add
    */
-  void setRoadMarking(const LineString3d & primitive);
+  void setRoadMarking(const LineString3d & road_marking);
 
   /**
    * @brief remove a road marking
@@ -67,8 +65,7 @@ private:
 };
 static lanelet::RegisterRegulatoryElement<RoadMarking> regRoadMarking;
 
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)
 

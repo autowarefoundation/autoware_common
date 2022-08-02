@@ -28,9 +28,7 @@
 #include <string>
 #include <utility>
 
-namespace lanelet
-{
-namespace projection
+namespace lanelet::projection
 {
 class MGRSProjector : public Projector
 {
@@ -111,8 +109,7 @@ private:
   mutable std::string projected_grid_;
 };
 
-}  // namespace projection
-}  // namespace lanelet
+}  // namespace lanelet::projection
 
 // NOLINTEND(readability-identifier-naming)
 

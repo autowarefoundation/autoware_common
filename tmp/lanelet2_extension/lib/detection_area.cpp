@@ -27,9 +27,7 @@
 #include <utility>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 namespace
 {
@@ -151,7 +149,6 @@ void DetectionArea::setStopLine(const LineString3d & stopLine)
 
 void DetectionArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
 
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

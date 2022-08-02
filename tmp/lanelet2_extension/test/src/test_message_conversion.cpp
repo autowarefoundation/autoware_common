@@ -39,7 +39,9 @@ public:
     Point3d p5;
     Point3d p6;
     Point3d p7;
-    LineString3d traffic_light_base, traffic_light_bulbs, stop_line;
+    LineString3d traffic_light_base;
+    LineString3d traffic_light_bulbs;
+    LineString3d stop_line;
 
     p1 = Point3d(getId(), 0., 0., 0.);
     p2 = Point3d(getId(), 0., 1., 0.);

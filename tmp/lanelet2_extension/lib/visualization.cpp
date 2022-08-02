@@ -112,7 +112,7 @@ bool inputLightMarker(visualization_msgs::msg::Marker * marker, const lanelet::C
     return false;
   }
 
-  marker->id = p.id();
+  marker->id = static_cast<int32_t>(p.id());
 
   geometry_msgs::msg::Point point;
   marker->pose.position.x = p.x();
@@ -254,7 +254,7 @@ void pushLaneletDirectionMarker(
 
 bool isClockWise(const geometry_msgs::msg::Polygon & polygon)
 {
-  const int N = polygon.points.size();
+  const int N = static_cast<int>(polygon.points.size());
   const double x_offset = polygon.points[0].x;
   const double y_offset = polygon.points[0].y;
   double sum = 0.0;
@@ -368,7 +368,7 @@ void visualization::polygon2Triangle(
   }
 
   // ear clipping: find smallest internal angle in polygon
-  int N = poly.points.size();
+  int N = static_cast<int>(poly.points.size());
 
   // array of angles for each vertex
   std::vector<bool> is_acute_angle;
@@ -419,7 +419,9 @@ void visualization::polygon2Triangle(
     }
 
     // create triangle
-    geometry_msgs::msg::Point32 p0, p1, p2;
+    geometry_msgs::msg::Point32 p0;
+    geometry_msgs::msg::Point32 p1;
+    geometry_msgs::msg::Point32 p2;
     adjacentPoints(clipped_vertex, N, poly, &p0, &p1, &p2);
     geometry_msgs::msg::Polygon triangle;
     triangle.points.push_back(p0);
@@ -438,7 +440,7 @@ void visualization::polygon2Triangle(
     is_acute_angle.erase(it_angle);
 
     // update angle list
-    N = poly.points.size();
+    N = static_cast<int>(poly.points.size());
     if (clipped_vertex == N) {
       clipped_vertex = 0;
     }
@@ -547,7 +549,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.header.frame_id = "map";
         marker.header.stamp = rclcpp::Time();
         marker.ns = "traffic_light_id";
-        marker.id = ls.id();
+        marker.id = static_cast<int32_t>(ls.id());
         marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
         marker.lifetime = duration;
         marker.action = visualization_msgs::msg::Marker::ADD;
@@ -614,7 +616,7 @@ visualization_msgs::msg::MarkerArray visualization::detectionAreasAsMarkerArray(
   for (const auto & da_reg_elem : da_reg_elems) {
     marker.points.clear();
     marker.colors.clear();
-    marker.id = da_reg_elem->id();
+    marker.id = static_cast<int32_t>(da_reg_elem->id());
 
     // area visualization
     const auto detection_areas = da_reg_elem->detectionAreas();
@@ -689,7 +691,7 @@ visualization_msgs::msg::MarkerArray visualization::noStoppingAreasAsMarkerArray
   for (const auto & no_reg_elem : no_reg_elems) {
     marker.points.clear();
     marker.colors.clear();
-    marker.id = no_reg_elem->id();
+    marker.id = static_cast<int32_t>(no_reg_elem->id());
 
     // area visualization
     const auto no_stopping_areas = no_reg_elem->noStoppingAreas();
@@ -801,12 +803,12 @@ visualization_msgs::msg::MarkerArray visualization::generateLaneletIdMarker(
     marker.header.frame_id = "map";
     marker.header.stamp = rclcpp::Clock().now();
     marker.ns = "lanelet_id";
-    marker.id = ll.id();
+    marker.id = static_cast<int32_t>(ll.id());
     marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
     marker.action = visualization_msgs::msg::Marker::ADD;
     const auto centerline = ll.centerline();
     const size_t target_position_index = centerline.size() / 2;
-    const auto target_position = centerline[target_position_index];
+    const auto & target_position = centerline[target_position_index];
     marker.pose.position.x = target_position.x();
     marker.pose.position.y = target_position.y();
     marker.pose.position.z = target_position.z();
@@ -844,7 +846,7 @@ visualization_msgs::msg::MarkerArray visualization::obstaclePolygonsAsMarkerArra
 
 visualization_msgs::msg::MarkerArray visualization::lineStringsAsMarkerArray(
   const std::vector<lanelet::ConstLineString3d> & line_strings, const std::string & name_space,
-  const std_msgs::msg::ColorRGBA & c, const double lss)
+  const std_msgs::msg::ColorRGBA & c, const float lss)
 {
   visualization_msgs::msg::MarkerArray ls_marker_array;
   if (line_strings.empty()) {
@@ -869,7 +871,7 @@ visualization_msgs::msg::MarkerArray visualization::laneletsBoundaryAsMarkerArra
   const bool viz_centerline, const std::string & additional_namespace)
 {
   const float lss = 0.1;  // line string size
-  const float lss_center = std::max(lss * 0.1, 0.02);
+  const float lss_center = static_cast<float>(std::max(lss * 0.1, 0.02));
 
   std::unordered_set<lanelet::Id> added;
   visualization_msgs::msg::Marker left_line_strip;
@@ -1151,10 +1153,11 @@ void visualization::pushLineStringMarker(
   }
   for (auto i = ls.begin(); i + 1 != ls.end(); i++) {
     geometry_msgs::msg::Point p;
-    const float heading = std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x());
+    const float heading =
+      static_cast<float>(std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x()));
 
-    const float x_offset = lss * 0.5 * std::sin(heading);
-    const float y_offset = lss * 0.5 * std::cos(heading);
+    const float x_offset = static_cast<float>(lss * 0.5 * std::sin(heading));
+    const float y_offset = static_cast<float>(lss * 0.5 * std::cos(heading));
 
     p.x = (*i).x() + x_offset;
     p.y = (*i).y() - y_offset;
@@ -1233,7 +1236,8 @@ void visualization::pushArrowsMarker(
     return;
   }
   for (auto i = ls.begin(); i + 1 != ls.end(); i++) {
-    const float heading = std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x());
+    const float heading =
+      static_cast<float>(std::atan2((*(i + 1)).y() - (*i).y(), (*(i + 1)).x() - (*i).x()));
 
     const float sin_offset = std::sin(heading);
     const float cos_offset = std::cos(heading);

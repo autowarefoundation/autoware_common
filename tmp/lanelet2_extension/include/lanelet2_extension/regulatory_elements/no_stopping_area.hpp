@@ -44,8 +44,8 @@ public:
    * @brief get the relevant no stopping area
    * @return no stopping area
    */
-  ConstPolygons3d noStoppingAreas() const;
-  Polygons3d noStoppingAreas();
+  [[nodiscard]] ConstPolygons3d noStoppingAreas() const;
+  [[nodiscard]] Polygons3d noStoppingAreas();
 
   /**
    * @brief add a new no stopping area
@@ -64,8 +64,8 @@ public:
    * @brief get the stop line for the no stopping area
    * @return the stop line as LineString
    */
-  Optional<ConstLineString3d> stopLine() const;
-  Optional<LineString3d> stopLine();
+  [[nodiscard]] Optional<ConstLineString3d> stopLine() const;
+  [[nodiscard]] Optional<LineString3d> stopLine();
 
   /**
    * @brief set a new stop line, overwrite the old one

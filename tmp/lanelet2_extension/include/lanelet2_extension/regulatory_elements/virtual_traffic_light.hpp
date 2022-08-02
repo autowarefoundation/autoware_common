@@ -23,9 +23,7 @@
 #include <memory>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 class VirtualTrafficLight : public lanelet::RegulatoryElement
 {
@@ -77,8 +75,7 @@ private:
 
 static lanelet::RegisterRegulatoryElement<VirtualTrafficLight> regVirtualTrafficLight;
 
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)
 

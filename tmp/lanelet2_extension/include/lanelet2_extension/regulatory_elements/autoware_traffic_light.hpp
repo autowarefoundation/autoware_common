@@ -54,7 +54,7 @@ public:
    * There might be multiple traffic light bulbs but they are required to show
    * the same signal.
    */
-  ConstLineStrings3d lightBulbs() const;
+  [[nodiscard]] ConstLineStrings3d lightBulbs() const;
 
   /**
    * @brief add a new traffic light bulb

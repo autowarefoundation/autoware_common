@@ -56,7 +56,8 @@ TEST(TestSuite, FactoryConstructsTrafficLight)  // NOLINT for gtest
   Point3d p6;
   Point3d p7;
   LineStringOrPolygon3d traffic_light_base;
-  LineString3d traffic_light_bulbs, stop_line;
+  LineString3d traffic_light_bulbs;
+  LineString3d stop_line;
 
   p1 = Point3d(getId(), 0., 1., 4.);
   p2 = Point3d(getId(), 1., 1., 4.);

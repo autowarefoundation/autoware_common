@@ -25,9 +25,7 @@
 #include <memory>
 #include <vector>
 
-namespace lanelet
-{
-namespace autoware
+namespace lanelet::autoware
 {
 class DetectionArea : public lanelet::RegulatoryElement
 {
@@ -48,8 +46,8 @@ public:
    * @brief get the relevant detection_areas
    * @return detection_areas
    */
-  ConstPolygons3d detectionAreas() const;
-  Polygons3d detectionAreas();
+  [[nodiscard]] ConstPolygons3d detectionAreas() const;
+  [[nodiscard]] Polygons3d detectionAreas();
 
   /**
    * @brief add a new detection area
@@ -68,8 +66,8 @@ public:
    * @brief get the stop line for the detection area
    * @return the stop line as LineString
    */
-  ConstLineString3d stopLine() const;
-  LineString3d stopLine();
+  [[nodiscard]] ConstLineString3d stopLine() const;
+  [[nodiscard]] LineString3d stopLine();
 
   /**
    * @brief set a new stop line, overwrite the old one
@@ -91,8 +89,7 @@ private:
 };
 static lanelet::RegisterRegulatoryElement<DetectionArea> regDetectionArea;
 
-}  // namespace autoware
-}  // namespace lanelet
+}  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)
 

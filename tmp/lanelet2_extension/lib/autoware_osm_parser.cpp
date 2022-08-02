@@ -26,9 +26,7 @@
 #include <memory>
 #include <string>
 
-namespace lanelet
-{
-namespace io_handlers
+namespace lanelet::io_handlers
 {
 std::unique_ptr<LaneletMap> AutowareOsmParser::parse(
   const std::string & filename, ErrorMessages & errors) const
@@ -87,7 +85,6 @@ void AutowareOsmParser::parseVersions(
   }
 }
 
-}  // namespace io_handlers
-}  // namespace lanelet
+}  // namespace lanelet::io_handlers
 
 // NOLINTEND(readability-identifier-naming)
