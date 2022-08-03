@@ -359,7 +359,7 @@ void visualization::lanelet2Triangle(
   polygon2Triangle(ll_poly, triangles);
 }
 
-// NOLINTNEXTLINE(readability-function-cognitive-complexity)
+// NOLINTBEGIN(readability-function-cognitive-complexity)
 void visualization::polygon2Triangle(
   const geometry_msgs::msg::Polygon & polygon, std::vector<geometry_msgs::msg::Polygon> * triangles)
 {
@@ -453,6 +453,7 @@ void visualization::polygon2Triangle(
     is_acute_angle.at(i_prev) = isAcuteAngle(p0, p1, p2);
   }
 }
+// NOLINTEND(readability-function-cognitive-complexity)
 
 void visualization::lanelet2Polygon(
   const lanelet::ConstLanelet & ll, geometry_msgs::msg::Polygon * polygon)

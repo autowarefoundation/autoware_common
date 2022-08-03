@@ -71,7 +71,7 @@ void validateElevationTag(const std::string & filename)
   }
 }
 
-// NOLINTNEXTLINE(readability-function-cognitive-complexity)
+// NOLINTBEGIN(readability-function-cognitive-complexity)
 void validateTrafficLight(const lanelet::LaneletMapPtr lanelet_map)
 {
   if (!lanelet_map) {
@@ -114,6 +114,7 @@ void validateTrafficLight(const lanelet::LaneletMapPtr lanelet_map)
     }
   }
 }
+// NOLINTEND(readability-function-cognitive-complexity)
 
 void validateTurnDirection(const lanelet::LaneletMapPtr lanelet_map)
 {
