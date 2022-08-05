@@ -270,6 +270,14 @@ visualization_msgs::msg::MarkerArray generateLaneletIdMarker(
 visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
 
+/**
+ * [NoDetectionAreaAsMarkerArray creates marker array to visualize no detection area]
+ * @param  no_detection_area [no detection area polygon]
+ * @param  c                 [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noDetectionAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_detection_area, const std_msgs::msg::ColorRGBA & c);
+
 }  // namespace lanelet::visualization
 
 // NOLINTEND(readability-identifier-naming)

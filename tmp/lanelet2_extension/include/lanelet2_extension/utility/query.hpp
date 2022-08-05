@@ -175,6 +175,9 @@ lanelet::ConstLineStrings3d getLinkedParkingSpaces(
 lanelet::ConstLanelets getLinkedLanelets(
   const lanelet::ConstPolygon3d & parking_lot, const lanelet::ConstLanelets & all_road_lanelets);
 
+// query all no detection area in lanelet2 map
+lanelet::ConstPolygons3d getAllNoDetectionArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+
 /**
  * [stopLinesLanelets extracts stoplines that are associated to lanelets]
  * @param lanelets [input lanelets]

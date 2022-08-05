@@ -879,6 +879,19 @@ std::vector<lanelet::ConstLanelets> query::getPrecedingLaneletSequences(
   return lanelet_sequences_vec;
 }
 
+lanelet::ConstPolygons3d query::getAllNoDetectionArea(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+{
+  lanelet::ConstPolygons3d no_detection_area;
+  for (const auto & poly : lanelet_map_ptr->polygonLayer) {
+    const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
+    if (type.compare("no_detection_area") == 0) {
+      no_detection_area.push_back(poly);
+    }
+  }
+  return no_detection_area;
+}
+
 }  // namespace lanelet::utils
 
 // NOLINTEND(readability-identifier-naming)
