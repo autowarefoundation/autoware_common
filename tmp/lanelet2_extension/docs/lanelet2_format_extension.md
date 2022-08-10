@@ -197,6 +197,7 @@ the crosswalk definition on lanelet2 map:
   closest point to the crosswalk when ego vehicle slows down and drives at specified speed
 
 _An example:_
+
 ```xml
 <relation id='34378' visible='true' version='1'>
   <member type='way' ref='34374' role='left' />
