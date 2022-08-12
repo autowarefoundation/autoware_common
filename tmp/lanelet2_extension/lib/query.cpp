@@ -885,7 +885,7 @@ lanelet::ConstPolygons3d query::getAllNoDetectionArea(
   lanelet::ConstPolygons3d no_detection_area;
   for (const auto & poly : lanelet_map_ptr->polygonLayer) {
     const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type.compare("no_detection_area") == 0) {
+    if (type == "no_detection_area") {
       no_detection_area.push_back(poly);
     }
   }
