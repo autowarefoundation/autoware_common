@@ -114,6 +114,9 @@ std::vector<lanelet::DetectionAreaConstPtr> detectionAreas(const lanelet::ConstL
 std::vector<lanelet::NoStoppingAreaConstPtr> noStoppingAreas(
   const lanelet::ConstLanelets & lanelets);
 
+// query all no detection area in lanelet2 map
+lanelet::ConstPolygons3d getAllNoDetectionArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+
 // query all obstacle polygons in lanelet2 map
 lanelet::ConstPolygons3d getAllObstaclePolygons(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
@@ -174,9 +177,6 @@ lanelet::ConstLineStrings3d getLinkedParkingSpaces(
 // query linked lanelets from parking lot
 lanelet::ConstLanelets getLinkedLanelets(
   const lanelet::ConstPolygon3d & parking_lot, const lanelet::ConstLanelets & all_road_lanelets);
-
-// query all no detection area in lanelet2 map
-lanelet::ConstPolygons3d getAllNoDetectionArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
 
 /**
  * [stopLinesLanelets extracts stoplines that are associated to lanelets]
