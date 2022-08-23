@@ -184,3 +184,27 @@ The following illustrates how light_bulbs are registered to traffic_light regula
   <member type='way' ref='11' role='light_bulbs'/> <!-- refers to the light_bulb line string -->
 </relation>
 ```
+
+### Safety Slow Down for Crosswalks
+
+If you wish ego vehicle to slow down to a certain speed from a certain distance while passing over a
+certain crosswalk _even though there are no target objects around it_, you can add following tags to
+the crosswalk definition on lanelet2 map:
+
+- `safety_slow_down_speed` **[m/s]**: The speed you want ego vehicle to drive at while passing over
+  the crosswalk
+- `safety_slow_down_distance` **[m]**: The distance between front bumper of ego vehicle and
+  closest point to the crosswalk when ego vehicle slows down and drives at specified speed
+
+_An example:_
+
+```xml
+<relation id='34378' visible='true' version='1'>
+  <member type='way' ref='34374' role='left' />
+  <member type='way' ref='34377' role='right' />
+  <tag k='subtype' v='crosswalk' />
+  <tag k='safety_slow_down_speed' v='3.0' />
+  <tag k='safety_slow_down_distance' v='2.0' />
+  <tag k='type' v='lanelet' />
+</relation>
+```
