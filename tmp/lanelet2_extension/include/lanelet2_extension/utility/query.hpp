@@ -114,8 +114,9 @@ std::vector<lanelet::DetectionAreaConstPtr> detectionAreas(const lanelet::ConstL
 std::vector<lanelet::NoStoppingAreaConstPtr> noStoppingAreas(
   const lanelet::ConstLanelets & lanelets);
 
-// query all no detection area in lanelet2 map
-lanelet::ConstPolygons3d getAllNoDetectionArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+// query all polygons that has given type in lanelet2 map
+lanelet::ConstPolygons3d getAllPolygonsByType(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type);
 
 // query all obstacle polygons in lanelet2 map
 lanelet::ConstPolygons3d getAllObstaclePolygons(

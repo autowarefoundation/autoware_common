@@ -212,17 +212,17 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
   return no_reg_elems;
 }
 
-lanelet::ConstPolygons3d query::getAllNoDetectionArea(
-  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+lanelet::ConstPolygons3d query::getAllPolygonsByType(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
 {
-  lanelet::ConstPolygons3d no_detection_area;
+  lanelet::ConstPolygons3d polygons;
   for (const auto & poly : lanelet_map_ptr->polygonLayer) {
     const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type == "no_detection_area") {
-      no_detection_area.push_back(poly);
+    if (type == polygon_type) {
+      polygons.push_back(poly);
     }
   }
-  return no_detection_area;
+  return polygons;
 }
 
 lanelet::ConstPolygons3d query::getAllObstaclePolygons(
