@@ -271,12 +271,25 @@ visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
 
 /**
- * [NoDetectionAreaAsMarkerArray creates marker array to visualize no detection area]
- * @param  no_detection_area [no detection area polygon]
- * @param  c                 [color of the marker]
+ * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area]
+ * @param  no_obstacle_segmentation_area [no obstacle segmenatation area polygon]
+ * @param  c                             [color of the marker]
  */
-visualization_msgs::msg::MarkerArray noDetectionAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & no_detection_area, const std_msgs::msg::ColorRGBA & c);
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
+  const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [noObstacleSegmentationAreaForRunOutAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area for run out]
+ * @param  no_obstacle_segmentation_area_for_run_out [no obstacle segmentation area for run out
+ * polygon]
+ * @param  c                                         [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
+  const std_msgs::msg::ColorRGBA & c);
 
 }  // namespace lanelet::visualization
 

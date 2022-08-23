@@ -1263,16 +1263,39 @@ void visualization::pushArrowsMarker(
   }
 }
 
-visualization_msgs::msg::MarkerArray visualization::noDetectionAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & no_detection_area, const std_msgs::msg::ColorRGBA & c)
+visualization_msgs::msg::MarkerArray visualization::noObstacleSegmentationAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
+  const std_msgs::msg::ColorRGBA & c)
 {
   visualization_msgs::msg::MarkerArray marker_array;
-  if (no_detection_area.empty()) {
+  if (no_obstacle_segmentation_area.empty()) {
     return marker_array;
   }
 
-  visualization_msgs::msg::Marker marker = createPolygonMarker("no_detection_area", c);
-  for (const auto & polygon : no_detection_area) {
+  visualization_msgs::msg::Marker marker = createPolygonMarker("no_obstacle_segmentation_area", c);
+  for (const auto & polygon : no_obstacle_segmentation_area) {
+    pushPolygonMarker(&marker, polygon, c);
+  }
+
+  if (!marker.points.empty()) {
+    marker_array.markers.push_back(marker);
+  }
+  return marker_array;
+}
+
+visualization_msgs::msg::MarkerArray
+visualization::noObstacleSegmentationAreaForRunOutAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
+  const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+  if (no_obstacle_segmentation_area_for_run_out.empty()) {
+    return marker_array;
+  }
+
+  visualization_msgs::msg::Marker marker =
+    createPolygonMarker("no_obstacle_segmentation_area_for_run_out", c);
+  for (const auto & polygon : no_obstacle_segmentation_area_for_run_out) {
     pushPolygonMarker(&marker, polygon, c);
   }
 
