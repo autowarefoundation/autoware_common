@@ -273,7 +273,7 @@ visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
 /**
  * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
  * segmentation area]
- * @param  no_obstacle_segmentation_area [no obstacle segmenatation area polygon]
+ * @param  no_obstacle_segmentation_area [no obstacle segmentation area polygon]
  * @param  c                             [color of the marker]
  */
 visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaAsMarkerArray(
