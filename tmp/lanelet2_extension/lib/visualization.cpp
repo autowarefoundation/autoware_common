@@ -1100,7 +1100,7 @@ void visualization::pushTrafficLightTriangleMarker(
     marker->points.push_back(i);
     marker->colors.push_back(cl);
   }
-  for (const auto & i : tri0) {
+  for (const auto & i : tri1) {
     marker->points.push_back(i);
     marker->colors.push_back(cl);
   }
