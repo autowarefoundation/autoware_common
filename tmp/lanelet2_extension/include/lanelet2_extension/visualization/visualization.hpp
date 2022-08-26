@@ -270,6 +270,27 @@ visualization_msgs::msg::MarkerArray generateLaneletIdMarker(
 visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
 
+/**
+ * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area]
+ * @param  no_obstacle_segmentation_area [no obstacle segmentation area polygon]
+ * @param  c                             [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
+  const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [noObstacleSegmentationAreaForRunOutAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area for run out]
+ * @param  no_obstacle_segmentation_area_for_run_out [no obstacle segmentation area for run out
+ * polygon]
+ * @param  c                                         [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
+  const std_msgs::msg::ColorRGBA & c);
+
 }  // namespace lanelet::visualization
 
 // NOLINTEND(readability-identifier-naming)

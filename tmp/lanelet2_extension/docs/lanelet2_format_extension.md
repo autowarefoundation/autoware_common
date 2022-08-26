@@ -208,3 +208,25 @@ _An example:_
   <tag k='type' v='lanelet' />
 </relation>
 ```
+
+### No Obstacle Segmentation Area
+
+If there is a polygon area that has `no_obstacle_segmentation_area` tag, the obstacle points in this area are removed.
+If you want to ignore points for a certain module, you have to define another tag and specify it in the parameter of vector_map_inside_area_filter.
+Currently, following tags are defined other than `no_obstacle_segmentation_area`.
+
+- `no_obstacle_segmentation_area_for_run_out`
+  - remove points for run out module
+
+_An example:_
+
+```xml
+  <way id="1658">
+    <nd ref="1653"/>
+    <nd ref="1654"/>
+    <nd ref="1656"/>
+    <nd ref="1657"/>
+    <tag k="type" v="no_obstacle_segmentation_area"/>
+    <tag k="area" v="yes"/>
+  </way>
+```

@@ -212,6 +212,19 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
   return no_reg_elems;
 }
 
+lanelet::ConstPolygons3d query::getAllPolygonsByType(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
+{
+  lanelet::ConstPolygons3d polygons;
+  for (const auto & poly : lanelet_map_ptr->polygonLayer) {
+    const std::string type = poly.attributeOr(lanelet::AttributeName::Type, "none");
+    if (type == polygon_type) {
+      polygons.push_back(poly);
+    }
+  }
+  return polygons;
+}
+
 lanelet::ConstPolygons3d query::getAllObstaclePolygons(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
 {
@@ -878,7 +891,6 @@ std::vector<lanelet::ConstLanelets> query::getPrecedingLaneletSequences(
   }
   return lanelet_sequences_vec;
 }
-
 }  // namespace lanelet::utils
 
 // NOLINTEND(readability-identifier-naming)
