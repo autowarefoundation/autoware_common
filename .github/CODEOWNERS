@@ -1,0 +1,8 @@
+### Copied from .github/CODEOWNERS-manual ###
+.github/* @autowarefoundation/autoware-maintainers
+
+### Automatically generated from package.xml ###
+autoware_utils/* kenji.miyake@tier4.jp
+autoware_lint_common/* kenji.miyake@tier4.jp
+autoware_cmake/* kenji.miyake@tier4.jp
+tmp/lanelet2_extension/* ryohsuke.mitsudome@tier4.jp
