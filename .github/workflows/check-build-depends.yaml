@@ -38,4 +38,4 @@ jobs:
         with:
           rosdistro: ${{ matrix.rosdistro }}
           target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
-          build-depends-repos: build_depends.repos
+          build-depends-repos: ${{ matrix.build-depends-repos }}
