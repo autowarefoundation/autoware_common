@@ -16,6 +16,7 @@
       post-commands: |
         sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
         sd "build_depends.humble.repos" "build_depends.repos" {dest}
+    - source: .github/workflows/cancel-previous-workflows.yaml
     - source: .github/workflows/check-build-depends.yaml
       post-commands: |
         sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest-cuda" "container: ros:\$1" {dest}
