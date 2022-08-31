@@ -61,7 +61,7 @@ jobs:
 
   clang-tidy-differential:
     runs-on: ubuntu-latest
-    container: ros:humble
+    container: ros:humble-cuda
     needs: build-and-test-differential
     steps:
       - name: Check out repository
