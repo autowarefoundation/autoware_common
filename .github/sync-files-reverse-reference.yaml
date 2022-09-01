@@ -30,9 +30,9 @@
         sd "build_depends.humble.repos" "build_depends.repos" {source}
     - source: .github/workflows/cancel-previous-workflows.yaml
     - source: .github/workflows/check-build-depends.yaml
-      post-commands: |
-        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest.*" "container: ros:\$1" {dest}
-        sd "build_depends.humble.repos" "build_depends.repos" {dest}
+      pre-commands: |
+        sd "container: ghcr.io/autowarefoundation/autoware-universe:(\w+)-latest.*" "container: ros:\$1" {source}
+        sd "build_depends.humble.repos" "build_depends.repos" {source}
     - source: .github/workflows/clang-tidy-pr-comments.yaml
     - source: .github/workflows/update-codeowners-from-packages.yaml
     - source: codecov.yaml
