@@ -1,6 +1,9 @@
 #include <lanelet2_extension/projection/mgrs_projector.hpp>
 #include <lanelet2_extension/utility/query.hpp>
 #include <lanelet2_extension/utility/utilities.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <lanelet2_core/LaneletMap.h>
 #include <lanelet2_io/Io.h>
@@ -36,15 +39,17 @@ int main(int argc, char ** argv)
   lanelet::routing::RoutingGraphPtr routing_graph_ptr =
     lanelet::routing::RoutingGraph::build(*map, *trafficRules);
 
-  vector<lanelet::RegulatoryElementPtr> row_elems;
-  for (auto regelem : map->regulatoryElementLayer) {
-    const auto & attrs = regelem->attributes();
-    if (auto it = attrs.find(lanelet::AttributeName::Subtype);
-        it != attrs.end() && it->second == lanelet::AttributeValueString::RightOfWay)
-      row_elems.push_back(regelem);
-  }
-  const vector<shared_ptr<lanelet::RightOfWay>> rows =
-    lanelet::utils::transformSharedPtr<lanelet::RightOfWay>(row_elems);
+  auto rows = map->regulatoryElementLayer  // filter elem whose Subtype is RighOfWay
+              |
+              ranges::view::filter([](auto && elem) {
+                const auto & attrs = elem->attributes();
+                auto it = attrs.find(lanelet::AttributeName::Subtype);
+                return it != attrs.end() && it->second == lanelet::AttributeValueString::RightOfWay;
+              })  // transform to lanelet::RightOfWay
+              | ranges::views::transform([](auto && elem) {
+                  return std::move(std::dynamic_pointer_cast<lanelet::RightOfWay>(elem));
+                });
+
   for (auto && row : rows) {
     const vector<lanelet::Lanelet> & right_of_ways = row->rightOfWayLanelets();
     const vector<lanelet::Lanelet> & yields = row->yieldLanelets();
