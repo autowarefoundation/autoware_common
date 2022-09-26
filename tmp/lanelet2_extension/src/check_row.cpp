@@ -1,9 +1,13 @@
 #include <lanelet2_extension/projection/mgrs_projector.hpp>
 #include <lanelet2_extension/utility/query.hpp>
 #include <lanelet2_extension/utility/utilities.hpp>
-#include <range/v3/range/conversion.hpp>
+#include <range/v3/algorithm/move.hpp>
+#include <range/v3/core.hpp>
+#include <range/v3/functional/overload.hpp>
+#include <range/v3/utility/copy.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/transform.hpp>
+#include <range/v3/view/unique.hpp>
 
 #include <lanelet2_core/LaneletMap.h>
 #include <lanelet2_io/Io.h>
@@ -51,10 +55,12 @@ int main(int argc, char ** argv)
                 });
 
   for (auto && row : rows) {
-    const vector<lanelet::Lanelet> & right_of_ways = row->rightOfWayLanelets();
-    const vector<lanelet::Lanelet> & yields = row->yieldLanelets();
+    const auto & right_of_ways = row->rightOfWayLanelets();
+    const auto & yields = row->yieldLanelets();
     set<int> yield_ids;
-    for (auto && yield : yields) yield_ids.insert(yield.id());
+    for (auto && yield : yields) {
+      yield_ids.insert(yield.id());
+    }
 
     set<int> conflicting_ids;
     for (auto && right_of_way : right_of_ways) {
