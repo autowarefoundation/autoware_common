@@ -62,6 +62,14 @@ target_link_libraries(autoware_lanelet2_validation
   lanelet2_extension_lib
 )
 
+ament_auto_add_executable(check_row src/check_row.cpp)
+add_dependencies(check_row lanelet2_extension_lib)
+target_link_libraries(check_row
+  ${catkin_LIBRARIES}
+  ${PUGIXML_LIBRARIES}
+  lanelet2_extension_lib
+)
+
 if(BUILD_TESTING)
   ament_add_ros_isolated_gtest(message_conversion-test test/src/test_message_conversion.cpp)
   target_link_libraries(message_conversion-test lanelet2_extension_lib)
