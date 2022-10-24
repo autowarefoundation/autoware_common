@@ -61,3 +61,71 @@ This regulatory element specifies related road markings to a lanelet as shown be
 refers: linestring with type attribute. Type explains what road marking it represents (e.g. stopline).
 
 ![Road marking](road_mark.png)
+
+## Speed Bump
+
+This regulatory element specifies a speed bump on the road.
+
+- refers: to a speed bump polygon. There must be only one speed bump polygon registered to a single
+  regulatory element.
+
+![Speed bump](speed_bump.png)
+
+An example annotation of speed_bump:
+
+```xml
+  <node id='1' lat='40.81478464668' lon='29.35984444811'>
+    <tag k='ele' v='3.004897' />
+    <tag k='x' v='138.2702' />
+    <tag k='y' v='326.5387' />
+  </node>
+  <node id='2' lat='40.81476705154' lon='29.3599302694'>
+    <tag k='ele' v='2.949194' />
+    <tag k='x' v='145.5616' />
+    <tag k='y' v='324.7803' />
+  </node>
+  <node id='3' lat='40.81477166944' lon='29.35993194259'>
+    <tag k='ele' v='2.948368' />
+    <tag k='x' v='145.6889' />
+    <tag k='y' v='325.2968' />
+  </node>
+  <node id='4' lat='40.81478914798' lon='29.35984590876'>
+    <tag k='ele' v='3.018582' />
+    <tag k='x' v='138.3799' />
+    <tag k='y' v='327.0417' />
+  </node>
+  <way id='5'>
+    <nd ref='1' />
+    <nd ref='2' />
+    <nd ref='3' />
+    <nd ref='4' />
+    <tag k='area' v='yes' />
+    <tag k='height' v='0.15' />
+    <tag k='type' v='speed_bump' />
+  </way>
+  <relation id='6'>
+    <member type='way' ref='5' role='refers' />
+    <tag k='subtype' v='speed_bump' />
+    <tag k='type' v='regulatory_element' />
+  </relation>
+  <relation id='7'>
+    <member type='relation' ref='6' role='regulatory_element' />
+    <member type='way' ref='10' role='left' />
+    <member type='way' ref='11' role='right' />
+    <tag k='location' v='urban' />
+    <tag k='participant:vehicle' v='yes' />
+    <tag k='speed_limit' v='30.00' />
+    <tag k='subtype' v='road' />
+    <tag k='type' v='lanelet' />
+  </relation>
+  <relation id='8'>
+    <member type='relation' ref='6' role='regulatory_element' />
+    <member type='way' ref='12' role='left' />
+    <member type='way' ref='10' role='right' />
+    <tag k='location' v='urban' />
+    <tag k='participant:vehicle' v='yes' />
+    <tag k='speed_limit' v='30.00' />
+    <tag k='subtype' v='road' />
+    <tag k='type' v='lanelet' />
+  </relation>
+```
