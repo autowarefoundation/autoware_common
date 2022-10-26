@@ -24,6 +24,8 @@ class RespawnableNodeContainer(ComposableNodeContainer):
         super().__init__(
             name=name,
             namespace=namespace,
+            composable_node_descriptions=composable_node_descriptions,
             respawn=respawn,
             respawn_delay=respawn_delay,
             **kwargs)
+
