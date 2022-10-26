@@ -1,9 +1,10 @@
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
 from typing import List
 from typing import Optional
 
 from launch.some_substitutions_type import SomeSubstitutionsType
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
+
 
 class RespawnableNodeContainer(ComposableNodeContainer):
     """
@@ -17,8 +18,8 @@ class RespawnableNodeContainer(ComposableNodeContainer):
         name: SomeSubstitutionsType,
         namespace: SomeSubstitutionsType,
         composable_node_descriptions: Optional[List[ComposableNode]] = None,
-        respawn = True,
-        respawn_delay = 0.5,
+        respawn=True,
+        respawn_delay=0.5,
         **kwargs
     ) -> None:
         super().__init__(
@@ -27,5 +28,5 @@ class RespawnableNodeContainer(ComposableNodeContainer):
             composable_node_descriptions=composable_node_descriptions,
             respawn=respawn,
             respawn_delay=respawn_delay,
-            **kwargs)
-
+            **kwargs
+        )
