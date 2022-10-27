@@ -77,11 +77,11 @@ Here is an example of osm syntax for lanelets in intersections.
 </relation>
 ```
 
-### RightOfWay
+### Right Of Way
 
-Users must add `RightOfWay` tag to intersection lanes, namely lanes with `turn_direction` attribute. Below image illustrates how to set yield lanes(orange) for the ego lane(blue).
+Users must add `right_of_way` tag to intersection lanes, namely lanes with `turn_direction` attribute. Below image illustrates how to set yield lanes(orange) for the ego lane(blue).
 
-![RightOfWay tagging](right_of_way.drawio.png)
+![RightOfWay tagging](right_of_way.drawio.svg)
 
 Basically intersection lanes which are:
 

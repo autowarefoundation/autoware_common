@@ -39,9 +39,9 @@ Autoware Traffic Light class contains following members:
 - light bulbs information of traffic lights
 - stopline associated to traffic light
 
-#### RightOfWay
+#### Right Of Way
 
-Autoware intersection module requires the information on which lanes can be ignored for object detection, like those lanes whose traffic light color is red when that of ego is green, etc. `RightOfWay` tag is a regulatory element that consists of a tuple of (`right_of_way`s and `yield_lane`s), and `right_of_way`s have priority over`yield_lane`s. Although `RightOfWay` tag itself is defined in Lanelet2, this package provides proper conditions on how this tag should be set.
+Autoware intersection module requires the information on which lanes can be ignored for object detection, like those lanes whose traffic light color is red when that of ego is green, etc. `right_of_way` tag is a regulatory element that consists of a tuple of (`right_of_way`s and `yield_lane`s), and `right_of_way`s have priority over`yield_lane`s. Although `right_of_way` tag itself is defined in Lanelet2, this package provides proper conditions on how this tag should be set.
 
 ### Utility
 

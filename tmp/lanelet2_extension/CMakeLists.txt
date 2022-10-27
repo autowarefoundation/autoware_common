@@ -62,9 +62,9 @@ target_link_libraries(autoware_lanelet2_validation
   lanelet2_extension_lib
 )
 
-ament_auto_add_executable(check_row src/check_row.cpp)
-add_dependencies(check_row lanelet2_extension_lib)
-target_link_libraries(check_row
+ament_auto_add_executable(check_right_of_way src/check_right_of_way.cpp)
+add_dependencies(check_right_of_way lanelet2_extension_lib)
+target_link_libraries(check_right_of_way
   ${catkin_LIBRARIES}
   ${PUGIXML_LIBRARIES}
   lanelet2_extension_lib
