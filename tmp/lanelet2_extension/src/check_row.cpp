@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
   lanelet::routing::RoutingGraphPtr routing_graph_ptr =
     lanelet::routing::RoutingGraph::build(*map, *trafficRules);
 
-  auto rows = map->regulatoryElementLayer  // filter elem whose Subtype is RighOfWay
+  auto rows = map->regulatoryElementLayer  // filter elem whose Subtype is RightOfWay
               |
               ranges::view::filter([](auto && elem) {
                 const auto & attrs = elem->attributes();
