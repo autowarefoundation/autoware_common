@@ -85,7 +85,7 @@ Users must add `right_of_way` tag to intersection lanes, namely lanes with `turn
 
 Basically intersection lanes which are:
 
-- left/right turn 
+- left/right turn
 - straight and on the side of priority sign
 
 need this tag to know which lanes in their `conflicting lanes` can be ignored for object detection.
