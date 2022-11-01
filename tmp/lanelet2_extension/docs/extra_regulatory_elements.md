@@ -129,3 +129,21 @@ An example annotation of speed_bump:
     <tag k='type' v='lanelet' />
   </relation>
 ```
+
+- As an option `slow_down_speed` tag can be added to the speed bump way annotation to override the
+  speed calculated in planning module wrt the speed bump `height`. The value specified in
+  `slow_down_speed` tag must be in **kph**. So if this option is used then the way annotation should
+  look like as below:
+
+```xml
+  <way id='5'>
+    <nd ref='1' />
+    <nd ref='2' />
+    <nd ref='3' />
+    <nd ref='4' />
+    <tag k='area' v='yes' />
+    <tag k='height' v='0.15' />
+    <tag k='slow_down_speed' v='7.0' />
+    <tag k='type' v='speed_bump' />
+  </way>
+```
