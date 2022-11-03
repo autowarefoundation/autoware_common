@@ -19,7 +19,7 @@ class RespawnableNodeContainer(ComposableNodeContainer):
         namespace: SomeSubstitutionsType,
         composable_node_descriptions: Optional[List[ComposableNode]] = None,
         respawn=True,
-        respawn_delay=0.5,
+        respawn_delay=0.05,
         **kwargs
     ) -> None:
         super().__init__(
