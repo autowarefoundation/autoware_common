@@ -7,7 +7,7 @@ on:
         description: The target workflow run ID or URL of the build-and-test-differential workflow
         required: true
 jobs:
-  clang-tidy-pr-comments:
+  clang-tidy-pr-comments-manually:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
