@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOLINTBEGIN(readability-identifier-naming)
-// NOLINTEND
-
 #include <lanelet2_extension/projection/mgrs_projector.hpp>
 #include <lanelet2_extension/utility/query.hpp>
 #include <lanelet2_extension/utility/utilities.hpp>
@@ -77,7 +74,7 @@ int main(int argc, char ** argv)
       yield_ids.insert(yield.id());
     }
 
-    std::set<int> conflicting_ids;
+    std::set<lanelet::Id> conflicting_ids;
     for (auto && right_of_way : right_of_ways) {
       const std::vector<lanelet::ConstLanelet> & conflicting_lanelets =
         lanelet::utils::getConflictingLanelets(routing_graph_ptr, right_of_way);
