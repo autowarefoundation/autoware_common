@@ -212,6 +212,34 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
   return no_reg_elems;
 }
 
+std::vector<lanelet::SpeedBumpConstPtr> query::speedBumps(const lanelet::ConstLanelets & lanelets)
+{
+  std::vector<lanelet::SpeedBumpConstPtr> sb_reg_elems;
+
+  for (const auto & ll : lanelets) {
+    std::vector<lanelet::SpeedBumpConstPtr> ll_sb_re =
+      ll.regulatoryElementsAs<lanelet::autoware::SpeedBump>();
+
+    // insert unique id into array
+    for (const auto & sb_ptr : ll_sb_re) {
+      lanelet::Id id = sb_ptr->id();
+      bool unique_id = true;
+
+      for (const auto & sb_reg_elem : sb_reg_elems) {
+        if (id == sb_reg_elem->id()) {
+          unique_id = false;
+          break;
+        }
+      }
+
+      if (unique_id) {
+        sb_reg_elems.push_back(sb_ptr);
+      }
+    }
+  }
+  return sb_reg_elems;
+}
+
 lanelet::ConstPolygons3d query::getAllPolygonsByType(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
 {
