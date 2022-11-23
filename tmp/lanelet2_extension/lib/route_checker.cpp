@@ -21,7 +21,7 @@
 namespace lanelet::utils
 {
 bool route::isRouteValid(
-  const HADMapRoute & route_msg, const lanelet::LaneletMapPtr lanelet_map_ptr_)
+  const LaneletRoute & route_msg, const lanelet::LaneletMapPtr lanelet_map_ptr_)
 {
   for (const auto & route_section : route_msg.segments) {
     for (const auto & primitive : route_section.primitives) {

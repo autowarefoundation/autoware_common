@@ -18,7 +18,7 @@
 #include "lanelet2_extension/utility/route_checker.hpp"
 
 #include <autoware_auto_mapping_msgs/msg/had_map_bin.hpp>
-#include <autoware_auto_planning_msgs/msg/had_map_route.hpp>
+#include <autoware_planning_msgs/msg/lanelet_route.hpp>
 
 #include <gtest/gtest.h>
 
@@ -48,9 +48,9 @@ public:
     sample_map_ptr->add(lanelet);
 
     // create sample routes
-    autoware_auto_mapping_msgs::msg::MapPrimitive map_primitive;
-    autoware_auto_mapping_msgs::msg::HADMapSegment map_segment1;
-    autoware_auto_mapping_msgs::msg::HADMapSegment map_segment2;
+    autoware_planning_msgs::msg::LaneletPrimitive map_primitive;
+    autoware_planning_msgs::msg::LaneletSegment map_segment1;
+    autoware_planning_msgs::msg::LaneletSegment map_segment2;
 
     for (size_t i = 0; i < 2; i++) {
       map_primitive.id = lanelet.id();
@@ -65,8 +65,8 @@ public:
   ~TestSuite() override = default;
 
   lanelet::LaneletMapPtr sample_map_ptr;
-  autoware_auto_planning_msgs::msg::HADMapRoute sample_route1;  // valid route
-  autoware_auto_planning_msgs::msg::HADMapRoute sample_route2;  // invalid route
+  autoware_planning_msgs::msg::LaneletRoute sample_route1;  // valid route
+  autoware_planning_msgs::msg::LaneletRoute sample_route2;  // invalid route
 
 private:
 };
@@ -76,9 +76,9 @@ TEST_F(TestSuite, isRouteValid)  // NOLINT for gtest
   autoware_auto_mapping_msgs::msg::HADMapBin bin_msg;
 
   const auto route_ptr1 =
-    std::make_shared<autoware_auto_planning_msgs::msg::HADMapRoute>(sample_route1);
+    std::make_shared<autoware_planning_msgs::msg::LaneletRoute>(sample_route1);
   const auto route_ptr2 =
-    std::make_shared<autoware_auto_planning_msgs::msg::HADMapRoute>(sample_route2);
+    std::make_shared<autoware_planning_msgs::msg::LaneletRoute>(sample_route2);
 
   // toBinMsg is tested at test_message_conversion.cpp
   lanelet::utils::conversion::toBinMsg(sample_map_ptr, &bin_msg);

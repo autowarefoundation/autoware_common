@@ -21,14 +21,14 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <autoware_auto_mapping_msgs/msg/had_map_bin.hpp>
-#include <autoware_auto_planning_msgs/msg/had_map_route.hpp>
+#include <autoware_planning_msgs/msg/lanelet_route.hpp>
 
 namespace lanelet::utils::route
 {
 using autoware_auto_mapping_msgs::msg::HADMapBin;
-using autoware_auto_planning_msgs::msg::HADMapRoute;
+using autoware_planning_msgs::msg::LaneletRoute;
 
-bool isRouteValid(const HADMapRoute & route, const lanelet::LaneletMapPtr lanelet_map_ptr_);
+bool isRouteValid(const LaneletRoute & route, const lanelet::LaneletMapPtr lanelet_map_ptr_);
 }  // namespace lanelet::utils::route
 
 // NOLINTEND(readability-identifier-naming)
