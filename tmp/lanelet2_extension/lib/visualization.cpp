@@ -515,7 +515,7 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
         visualization::pushTrafficLightTriangleMarker(&marker_tri, ls, c, scale);
       }
     }
-
+    marker_tri.id++;
     tl_marker_array.markers.push_back(marker_tri);
 
     lanelet::ConstLineStrings3d light_bulbs = tl->lightBulbs();
@@ -524,6 +524,7 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
       for (const auto & pt : l) {
         if (pt.hasAttribute("color")) {
           if (inputLightMarker(&marker_sph, pt)) {
+            marker_sph.id++;
             tl_marker_array.markers.push_back(marker_sph);
           }
         }
