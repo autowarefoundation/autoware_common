@@ -13,6 +13,7 @@
 
   <depend>autoware_auto_mapping_msgs</depend>
   <depend>autoware_auto_planning_msgs</depend>
+  <depend>autoware_planning_msgs</depend>
   <depend>autoware_utils</depend>
   <depend>geographiclib</depend>
   <depend>geometry_msgs</depend>
