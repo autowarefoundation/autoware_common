@@ -114,6 +114,47 @@ TEST_F(TestSuite, OverwriteLaneletsCenterline)  // NOLINT for gtest
   }
 }
 
+TEST(Utilities, copyZ)
+{
+  using lanelet::utils::copyZ;
+
+  LineString3d ls1;
+  LineString3d ls2;
+
+  ASSERT_NO_THROW(copyZ(ls1, ls2));
+  ls1.push_back(Point3d(lanelet::InvalId, 0.0, 0.0, 5.0));
+  ASSERT_NO_THROW(copyZ(ls1, ls2));
+  ls2.push_back(Point3d(lanelet::InvalId, 0.0, 0.0, 0.0));
+  ASSERT_NO_THROW(copyZ(ls1, ls2));
+  EXPECT_EQ(ls2.front().z(), ls1.front().z());
+  ls1.push_back(Point3d(lanelet::InvalId, 1.0, 0.0, 2.0));
+  ls2.push_back(Point3d(lanelet::InvalId, 3.0, 0.0, 0.0));
+  ASSERT_NO_THROW(copyZ(ls1, ls2));
+  EXPECT_EQ(ls2.front().z(), ls1.front().z());
+  EXPECT_EQ(ls2.back().z(), ls1.back().z());
+
+  ls1.push_back(Point3d(lanelet::InvalId, 2.0, 0.0, 0.0));
+  ls1.push_back(Point3d(lanelet::InvalId, 3.0, 0.0, 3.0));
+  lanelet::Points3d points;
+  points.emplace_back(lanelet::InvalId, 0.0, 0.0, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 0.5, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 1.0, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 1.5, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 2.0, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 2.5, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 3.0, 0.0);
+  points.emplace_back(lanelet::InvalId, 0.0, 3.5, 0.0);
+  ASSERT_NO_THROW(copyZ(ls1, points));
+  EXPECT_EQ(points[0].z(), 5.0);
+  EXPECT_EQ(points[1].z(), 3.5);
+  EXPECT_EQ(points[2].z(), 2.0);
+  EXPECT_EQ(points[3].z(), 1.0);
+  EXPECT_EQ(points[4].z(), 0.0);
+  EXPECT_EQ(points[5].z(), 1.5);
+  EXPECT_EQ(points[6].z(), 3.0);
+  EXPECT_EQ(points[7].z(), 3.0);
+}
+
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
