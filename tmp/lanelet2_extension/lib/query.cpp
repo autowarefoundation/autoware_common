@@ -794,6 +794,96 @@ bool query::getClosestLanelet(
   return found;
 }
 
+bool query::getClosestLaneletWithConstrains(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelet * closest_lanelet_ptr, const double dist_threshold, const double yaw_threshold)
+{
+  bool found = false;
+
+  if (closest_lanelet_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return found;
+  }
+
+  if (lanelets.empty()) {
+    return found;
+  }
+
+  lanelet::BasicPoint2d search_point(search_pose.position.x, search_pose.position.y);
+
+  // find by distance
+  std::vector<std::pair<lanelet::ConstLanelet, double>> candidate_lanelets;
+  {
+    for (const auto & llt : lanelets) {
+      double distance =
+        boost::geometry::comparable_distance(llt.polygon2d().basicPolygon(), search_point);
+
+      if (distance <= dist_threshold) {
+        candidate_lanelets.emplace_back(llt, distance);
+      }
+    }
+
+    if (!candidate_lanelets.empty()) {
+      // sort by distance
+      std::sort(
+        candidate_lanelets.begin(), candidate_lanelets.end(),
+        [](
+          const std::pair<lanelet::ConstLanelet, double> & x,
+          std::pair<lanelet::ConstLanelet, double> & y) { return x.second < y.second; });
+    } else {
+      std::cerr << "there are no lanelets close enough!" << std::endl;
+      return found;
+    }
+  }
+
+  std::cout << "************************" << std::endl;
+  for (const auto & llt_pair : candidate_lanelets) {
+    std::cout << "llt_pair.first.id: " << llt_pair.first.id() << std::endl;
+  }
+  std::cout << "************************" << std::endl;
+
+  // find closest lanelet within yaw_threshold
+  {
+    double min_angle = std::numeric_limits<double>::max();
+    double min_distance = std::numeric_limits<double>::max();
+    double pose_yaw = tf2::getYaw(search_pose.orientation);
+    for (const auto & llt_pair : candidate_lanelets) {
+      const auto & distance = llt_pair.second;
+
+      std::cout << "llt_id: " << llt_pair.first.id() << std::endl;
+      std::cout << "distance: " << llt_pair.second << std::endl;
+
+      lanelet::ConstLineString3d segment =
+        getClosestSegment(search_point, llt_pair.first.centerline());
+      double segment_angle = std::atan2(
+        segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
+      double angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+
+      std::cout << "angle_diff [deg]: " << angle_diff * 180 / M_PI << std::endl;
+      std::cout << "min_angle [deg]: " << min_angle * 180 / M_PI << std::endl;
+      std::cout << "yaw_threshold [deg]: " << yaw_threshold * 180 / M_PI << std::endl;
+      std::cout << "min_distance: " << min_distance << std::endl;
+
+      if (angle_diff > std::abs(yaw_threshold)) continue;
+
+      if (min_distance < distance) break;
+
+      if (angle_diff < min_angle) {
+        min_angle = angle_diff;
+        min_distance = distance;
+        *closest_lanelet_ptr = llt_pair.first;
+        found = true;
+        std::cout << "*** closest_lanelet_id: " << llt_pair.first.id() << std::endl;
+      }
+    }
+  }
+
+  std::cout << "-----------------------------" << std::endl;
+
+  return found;
+}
+
 bool query::getCurrentLanelets(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
   ConstLanelets * current_lanelets_ptr)
