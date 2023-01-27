@@ -10,7 +10,8 @@
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
-  <build_export_depend>ament_cmake_auto</build_export_depend>
+  <buildtool_export_depend>ament_cmake_auto</buildtool_export_depend>
+  <buildtool_export_depend>ament_lint_auto</buildtool_export_depend>
   <build_export_depend>ros_environment</build_export_depend>
 
   <test_depend>ament_lint_auto</test_depend>
