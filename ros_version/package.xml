@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ros_version</name>
+  <version>0.1.0</version>
+  <maintainer email="taiki.tanaka@tier4.jp">tanaka3</maintainer>
+  <description>The gtest package</description>
+  <license>Apache License 2.0</license>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <depend>rclcpp</depend>
+  <depend>std_srvs</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
