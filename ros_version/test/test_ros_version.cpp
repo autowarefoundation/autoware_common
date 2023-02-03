@@ -26,13 +26,14 @@
 #include <memory>
 #include <string>
 
-using namespace std::chrono_literals;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std_srvs::srv::Trigger;
 
 class Minimal : public rclcpp::Node
 {
+  using std::chrono_literals;
+
 public:
   Minimal() : Node("minimal")
   {

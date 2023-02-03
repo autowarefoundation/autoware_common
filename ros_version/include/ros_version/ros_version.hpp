@@ -11,3 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+#ifndef ROS_VERSION__ROS_VERSION_HPP_
+#define ROS_VERSION__ROS_VERSION_HPP_
+#endif  // ROS_VERSION__ROS_VERSION_HPP_
