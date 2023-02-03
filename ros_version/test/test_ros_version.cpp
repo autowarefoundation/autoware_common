@@ -13,18 +13,15 @@
 // limitations under the License.
 
 #include <rclcpp/rclcpp.hpp>
-#include <ros_version/ros_version.hpp>
 
 #include <std_srvs/srv/trigger.hpp>
 
 #include <gtest/gtest.h>
 #include <rclcpp/version.h>
 
-#include <chrono>
 #include <functional>
 #include <iostream>
 #include <memory>
-#include <string>
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -32,8 +29,6 @@ using std_srvs::srv::Trigger;
 
 class Minimal : public rclcpp::Node
 {
-  using std::chrono_literals;
-
 public:
   Minimal() : Node("minimal")
   {
