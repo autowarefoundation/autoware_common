@@ -22,9 +22,7 @@ if(BUILD_TESTING)
 endif()
 ```
 
-_For ROS 2 messages and services,_
-
-If there is `ADD_LINTER_TESTS` argument in the `rosidl_generate_interfaces()` function in the `CMakelists.txt` file, you need to remove the `ADD_LINTER_TESTS` argument.
+For ROS 2 messages and services, you need to remove the `ADD_LINTER_TESTS` argument in the `rosidl_generate_interfaces()` function in the `CMakelists.txt` file.
 
 Then, the following linters will run during `colcon test`.
 
