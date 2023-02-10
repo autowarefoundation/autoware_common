@@ -114,7 +114,7 @@ TEST_F(TestSuite, OverwriteLaneletsCenterline)  // NOLINT for gtest
   }
 }
 
-TEST(Utilities, copyZ)
+TEST(Utilities, copyZ)  // NOLINT for gtest
 {
   using lanelet::utils::copyZ;
 
