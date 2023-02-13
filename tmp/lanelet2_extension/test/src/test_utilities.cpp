@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOLINTBEGIN(readability-identifier-naming)
+// NOLINTBEGIN(readability-identifier-naming, cppcoreguidelines-avoid-goto)
 
 #include "lanelet2_extension/utility/utilities.hpp"
 
@@ -161,4 +161,4 @@ int main(int argc, char ** argv)
   return RUN_ALL_TESTS();
 }
 
-// NOLINTEND(readability-identifier-naming)
+// NOLINTEND(readability-identifier-naming, cppcoreguidelines-avoid-goto)
