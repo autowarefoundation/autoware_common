@@ -792,6 +792,70 @@ visualization_msgs::msg::MarkerArray visualization::speedBumpsAsMarkerArray(
   return marker_array;
 }
 
+visualization_msgs::msg::MarkerArray visualization::invalidLaneletsAsMarkerArray(
+  const std::vector<lanelet::InvalidLaneletConstPtr> & il_reg_elems, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+  visualization_msgs::msg::Marker marker;
+  visualization_msgs::msg::Marker line_marker;
+
+  if (il_reg_elems.empty()) {
+    return marker_array;
+  }
+
+  marker.header.frame_id = "map";
+  marker.header.stamp = rclcpp::Time();
+  marker.frame_locked = true;
+  marker.ns = "invalid_lanelet";
+  marker.id = 0;
+  marker.type = visualization_msgs::msg::Marker::TRIANGLE_LIST;
+  marker.lifetime = duration;
+  marker.pose.position.x = 0.0;  // p.x();
+  marker.pose.position.y = 0.0;  // p.y();
+  marker.pose.position.z = 0.0;  // p.z();
+  marker.pose.orientation.x = 0.0;
+  marker.pose.orientation.y = 0.0;
+  marker.pose.orientation.z = 0.0;
+  marker.pose.orientation.w = 1.0;
+  marker.scale.x = 1.0;
+  marker.scale.y = 1.0;
+  marker.scale.z = 1.0;
+  marker.color.r = 1.0f;
+  marker.color.g = 1.0f;
+  marker.color.b = 1.0f;
+  marker.color.a = 0.999;
+
+  for (const auto & il_reg_elem : il_reg_elems) {
+    marker.points.clear();
+    marker.colors.clear();
+    marker.id = static_cast<int32_t>(il_reg_elem->id());
+
+    // area visualization
+    const auto invalid_lanelet = il_reg_elem->invalidLanelet();
+
+    geometry_msgs::msg::Polygon geom_poly;
+    utils::conversion::toGeomMsgPoly(invalid_lanelet, &geom_poly);
+
+    std::vector<geometry_msgs::msg::Polygon> triangles;
+    polygon2Triangle(geom_poly, &triangles);
+
+    for (auto tri : triangles) {
+      geometry_msgs::msg::Point tri0[3];
+
+      for (int i = 0; i < 3; i++) {
+        utils::conversion::toGeomMsgPt(tri.points[i], &tri0[i]);
+        marker.points.push_back(tri0[i]);
+        marker.colors.push_back(c);
+      }
+    }  // for triangles0
+
+    marker_array.markers.push_back(marker);
+  }  // for regulatory elements
+
+  return marker_array;
+}
+
 visualization_msgs::msg::MarkerArray visualization::pedestrianMarkingsAsMarkerArray(
   const lanelet::ConstLineStrings3d & pedestrian_markings, const std_msgs::msg::ColorRGBA & c)
 {

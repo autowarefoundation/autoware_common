@@ -23,6 +23,7 @@
 #include "lanelet2_extension/regulatory_elements/detection_area.hpp"
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
 #include "lanelet2_extension/regulatory_elements/speed_bump.hpp"
+#include "lanelet2_extension/regulatory_elements/invalid_lanelet.hpp"
 
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
@@ -43,6 +44,7 @@ using AutowareTrafficLightConstPtr = std::shared_ptr<const lanelet::autoware::Au
 using DetectionAreaConstPtr = std::shared_ptr<const lanelet::autoware::DetectionArea>;
 using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
 using SpeedBumpConstPtr = std::shared_ptr<const lanelet::autoware::SpeedBump>;
+using InvalidLaneletConstPtr = std::shared_ptr<const lanelet::autoware::InvalidLanelet>;
 }  // namespace lanelet
 
 namespace lanelet::utils::query
@@ -122,6 +124,13 @@ std::vector<lanelet::NoStoppingAreaConstPtr> noStoppingAreas(
  * @return         [speed bumps that are associated with input lanelets]
  */
 std::vector<lanelet::SpeedBumpConstPtr> speedBumps(const lanelet::ConstLanelets & lanelets);
+
+/**
+ * [invalidLanelets extracts Invalid Lanelet regulatory elements from lanelets]
+ * @param lanelets [input lanelets]
+ * @return         [invalid lanelets that are associated with input lanelets]
+ */
+std::vector<lanelet::InvalidLaneletConstPtr> invalidLanelets(const lanelet::ConstLanelets & lanelets);
 
 // query all polygons that has given type in lanelet2 map
 lanelet::ConstPolygons3d getAllPolygonsByType(
