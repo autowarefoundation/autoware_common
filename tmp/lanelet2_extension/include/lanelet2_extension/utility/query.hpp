@@ -31,10 +31,10 @@
 #include <lanelet2_core/primitives/Lanelet.h>
 #include <lanelet2_routing/RoutingGraph.h>
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
-#include <limits>
 
 namespace lanelet
 {
