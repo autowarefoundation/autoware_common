@@ -775,6 +775,11 @@ bool query::getClosestLanelet(
     }
   }
 
+  if(candidate_lanelets.size() == 1){
+    *closest_lanelet_ptr = candidate_lanelets.at(0);
+    return found;
+  }
+
   // find by angle
   {
     double min_angle = std::numeric_limits<double>::max();
