@@ -34,6 +34,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <limits>
 
 namespace lanelet
 {
