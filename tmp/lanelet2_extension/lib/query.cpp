@@ -837,12 +837,6 @@ bool query::getClosestLaneletWithConstrains(
     }
   }
 
-  std::cout << "************************" << std::endl;
-  for (const auto & llt_pair : candidate_lanelets) {
-    std::cout << "llt_pair.first.id: " << llt_pair.first.id() << std::endl;
-  }
-  std::cout << "************************" << std::endl;
-
   // find closest lanelet within yaw_threshold
   {
     double min_angle = std::numeric_limits<double>::max();
@@ -851,22 +845,13 @@ bool query::getClosestLaneletWithConstrains(
     for (const auto & llt_pair : candidate_lanelets) {
       const auto & distance = llt_pair.second;
 
-      std::cout << "llt_id: " << llt_pair.first.id() << std::endl;
-      std::cout << "distance: " << llt_pair.second << std::endl;
-
       lanelet::ConstLineString3d segment =
         getClosestSegment(search_point, llt_pair.first.centerline());
       double segment_angle = std::atan2(
         segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
       double angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
 
-      std::cout << "angle_diff [deg]: " << angle_diff * 180 / M_PI << std::endl;
-      std::cout << "min_angle [deg]: " << min_angle * 180 / M_PI << std::endl;
-      std::cout << "yaw_threshold [deg]: " << yaw_threshold * 180 / M_PI << std::endl;
-      std::cout << "min_distance: " << min_distance << std::endl;
-
       if (angle_diff > std::abs(yaw_threshold)) continue;
-
       if (min_distance < distance) break;
 
       if (angle_diff < min_angle) {
@@ -874,12 +859,9 @@ bool query::getClosestLaneletWithConstrains(
         min_distance = distance;
         *closest_lanelet_ptr = llt_pair.first;
         found = true;
-        std::cout << "*** closest_lanelet_id: " << llt_pair.first.id() << std::endl;
       }
     }
   }
-
-  std::cout << "-----------------------------" << std::endl;
 
   return found;
 }
