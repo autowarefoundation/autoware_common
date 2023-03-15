@@ -775,7 +775,7 @@ bool query::getClosestLanelet(
     }
   }
 
-  if(candidate_lanelets.size() == 1){
+  if (candidate_lanelets.size() == 1) {
     *closest_lanelet_ptr = candidate_lanelets.at(0);
     return found;
   }
