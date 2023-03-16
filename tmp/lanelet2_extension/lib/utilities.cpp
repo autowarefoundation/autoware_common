@@ -723,6 +723,22 @@ geometry_msgs::msg::Pose getClosestCenterPose(
 
   return closest_pose;
 }
+
+double getLateralDistanceToLanelet(const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Pose & pose)
+{
+  const auto & centerline_2d = lanelet::utils::to2D(lanelet.centerline());
+  const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
+  return lanelet::geometry::signedDistance(
+    centerline_2d, lanelet::utils::to2D(lanelet_point).basicPoint());
+}
+
+double getLateralDistanceToClosestLanelet(
+  const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
+{
+  lanelet::ConstLanelet closest_lanelet;
+  lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
+  return getLateralDistanceToLanelet(closest_lanelet, pose);
+}
 }  // namespace lanelet::utils
 
 // NOLINTEND(readability-identifier-naming)
