@@ -738,7 +738,7 @@ double getLateralDistanceToClosestLanelet(
 {
   lanelet::ConstLanelet closest_lanelet;
   lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
-  return getLateralDistanceToLanelet(closest_lanelet, pose);
+  return getLateralDistanceToCenterline(closest_lanelet, pose);
 }
 }  // namespace lanelet::utils
 
