@@ -724,7 +724,8 @@ geometry_msgs::msg::Pose getClosestCenterPose(
   return closest_pose;
 }
 
-double getLateralDistanceToLanelet(const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Pose & pose)
+double getLateralDistanceToLanelet(
+  const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Pose & pose)
 {
   const auto & centerline_2d = lanelet::utils::to2D(lanelet.centerline());
   const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
