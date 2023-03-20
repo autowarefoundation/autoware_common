@@ -240,34 +240,6 @@ std::vector<lanelet::SpeedBumpConstPtr> query::speedBumps(const lanelet::ConstLa
   return sb_reg_elems;
 }
 
-std::vector<lanelet::InvalidLaneletConstPtr> query::invalidLanelets(const lanelet::ConstLanelets & lanelets)
-{
-  std::vector<lanelet::InvalidLaneletConstPtr> il_reg_elems;
-
-  for (const auto & ll : lanelets) {
-    std::vector<lanelet::InvalidLaneletConstPtr> ll_il_re =
-      ll.regulatoryElementsAs<lanelet::autoware::InvalidLanelet>();
-
-    // insert unique id into array
-    for (const auto & il_ptr : ll_il_re) {
-      lanelet::Id id = il_ptr->id();
-      bool unique_id = true;
-
-      for (const auto & il_reg_elem : il_reg_elems) {
-        if (id == il_reg_elem->id()) {
-          unique_id = false;
-          break;
-        }
-      }
-
-      if (unique_id) {
-        il_reg_elems.push_back(il_ptr);
-      }
-    }
-  }
-  return il_reg_elems;
-}
-
 lanelet::ConstPolygons3d query::getAllPolygonsByType(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
 {

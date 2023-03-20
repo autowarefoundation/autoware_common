@@ -242,16 +242,6 @@ visualization_msgs::msg::MarkerArray speedBumpsAsMarkerArray(
   const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
 
 /**
- * [InvalidLaneletsAsMarkerArray creates marker array to visualize invalid lanelets]
- * @param  il_reg_elems [invalid lanelet regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray invalidLaneletsAsMarkerArray(
-  const std::vector<lanelet::InvalidLaneletConstPtr> & il_reg_elems, const std_msgs::msg::ColorRGBA & c,
-  const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
  * [pedestrianMarkingsAsMarkerArray creates marker array to visualize pedestrian markings]
  * @param  pedestrian_markings [pedestrian marking polygon]
  * @param  c            [color of the marker]
