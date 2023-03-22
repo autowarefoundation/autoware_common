@@ -44,6 +44,9 @@ macro(autoware_package)
     add_compile_definitions(ROS_DISTRO_HUMBLE)
   endif()
 
+  # Get user-provided variables
+  option(DOWNLOAD_ARTIFACTS "enable artifact download" OFF)
+
   # Find dependencies
   find_package(ament_cmake_auto REQUIRED)
   ament_auto_find_build_dependencies()
