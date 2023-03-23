@@ -844,11 +844,8 @@ bool query::getClosestLaneletWithConstrains(
     for (const auto & llt_pair : candidate_lanelets) {
       const auto & distance = llt_pair.second;
 
-      lanelet::ConstLineString3d segment =
-        getClosestSegment(search_point, llt_pair.first.centerline());
-      double segment_angle = std::atan2(
-        segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-      double angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+      double lanelet_angle = getLaneletAngle(llt_pair.first, search_pose.position);
+      double angle_diff = std::abs(autoware_utils::normalize_radian(lanelet_angle - pose_yaw));
 
       if (angle_diff > std::abs(yaw_threshold)) continue;
       if (min_distance < distance) break;
