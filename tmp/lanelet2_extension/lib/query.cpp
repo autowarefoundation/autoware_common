@@ -816,8 +816,7 @@ bool query::getClosestLaneletWithConstrains(
   std::vector<std::pair<lanelet::ConstLanelet, double>> candidate_lanelets;
   {
     for (const auto & llt : lanelets) {
-      double distance =
-        boost::geometry::comparable_distance(llt.polygon2d().basicPolygon(), search_point);
+      double distance = boost::geometry::distance(llt.polygon2d().basicPolygon(), search_point);
 
       if (distance <= dist_threshold) {
         candidate_lanelets.emplace_back(llt, distance);
