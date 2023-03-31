@@ -120,7 +120,10 @@ ConstPolygons3d DetectionArea::detectionAreas() const
 {
   return getConstPoly(parameters(), RoleName::Refers);
 }
-Polygons3d DetectionArea::detectionAreas() { return getPoly(parameters(), RoleName::Refers); }
+Polygons3d DetectionArea::detectionAreas()
+{
+  return getPoly(parameters(), RoleName::Refers);
+}
 
 void DetectionArea::addDetectionArea(const Polygon3d & primitive)
 {
@@ -147,7 +150,10 @@ void DetectionArea::setStopLine(const LineString3d & stopLine)
   parameters()[RoleName::RefLine] = {stopLine};
 }
 
-void DetectionArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
+void DetectionArea::removeStopLine()
+{
+  parameters()[RoleName::RefLine] = {};
+}
 
 }  // namespace lanelet::autoware
 

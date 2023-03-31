@@ -120,7 +120,10 @@ ConstPolygons3d NoStoppingArea::noStoppingAreas() const
 {
   return getConstPoly(parameters(), RoleName::Refers);
 }
-Polygons3d NoStoppingArea::noStoppingAreas() { return getPoly(parameters(), RoleName::Refers); }
+Polygons3d NoStoppingArea::noStoppingAreas()
+{
+  return getPoly(parameters(), RoleName::Refers);
+}
 
 void NoStoppingArea::addNoStoppingArea(const Polygon3d & primitive)
 {
@@ -147,7 +150,10 @@ void NoStoppingArea::setStopLine(const LineString3d & stopLine)
   parameters()[RoleName::RefLine] = {stopLine};
 }
 
-void NoStoppingArea::removeStopLine() { parameters()[RoleName::RefLine] = {}; }
+void NoStoppingArea::removeStopLine()
+{
+  parameters()[RoleName::RefLine] = {};
+}
 
 }  // namespace lanelet::autoware
 
