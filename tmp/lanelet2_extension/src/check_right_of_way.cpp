@@ -37,10 +37,12 @@
 
 int main(int argc, char ** argv)
 {
+  // NOLINTBEGIN
   if (argc < 2) {
     std::cout << "usage: ros2 run lanelet2_extension check_right_of_way <map_path>";
     return 0;
   }
+  // NOLINTEND
 
   const std::string map_path = std::string(argv[1]);
 
