@@ -100,7 +100,10 @@ ConstPolygon3d SpeedBump::speedBump() const
   return getConstPoly(parameters(), RoleName::Refers).front();
 }
 
-Polygon3d SpeedBump::speedBump() { return getPoly(parameters(), RoleName::Refers).front(); }
+Polygon3d SpeedBump::speedBump()
+{
+  return getPoly(parameters(), RoleName::Refers).front();
+}
 
 void SpeedBump::addSpeedBump(const Polygon3d & primitive)
 {

@@ -70,7 +70,10 @@ void RoadMarking::setRoadMarking(const LineString3d & road_marking)
   parameters()[RoleName::Refers] = {road_marking};
 }
 
-void RoadMarking::removeRoadMarking() { parameters()[RoleName::Refers] = {}; }
+void RoadMarking::removeRoadMarking()
+{
+  parameters()[RoleName::Refers] = {};
+}
 
 }  // namespace lanelet::autoware
 
