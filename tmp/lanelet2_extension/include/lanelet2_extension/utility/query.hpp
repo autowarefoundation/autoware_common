@@ -31,6 +31,7 @@
 #include <lanelet2_core/primitives/Lanelet.h>
 #include <lanelet2_routing/RoutingGraph.h>
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
@@ -237,6 +238,12 @@ ConstLanelets getAllNeighbors(
 bool getClosestLanelet(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
   ConstLanelet * closest_lanelet_ptr);
+
+bool getClosestLaneletWithConstrains(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelet * closest_lanelet_ptr,
+  const double dist_threshold = std::numeric_limits<double>::max(),
+  const double yaw_threshold = std::numeric_limits<double>::max());
 
 bool getCurrentLanelets(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,

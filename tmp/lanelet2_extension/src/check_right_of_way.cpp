@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOLINTBEGIN(readability-identifier-naming)
-
 #include <lanelet2_extension/projection/mgrs_projector.hpp>
 #include <lanelet2_extension/utility/query.hpp>
 #include <lanelet2_extension/utility/utilities.hpp>
@@ -44,22 +42,24 @@ int main(int argc, char ** argv)
     return 0;
   }
 
+  // NOLINTBEGIN
   const std::string map_path = std::string(argv[1]);
+  // NOLINTEND
 
   lanelet::ErrorMessages errors{};
   lanelet::projection::MGRSProjector projector{};
   lanelet::LaneletMapPtr map = lanelet::load(map_path, projector, &errors);
   for (auto && error : errors) std::cout << error << std::endl;
 
-  lanelet::traffic_rules::TrafficRulesPtr trafficRules =
+  lanelet::traffic_rules::TrafficRulesPtr traffic_rules =
     lanelet::traffic_rules::TrafficRulesFactory::create(
       lanelet::Locations::Germany, lanelet::Participants::Vehicle);
   lanelet::routing::RoutingGraphPtr routing_graph_ptr =
-    lanelet::routing::RoutingGraph::build(*map, *trafficRules);
+    lanelet::routing::RoutingGraph::build(*map, *traffic_rules);
 
   auto rows = map->regulatoryElementLayer  // filter elem whose Subtype is RightOfWay
               |
-              ranges::view::filter([](auto && elem) {
+              ranges::views::filter([](auto && elem) {
                 const auto & attrs = elem->attributes();
                 auto it = attrs.find(lanelet::AttributeName::Subtype);
                 return it != attrs.end() && it->second == lanelet::AttributeValueString::RightOfWay;
@@ -71,23 +71,23 @@ int main(int argc, char ** argv)
   for (auto && row : rows) {
     const auto & right_of_ways = row->rightOfWayLanelets();
     const auto & yields = row->yieldLanelets();
-    std::set<int> yield_ids;
+    std::set<lanelet::Id> yield_ids;
     for (auto && yield : yields) {
       yield_ids.insert(yield.id());
     }
 
-    std::set<int> conflicting_ids;
+    std::set<lanelet::Id> conflicting_ids;
     for (auto && right_of_way : right_of_ways) {
       const std::vector<lanelet::ConstLanelet> & conflicting_lanelets =
         lanelet::utils::getConflictingLanelets(routing_graph_ptr, right_of_way);
       for (auto && conflict : conflicting_lanelets) conflicting_ids.insert(conflict.id());
     }
 
-    std::vector<int> unnecessary_yields;
+    std::vector<lanelet::Id> unnecessary_yields;
     set_difference(
       yield_ids.begin(), yield_ids.end(), conflicting_ids.begin(), conflicting_ids.end(),
       std::inserter(unnecessary_yields, unnecessary_yields.end()));
-    if (unnecessary_yields.size() == 0) continue;
+    if (unnecessary_yields.empty()) continue;
     std::cout << "RightOfWay " << row->id() << ": [";
     const char * delim = "";
     for (auto && unnecessary_yield : unnecessary_yields)
