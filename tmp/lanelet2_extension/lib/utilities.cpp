@@ -716,8 +716,7 @@ geometry_msgs::msg::Pose getClosestCenterPose(
     return closest_pose;
   }
 
-  lanelet::ConstLineString3d segment =
-    getClosestSegment(llt_search_point, lanelet.centerline());
+  lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
   if (segment.empty()) {
     return geometry_msgs::msg::Pose{};
   }
