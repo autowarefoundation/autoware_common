@@ -17,7 +17,6 @@ However, there are some custom tags that is used by the parser.
 
 Currently, this includes:
 
-- overwriting x,y values with `local_x` and `local_y` tags.
 - reading `<MapMetaInfo>` tag which contains information about map format version and map version.
 
 The parser is registered as "autoware_osm_handler" as lanelet parser

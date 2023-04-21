@@ -118,7 +118,7 @@ Here is an example of MetaInfo in osm file:
 
 Sometimes users might want to create Lanelet2 maps that are not georeferenced.
 In such a case, users may use "local_x", "local_y" taggings to express local positions instead of latitude and longitude.
-Autoware Osm Parser will overwrite x,y positions with these tags when they are present.
+You will need to `lanelet2_map_projector_type` to `local`, then autoware map loader will overwrite x,y positions with these tags when they are present.
 For z values, use "ele" tags as default Lanelet2 Format.
 You would still need to fill in lat and lon attributes so that parser does not crush, but their values could be anything.
 
