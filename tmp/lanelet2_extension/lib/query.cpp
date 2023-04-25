@@ -788,11 +788,11 @@ bool query::getClosestLanelet(
       lanelet::ConstLineString3d segment = getClosestSegment(search_point, llt.centerline());
       double angle_diff = std::numeric_limits<double>::max();
       if (segment.empty()) {
-          angle_diff = M_PI;
+        angle_diff = M_PI;
       } else {
-          double segment_angle = std::atan2(
-            segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-          angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+        double segment_angle = std::atan2(
+          segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
+        angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
       }
       if (angle_diff < min_angle) {
         min_angle = angle_diff;
