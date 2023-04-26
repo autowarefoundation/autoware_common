@@ -33,16 +33,6 @@ std::unique_ptr<LaneletMap> AutowareOsmParser::parse(
 {
   auto map = OsmParser::parse(filename, errors);
 
-  // overwrite x and y values if there are local_x, local_y tags
-  for (Point3d point : map->pointLayer) {
-    if (point.hasAttribute("local_x")) {
-      point.x() = point.attribute("local_x").asDouble().value();
-    }
-    if (point.hasAttribute("local_y")) {
-      point.y() = point.attribute("local_y").asDouble().value();
-    }
-  }
-
   // rerun align function in just in case
   for (Lanelet & lanelet : map->laneletLayer) {
     LineString3d new_left;
