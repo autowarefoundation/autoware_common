@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 3.14)
 project(autoware_utils)
 
 find_package(autoware_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
 autoware_package()
 
 ament_auto_add_library(autoware_utils SHARED
   src/autoware_utils.cpp
 )
+
+ament_python_install_package(${PROJECT_NAME})
 
 if(BUILD_TESTING)
   file(GLOB_RECURSE test_files test/**/*.cpp)
