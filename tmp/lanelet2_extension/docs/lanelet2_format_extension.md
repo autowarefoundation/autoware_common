@@ -247,7 +247,6 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
-
 ### Hatched Road Markings Area
 
 The area with `hatched_road_markings` tag can be used for avoiding obstacles when there is not enough space to avoid.
@@ -317,3 +316,25 @@ _An example:_
     <tag k='type' v='regulatory_element' />
   </relation>
 ```
+
+### Invalid Lanelet
+An invalid lanelet is a lanelet that is out of operation design domain (ODD), i.e., the vehicle **must not** drive autonomously in this lanelet.  
+A lanelet becomes invalid by adding an optional tag under the relevant lanelet in the map file `<tag k="invalid_lanelet" v="yes"/>`.
+
+_An example:_
+
+```xml
+<relation id="2621">
+    <member type="way" role="left" ref="2593"/>
+    <member type="way" role="right" ref="2620"/>
+    <tag k="type" v="lanelet"/>
+    <tag k="subtype" v="road"/>
+    <tag k="speed_limit" v="30.00"/>
+    <tag k="location" v="urban"/>
+    <tag k="one_way" v="yes"/>
+    <tag k="participant:vehicle" v="yes"/>
+    <tag k="invalid_lanelet" v="yes"/>
+  </relation>
+```
+
+For more details about the invalid lanelet concept and design, please refer to the [_invalid-lanelet-design_](../../../../../universe/autoware.universe/planning/behavior_velocity_planner/invalid-lanelet-design.md) document.
