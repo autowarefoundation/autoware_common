@@ -247,6 +247,8 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
+```
+
 ### Hatched Road Markings Area
 
 The area with `hatched_road_markings` tag can be used for avoiding obstacles when there is not enough space to avoid.
@@ -317,9 +319,10 @@ _An example:_
   </relation>
 ```
 
-### Invalid Lanelet
-An invalid lanelet is a lanelet that is out of operation design domain (ODD), i.e., the vehicle **must not** drive autonomously in this lanelet.  
-A lanelet becomes invalid by adding an optional tag under the relevant lanelet in the map file `<tag k="invalid_lanelet" v="yes"/>`.
+### No Drivable Lane
+
+A no drivable lane is a lanelet or more that are out of operation design domain (ODD), i.e., the vehicle **must not** drive autonomously in this/these lanelet/s.  
+A lanelet becomes no drivable by adding an optional tag under the relevant lanelet in the map file `<tag k="no_drivable_lane" v="yes"/>`.
 
 _An example:_
 
@@ -333,8 +336,8 @@ _An example:_
     <tag k="location" v="urban"/>
     <tag k="one_way" v="yes"/>
     <tag k="participant:vehicle" v="yes"/>
-    <tag k="invalid_lanelet" v="yes"/>
+    <tag k="no_drivable_lane" v="yes"/>
   </relation>
 ```
 
-For more details about the invalid lanelet concept and design, please refer to the [_invalid-lanelet-design_](../../../../../universe/autoware.universe/planning/behavior_velocity_planner/invalid-lanelet-design.md) document.
+For more details about the no_drivable_lane concept and design, please refer to the [_no-drivable-lane-design_](../../../../../universe/autoware.universe/planning/behavior_velocity_planner/no-drivable-lane-design.md) document.
