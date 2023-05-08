@@ -301,6 +301,15 @@ visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarker
   const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
   const std_msgs::msg::ColorRGBA & c);
 
+/**
+ * [hatchedRoadMarkingsAreaAsMarkerArray creates marker array to visualize hatched road markings
+ * area]
+ * @param  hatched_road_markings_area [hatched road markings area polygon]
+ * @param  c                                         [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray hatchedRoadMarkingsAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & hatched_road_markings_area, const std_msgs::msg::ColorRGBA & c);
+
 }  // namespace lanelet::visualization
 
 // NOLINTEND(readability-identifier-naming)

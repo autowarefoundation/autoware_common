@@ -1370,6 +1370,24 @@ visualization::noObstacleSegmentationAreaForRunOutAsMarkerArray(
   return marker_array;
 }
 
+visualization_msgs::msg::MarkerArray visualization::hatchedRoadMarkingsAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & hatched_road_markings_area, const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+  if (hatched_road_markings_area.empty()) {
+    return marker_array;
+  }
+
+  visualization_msgs::msg::Marker marker = createPolygonMarker("hatched_road_markings", c);
+  for (const auto & polygon : hatched_road_markings_area) {
+    pushPolygonMarker(&marker, polygon, c);
+  }
+
+  if (!marker.points.empty()) {
+    marker_array.markers.push_back(marker);
+  }
+  return marker_array;
+}
 }  // namespace lanelet
 
 // NOLINTEND(readability-identifier-naming)
