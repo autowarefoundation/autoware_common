@@ -1371,21 +1371,46 @@ visualization::noObstacleSegmentationAreaForRunOutAsMarkerArray(
 }
 
 visualization_msgs::msg::MarkerArray visualization::hatchedRoadMarkingsAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & hatched_road_markings_area, const std_msgs::msg::ColorRGBA & c)
+  const lanelet::ConstPolygons3d & hatched_road_markings_area,
+  const std_msgs::msg::ColorRGBA & area_color, const std_msgs::msg::ColorRGBA & line_color)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   if (hatched_road_markings_area.empty()) {
     return marker_array;
   }
 
-  visualization_msgs::msg::Marker marker = createPolygonMarker("hatched_road_markings", c);
+  // polygon
+  visualization_msgs::msg::Marker area_marker =
+    createPolygonMarker("hatched_road_markings_area", area_color);
   for (const auto & polygon : hatched_road_markings_area) {
-    pushPolygonMarker(&marker, polygon, c);
+    pushPolygonMarker(&area_marker, polygon, area_color);
   }
 
-  if (!marker.points.empty()) {
-    marker_array.markers.push_back(marker);
+  if (!area_marker.points.empty()) {
+    marker_array.markers.push_back(area_marker);
   }
+
+  // line strings
+  const float lss = 0.1;  // line string size
+  visualization_msgs::msg::Marker line_strip;
+  visualization::initLineStringMarker(
+    &line_strip, "map", "hatched_oard_markings_bound", line_color);
+
+  for (const auto & polygon : hatched_road_markings_area) {
+    lanelet::LineString3d bound_ls(lanelet::utils::getId());
+    for (const auto & point : polygon) {
+      bound_ls.push_back(
+        lanelet::Point3d(lanelet::utils::getId(), point.x(), point.y(), point.z()));
+    }
+    if (!bound_ls.empty()) {
+      bound_ls.push_back(bound_ls.back());
+    }
+    visualization::pushLineStringMarker(&line_strip, bound_ls, line_color, lss);
+  }
+  if (!line_strip.points.empty()) {
+    marker_array.markers.push_back(line_strip);
+  }
+
   return marker_array;
 }
 }  // namespace lanelet

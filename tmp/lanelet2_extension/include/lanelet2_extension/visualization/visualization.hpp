@@ -305,10 +305,12 @@ visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarker
  * [hatchedRoadMarkingsAreaAsMarkerArray creates marker array to visualize hatched road markings
  * area]
  * @param  hatched_road_markings_area [hatched road markings area polygon]
- * @param  c                                         [color of the marker]
+ * @param  area_color                 [color of the area marker]
+ * @param  line_color                 [color of the line marker]
  */
 visualization_msgs::msg::MarkerArray hatchedRoadMarkingsAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & hatched_road_markings_area, const std_msgs::msg::ColorRGBA & c);
+  const lanelet::ConstPolygons3d & hatched_road_markings_area,
+  const std_msgs::msg::ColorRGBA & area_color, const std_msgs::msg::ColorRGBA & line_color);
 
 }  // namespace lanelet::visualization
 
