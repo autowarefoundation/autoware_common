@@ -1394,7 +1394,7 @@ visualization_msgs::msg::MarkerArray visualization::hatchedRoadMarkingsAreaAsMar
   const float lss = 0.1;  // line string size
   visualization_msgs::msg::Marker line_strip;
   visualization::initLineStringMarker(
-    &line_strip, "map", "hatched_oard_markings_bound", line_color);
+    &line_strip, "map", "hatched_road_markings_bound", line_color);
 
   for (const auto & polygon : hatched_road_markings_area) {
     lanelet::LineString3d bound_ls(lanelet::utils::getId());
