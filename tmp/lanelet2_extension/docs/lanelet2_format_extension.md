@@ -247,3 +247,25 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
+
+### Hatched Road Markings Area
+
+The area with `hatched_road_markings` tag can be used for avoiding obstacles when there is not enough space to avoid.
+Note that in some countries, it is forbidden for vehicles to go inside the area.
+
+_An example:_
+
+```xml
+  <way id="9933">
+    <nd ref="2058"/>
+    <nd ref="2059"/>
+    <nd ref="1581"/>
+    <nd ref="2057"/>
+    <nd ref="4925"/>
+    <nd ref="4923"/>
+    <nd ref="4921"/>
+    <nd ref="4920"/>
+    <tag k="type" v="hatched_road_markings"/>
+    <tag k="area" v="yes"/>
+  </way>
+```
