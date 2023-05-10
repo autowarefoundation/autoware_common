@@ -247,7 +247,6 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
-```
 
 ### Hatched Road Markings Area
 
