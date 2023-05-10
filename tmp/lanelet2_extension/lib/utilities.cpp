@@ -703,7 +703,23 @@ geometry_msgs::msg::Pose getClosestCenterPose(
   const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point)
 {
   lanelet::BasicPoint2d llt_search_point(search_point.x, search_point.y);
+
+  if (lanelet.centerline().size() == 1) {
+    geometry_msgs::msg::Pose closest_pose;
+    closest_pose.position.x = lanelet.centerline().front().x();
+    closest_pose.position.y = lanelet.centerline().front().y();
+    closest_pose.position.z = search_point.z;
+    closest_pose.orientation.x = 0.0;
+    closest_pose.orientation.y = 0.0;
+    closest_pose.orientation.z = 0.0;
+    closest_pose.orientation.w = 1.0;
+    return closest_pose;
+  }
+
   lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
+  if (segment.empty()) {
+    return geometry_msgs::msg::Pose{};
+  }
 
   const Eigen::Vector2d direction(
     (segment.back().basicPoint2d() - segment.front().basicPoint2d()).normalized());

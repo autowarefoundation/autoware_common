@@ -786,9 +786,12 @@ bool query::getClosestLanelet(
     double pose_yaw = tf2::getYaw(search_pose.orientation);
     for (const auto & llt : candidate_lanelets) {
       lanelet::ConstLineString3d segment = getClosestSegment(search_point, llt.centerline());
-      double segment_angle = std::atan2(
-        segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-      double angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+      double angle_diff = M_PI;
+      if (!segment.empty()) {
+        double segment_angle = std::atan2(
+          segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
+        angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+      }
       if (angle_diff < min_angle) {
         min_angle = angle_diff;
         *closest_lanelet_ptr = llt;
