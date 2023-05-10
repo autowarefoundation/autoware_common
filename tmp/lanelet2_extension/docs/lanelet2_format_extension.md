@@ -339,4 +339,4 @@ _An example:_
   </relation>
 ```
 
-For more details about the no*drivable_lane concept and design, please refer to the [\_no-drivable-lane-design*](../../../../../universe/autoware.universe/planning/behavior_velocity_planner/no-drivable-lane-design.md) document.
+For more details about the `no_drivable_lane` concept and design, please refer to the [**_no-drivable-lane-design_**](../../../../../universe/autoware.universe/planning/behavior_velocity_planner/no-drivable-lane-design.md) document.
