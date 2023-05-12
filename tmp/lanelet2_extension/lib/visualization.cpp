@@ -105,14 +105,15 @@ void initLightMarker(visualization_msgs::msg::Marker * marker, const std::string
   marker->scale.z = s;
 }
 
-bool inputLightMarker(visualization_msgs::msg::Marker * marker, const lanelet::ConstPoint3d & p)
+bool inputLightMarker(
+  visualization_msgs::msg::Marker * marker, const lanelet::ConstPoint3d & p, const int & id)
 {
   if (marker == nullptr) {
     std::cerr << __FUNCTION__ << ": marker is null pointer!" << std::endl;
     return false;
   }
 
-  marker->id = static_cast<int32_t>(p.id());
+  marker->id = static_cast<int32_t>(id);
 
   geometry_msgs::msg::Point point;
   marker->pose.position.x = p.x();
@@ -523,7 +524,7 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
       lanelet::ConstLineString3d l = static_cast<lanelet::ConstLineString3d>(ls);
       for (const auto & pt : l) {
         if (pt.hasAttribute("color")) {
-          if (inputLightMarker(&marker_sph, pt)) {
+          if (inputLightMarker(&marker_sph, pt, marker_sph.id)) {
             marker_sph.id++;
             tl_marker_array.markers.push_back(marker_sph);
           }
@@ -541,6 +542,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
 {
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
 
+  int id = 0;
   for (const auto & tl : tl_reg_elems) {
     const auto lights = tl->trafficLights();
     for (const auto & lsp : lights) {
@@ -552,7 +554,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.header.frame_id = "map";
         marker.header.stamp = rclcpp::Time();
         marker.ns = "traffic_light_id";
-        marker.id = static_cast<int32_t>(ls.id());
+        marker.id = static_cast<int32_t>(id++);
         marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
         marker.lifetime = duration;
         marker.action = visualization_msgs::msg::Marker::ADD;
