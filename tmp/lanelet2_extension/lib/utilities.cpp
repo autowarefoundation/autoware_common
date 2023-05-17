@@ -536,19 +536,18 @@ bool lineStringToPolygon(
   const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
 {
   if (polygon == nullptr) {
-    RCLCPP_ERROR_STREAM(
+    RCLCPP_WARN_STREAM(
       rclcpp::get_logger("lanelet2_extension.visualization"),
       __func__ << ": polygon is null pointer! Failed to convert to polygon.");
     return false;
   }
   if (linestring.size() < 4) {
     if (linestring.size() < 3 || linestring.front().id() == linestring.back().id()) {
-      RCLCPP_ERROR_STREAM(
+      RCLCPP_WARN_STREAM(
         rclcpp::get_logger("lanelet2_extension.visualization"),
         __func__ << ": linestring" << linestring.id()
-                 << " must have more than different 3 points! (size is " << linestring.size() << ")"
-                 << std::endl
-                 << "Failed to convert to polygon.");
+                 << " must have more than different 3 points! (size is " << linestring.size()
+                 << "). Failed to convert to polygon.");
       return false;
     }
   }

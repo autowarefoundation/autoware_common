@@ -806,7 +806,7 @@ visualization_msgs::msg::MarkerArray visualization::pedestrianMarkingsAsMarkerAr
     if (utils::lineStringToPolygon(linestring, &polygon)) {
       pushPolygonMarker(&marker, polygon, c);
     } else {
-      RCLCPP_ERROR_STREAM(
+      RCLCPP_WARN_STREAM(
         rclcpp::get_logger("lanelet2_extension.visualization"),
         "pedestrian marking " << linestring.id() << " failed conversion.");
     }
