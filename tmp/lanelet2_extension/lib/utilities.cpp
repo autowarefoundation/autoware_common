@@ -536,7 +536,7 @@ bool lineStringToPolygon(
   const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
 {
   if (polygon == nullptr) {
-    RCLCPP_WARN_STREAM(
+    RCLCPP_ERROR_STREAM(
       rclcpp::get_logger("lanelet2_extension.visualization"),
       __func__ << ": polygon is null pointer! Failed to convert to polygon.");
     return false;
