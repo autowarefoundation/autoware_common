@@ -269,3 +269,41 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
+
+### No Stopping Area
+
+The area with `no_stopping_area` tag can be used to prohibit even a few seconds of stopping, such as in traffic jams or at traffic lights.
+
+_An example:_
+
+```xml
+  <way id="191127">
+    <nd ref="191123"/>
+    <nd ref="191124"/>
+    <nd ref="191129"/>
+    <nd ref="191125"/>
+    <nd ref="191130"/>
+    <nd ref="191126"/>
+    <tag k="type" v="no_stopping_area"/>
+    <tag k="area" v="yes"/>
+  </way>
+```
+
+### No Parking Area
+
+The area with `no_parking_area` tag can be used to prohibit parking. Stopping for a few seconds is allowed in traffic jams or at traffic lights to this area.
+
+_An example:_
+
+```xml
+  <way id="191127">
+    <nd ref="191123"/>
+    <nd ref="191124"/>
+    <nd ref="191129"/>
+    <nd ref="191125"/>
+    <nd ref="191130"/>
+    <nd ref="191126"/>
+    <tag k="type" v="no_parking_area"/>
+    <tag k="area" v="yes"/>
+  </way>
+```
