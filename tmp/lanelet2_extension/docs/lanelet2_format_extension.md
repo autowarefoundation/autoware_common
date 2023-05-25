@@ -291,7 +291,7 @@ _An example:_
 
 ### No Parking Area
 
-The area with `no_parking_area` tag can be used to prohibit parking. Stopping for a few seconds is allowed in traffic jams or at traffic lights to this area.
+The area with `no_parking_area` tag can be used to prohibit parking. Stopping for a few seconds is allowed in this area.
 
 _An example:_
 
