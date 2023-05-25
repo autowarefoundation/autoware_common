@@ -272,7 +272,7 @@ _An example:_
 
 ### No Stopping Area
 
-The area with `no_stopping_area` tag can be used to prohibit even a few seconds of stopping, such as in traffic jams or at traffic lights.
+The area with `no_stopping_area` tag can be used to prohibit even a few seconds of stopping, even for traffic jams or at traffic lights.
 
 _An example:_
 
