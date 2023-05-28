@@ -45,6 +45,7 @@ using AutowareTrafficLightConstPtr = std::shared_ptr<const lanelet::autoware::Au
 using DetectionAreaConstPtr = std::shared_ptr<const lanelet::autoware::DetectionArea>;
 using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
 using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
+using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
 using SpeedBumpConstPtr = std::shared_ptr<const lanelet::autoware::SpeedBump>;
 }  // namespace lanelet
 
@@ -118,6 +119,13 @@ std::vector<lanelet::DetectionAreaConstPtr> detectionAreas(const lanelet::ConstL
  */
 std::vector<lanelet::NoStoppingAreaConstPtr> noStoppingAreas(
   const lanelet::ConstLanelets & lanelets);
+
+/**
+ * [noParkingArea extracts NoParking Area regulatory elements from lanelets]
+ * @param lanelets [input lanelets]
+ * @return         [no parking areas that are associated with input lanelets]
+ */
+std::vector<lanelet::NoParkingAreaConstPtr> noParkingAreas(const lanelet::ConstLanelets & lanelets);
 
 /**
  * [speedBumps extracts Speed Bump regulatory elements from lanelets]

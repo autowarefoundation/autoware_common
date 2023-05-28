@@ -212,6 +212,35 @@ std::vector<lanelet::NoStoppingAreaConstPtr> query::noStoppingAreas(
   return no_reg_elems;
 }
 
+std::vector<lanelet::NoParkingAreaConstPtr> query::noParkingAreas(
+  const lanelet::ConstLanelets & lanelets)
+{
+  std::vector<lanelet::NoParkingAreaConstPtr> no_pa_reg_elems;
+
+  for (const auto & ll : lanelets) {
+    std::vector<lanelet::NoParkingAreaConstPtr> ll_no_pa_re =
+      ll.regulatoryElementsAs<lanelet::autoware::NoParkingArea>();
+
+    // insert unique tl into array
+    for (const auto & no_pa_ptr : ll_no_pa_re) {
+      lanelet::Id id = no_pa_ptr->id();
+      bool unique_id = true;
+
+      for (const auto & no_reg_elem : no_pa_reg_elems) {
+        if (id == no_reg_elem->id()) {
+          unique_id = false;
+          break;
+        }
+      }
+
+      if (unique_id) {
+        no_pa_reg_elems.push_back(no_pa_ptr);
+      }
+    }
+  }
+  return no_pa_reg_elems;
+}
+
 std::vector<lanelet::SpeedBumpConstPtr> query::speedBumps(const lanelet::ConstLanelets & lanelets)
 {
   std::vector<lanelet::SpeedBumpConstPtr> sb_reg_elems;
