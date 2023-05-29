@@ -49,6 +49,11 @@ ament_auto_add_library(lanelet2_extension_lib SHARED
 target_link_libraries(lanelet2_extension_lib
   ${GeographicLib_LIBRARIES}
 )
+get_target_property(lanelet2_core_INCLUDE_DIRECTORIES lanelet2_core::lanelet2_core INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(lanelet2_extension_lib
+  SYSTEM PRIVATE
+    ${lanelet2_core_INCLUDE_DIRECTORIES}
+)
 
 ament_auto_add_executable(lanelet2_extension_sample src/sample_code.cpp)
 add_dependencies(lanelet2_extension_sample lanelet2_extension_lib)
