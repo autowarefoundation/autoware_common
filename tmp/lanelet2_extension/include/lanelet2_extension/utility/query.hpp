@@ -21,6 +21,7 @@
 
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 #include "lanelet2_extension/regulatory_elements/detection_area.hpp"
+#include "lanelet2_extension/regulatory_elements/no_parking_area.hpp"
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
 #include "lanelet2_extension/regulatory_elements/speed_bump.hpp"
 
@@ -42,7 +43,9 @@ using TrafficSignConstPtr = std::shared_ptr<const lanelet::TrafficSign>;
 using TrafficLightConstPtr = std::shared_ptr<const lanelet::TrafficLight>;
 using AutowareTrafficLightConstPtr = std::shared_ptr<const lanelet::autoware::AutowareTrafficLight>;
 using DetectionAreaConstPtr = std::shared_ptr<const lanelet::autoware::DetectionArea>;
+using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
 using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
+using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
 using SpeedBumpConstPtr = std::shared_ptr<const lanelet::autoware::SpeedBump>;
 }  // namespace lanelet
 
@@ -116,6 +119,13 @@ std::vector<lanelet::DetectionAreaConstPtr> detectionAreas(const lanelet::ConstL
  */
 std::vector<lanelet::NoStoppingAreaConstPtr> noStoppingAreas(
   const lanelet::ConstLanelets & lanelets);
+
+/**
+ * [noParkingArea extracts NoParking Area regulatory elements from lanelets]
+ * @param lanelets [input lanelets]
+ * @return         [no parking areas that are associated with input lanelets]
+ */
+std::vector<lanelet::NoParkingAreaConstPtr> noParkingAreas(const lanelet::ConstLanelets & lanelets);
 
 /**
  * [speedBumps extracts Speed Bump regulatory elements from lanelets]

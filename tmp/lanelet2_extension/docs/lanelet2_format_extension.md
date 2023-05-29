@@ -269,3 +269,51 @@ _An example:_
     <tag k="area" v="yes"/>
   </way>
 ```
+
+### No Stopping Area
+
+The area with `no_stopping_area` tag can be used to prohibit even a few seconds of stopping, even for traffic jams or at traffic lights.
+The ref_line can be set arbitrarily, and the ego-vehicle should stop at this line if it cannot pass through the area.
+
+_An example:_
+
+```xml
+  <way id='9853' visible='true' version='1'>
+    <nd ref='9849' />
+    <nd ref='9850' />
+    <nd ref='9851' />
+    <nd ref='9852' />
+    <tag k='area' v='yes' />
+    <tag k='type' v='no_stopping_area' />
+  </way>
+
+  <relation id='9854' visible='true' version='1'>
+    <member type='way' ref='9853' role='refers' />
+    <member type='way' ref='9848' role='ref_line' />
+    <tag k='subtype' v='no_stopping_area' />
+    <tag k='type' v='regulatory_element' />
+  </relation>
+```
+
+### No Parking Area
+
+The area with `no_parking_area` tag can be used to prohibit parking. Stopping for a few seconds is allowed in this area.
+
+_An example:_
+
+```xml
+  <way id='9853' visible='true' version='1'>
+    <nd ref='9849' />
+    <nd ref='9850' />
+    <nd ref='9851' />
+    <nd ref='9852' />
+    <tag k='area' v='yes' />
+    <tag k='type' v='no_parking_area' />
+  </way>
+
+  <relation id='9854' visible='true' version='1'>
+    <member type='way' ref='9853' role='refers' />
+    <tag k='subtype' v='no_parking_area' />
+    <tag k='type' v='regulatory_element' />
+  </relation>
+```
