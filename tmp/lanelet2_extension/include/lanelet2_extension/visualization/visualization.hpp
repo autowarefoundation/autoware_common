@@ -224,7 +224,7 @@ visualization_msgs::msg::MarkerArray detectionAreasAsMarkerArray(
 
 /**
  * [noParkingAreasAsMarkerArray creates marker array to visualize detection areas]
- * @param  no_reg_elems [mp parking area regulatory elements]
+ * @param  no_reg_elems [no parking area regulatory elements]
  * @param  c            [color of the marker]
  * @param  duration     [lifetime of the marker]
  */
