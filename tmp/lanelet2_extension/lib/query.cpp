@@ -221,7 +221,7 @@ std::vector<lanelet::NoParkingAreaConstPtr> query::noParkingAreas(
     std::vector<lanelet::NoParkingAreaConstPtr> ll_no_pa_re =
       ll.regulatoryElementsAs<lanelet::autoware::NoParkingArea>();
 
-    // insert unique tl into array
+    // insert unique NoParkingArea into array
     for (const auto & no_pa_ptr : ll_no_pa_re) {
       lanelet::Id id = no_pa_ptr->id();
       bool unique_id = true;
