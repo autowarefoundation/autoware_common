@@ -88,6 +88,10 @@ if(BUILD_TESTING)
   target_link_libraries(regulatory_elements-test lanelet2_extension_lib)
   ament_add_ros_isolated_gtest(utilities-test test/src/test_utilities.cpp)
   target_link_libraries(utilities-test lanelet2_extension_lib)
+  target_include_directories(utilities-test
+  SYSTEM PRIVATE
+    ${lanelet2_core_INCLUDE_DIRECTORIES}
+  )
   ament_add_ros_isolated_gtest(route-test test/src/test_route_checker.cpp)
   target_link_libraries(route-test lanelet2_extension_lib)
 endif()
