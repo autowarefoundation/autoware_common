@@ -1465,7 +1465,7 @@ visualization_msgs::msg::MarkerArray visualization::hatchedRoadMarkingsAreaAsMar
         lanelet::Point3d(lanelet::utils::getId(), point.x(), point.y(), point.z()));
     }
     if (!bound_ls.empty()) {
-      bound_ls.push_back(bound_ls.back());
+      bound_ls.push_back(bound_ls.front());
     }
     visualization::pushLineStringMarker(&line_strip, bound_ls, line_color, lss);
   }
