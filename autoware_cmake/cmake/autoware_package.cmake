@@ -53,6 +53,14 @@ macro(autoware_package)
     ${EIGEN3_INCLUDE_DIR}
   )
 
+  # Workaround for lanelet2-core@1.2.1
+  if(TARGET lanelet2_core::lanelet2_core)
+    get_target_property(lanelet2_core_INCLUDE_DIRECTORIES lanelet2_core::lanelet2_core INTERFACE_INCLUDE_DIRECTORIES)
+    include_directories(SYSTEM
+      ${lanelet2_core_INCLUDE_DIRECTORIES}
+    )
+  endif()
+
   # Find test dependencies
   if(BUILD_TESTING)
     find_package(ament_lint_auto REQUIRED)
