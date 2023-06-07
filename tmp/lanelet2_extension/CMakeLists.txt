@@ -33,6 +33,7 @@ add_definitions(${GeographicLib_DEFINITIONS})
 ament_auto_add_library(lanelet2_extension_lib SHARED
   lib/autoware_osm_parser.cpp
   lib/autoware_traffic_light.cpp
+  lib/crosswalk.cpp
   lib/detection_area.cpp
   lib/no_parking_area.cpp
   lib/no_stopping_area.cpp

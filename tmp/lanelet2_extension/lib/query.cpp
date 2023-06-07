@@ -269,6 +269,34 @@ std::vector<lanelet::SpeedBumpConstPtr> query::speedBumps(const lanelet::ConstLa
   return sb_reg_elems;
 }
 
+std::vector<lanelet::CrosswalkConstPtr> query::crosswalks(const lanelet::ConstLanelets & lanelets)
+{
+  std::vector<lanelet::CrosswalkConstPtr> cw_reg_elems;
+
+  for (const auto & ll : lanelets) {
+    std::vector<lanelet::CrosswalkConstPtr> ll_cw_re =
+      ll.regulatoryElementsAs<lanelet::autoware::Crosswalk>();
+
+    // insert unique id into array
+    for (const auto & cw_ptr : ll_cw_re) {
+      lanelet::Id id = cw_ptr->id();
+      bool unique_id = true;
+
+      for (const auto & cw_reg_elem : cw_reg_elems) {
+        if (id == cw_reg_elem->id()) {
+          unique_id = false;
+          break;
+        }
+      }
+
+      if (unique_id) {
+        cw_reg_elems.push_back(cw_ptr);
+      }
+    }
+  }
+  return cw_reg_elems;
+}
+
 lanelet::ConstPolygons3d query::getAllPolygonsByType(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
 {
