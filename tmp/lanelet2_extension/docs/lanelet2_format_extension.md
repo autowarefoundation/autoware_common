@@ -317,3 +317,26 @@ _An example:_
     <tag k='type' v='regulatory_element' />
   </relation>
 ```
+
+### No Drivable Lane
+
+A no drivable lane is a lanelet or more that are out of operation design domain (ODD), i.e., the vehicle **must not** drive autonomously in this/these lanelet/s.  
+A lanelet becomes no drivable by adding an optional tag under the relevant lanelet in the map file `<tag k="no_drivable_lane" v="yes"/>`.
+
+_An example:_
+
+```xml
+<relation id="2621">
+    <member type="way" role="left" ref="2593"/>
+    <member type="way" role="right" ref="2620"/>
+    <tag k="type" v="lanelet"/>
+    <tag k="subtype" v="road"/>
+    <tag k="speed_limit" v="30.00"/>
+    <tag k="location" v="urban"/>
+    <tag k="one_way" v="yes"/>
+    <tag k="participant:vehicle" v="yes"/>
+    <tag k="no_drivable_lane" v="yes"/>
+  </relation>
+```
+
+For more details about the `no_drivable_lane` concept and design, please refer to the [**_no-drivable-lane-design_**](https://github.com/autowarefoundation/autoware.universe/blob/main/planning/behavior_velocity_no_drivable_lane_module/docs/no-drivable-lane-design.md) document.
