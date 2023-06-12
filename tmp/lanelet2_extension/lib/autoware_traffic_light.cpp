@@ -100,7 +100,8 @@ LineStringsOrPolygons3d getLsOrPoly(const RuleParameterMap & paramsMap, RoleName
     rpm.insert(std::make_pair(RoleNameString::RefLine, rule_parameters));
   }
   if (!lightBulbs.empty()) {
-    rpm.insert(std::make_pair(AutowareRoleNameString::LightBulbs, toRuleParameters(lightBulbs)));
+    rpm.insert(std::make_pair(
+      AutowareTrafficLight::AutowareRoleNameString::LightBulbs, toRuleParameters(lightBulbs)));
   }
 
   auto data = std::make_shared<RegulatoryElementData>(id, rpm, attributes);

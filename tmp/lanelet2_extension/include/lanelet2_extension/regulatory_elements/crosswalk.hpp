@@ -31,6 +31,11 @@ public:
   using Ptr = std::shared_ptr<Crosswalk>;
   static constexpr char RuleName[] = "crosswalk";
 
+  struct AutowareRoleNameString
+  {
+    static constexpr const char CrosswalkPolygon[] = "crosswalk_polygon";
+  };
+
   static Ptr make(
     Id id, const AttributeMap & attributes, const Lanelet & crosswalk_lanelet,
     const Polygon3d & crosswalk_area, const LineStrings3d & stop_line)
@@ -43,11 +48,17 @@ public:
    * @return crosswalk area
    */
   [[nodiscard]] ConstPolygons3d crosswalkAreas() const;
-  [[nodiscard]] Polygons3d crosswalkAreas();
 
+  /**
+   * @brief get the relevant crosswalk line
+   * @return stop line
+   */
   [[nodiscard]] ConstLineStrings3d stopLines() const;
-  [[nodiscard]] LineStrings3d stopLines();
 
+  /**
+   * @brief get the relevant crosswalk lanelet
+   * @return lanelet
+   */
   [[nodiscard]] ConstLanelet crosswalkLanelet() const;
 
   /**

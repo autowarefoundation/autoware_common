@@ -27,16 +27,16 @@
 
 namespace lanelet::autoware
 {
-struct AutowareRoleNameString
-{
-  static constexpr const char LightBulbs[] = "light_bulbs";
-};
-
 class AutowareTrafficLight : public lanelet::TrafficLight
 {
 public:
   using Ptr = std::shared_ptr<AutowareTrafficLight>;
   static constexpr char RuleName[] = "traffic_light";
+
+  struct AutowareRoleNameString
+  {
+    static constexpr const char LightBulbs[] = "light_bulbs";
+  };
 
   //! Directly construct a stop line from its required rule parameters.
   //! Might modify the input data in oder to get correct tags.

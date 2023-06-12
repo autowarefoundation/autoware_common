@@ -60,29 +60,6 @@ RuleParameters toRuleParameters(const std::vector<T> & primitives)
   return utils::transform(primitives, cast_func);
 }
 
-Polygons3d getPoly(const RuleParameterMap & paramsMap, RoleName role)
-{
-  auto params = paramsMap.find(role);
-  if (params == paramsMap.end()) {
-    return {};
-  }
-
-  Polygons3d result;
-  for (auto & param : params->second) {
-    auto p = boost::get<Polygon3d>(&param);
-    if (p != nullptr) {
-      result.push_back(*p);
-    }
-  }
-  return result;
-}
-
-ConstPolygons3d getConstPoly(const RuleParameterMap & params, RoleName role)
-{
-  auto cast_func = [](auto & poly) { return static_cast<ConstPolygon3d>(poly); };
-  return utils::transform(getPoly(params, role), cast_func);
-}
-
 RegulatoryElementDataPtr constructCrosswalk(
   Id id, const AttributeMap & attributes, const Lanelet & crosswalkLanelet,
   const Polygon3d & crosswalkArea, const LineStrings3d & stopLine)
@@ -91,12 +68,13 @@ RegulatoryElementDataPtr constructCrosswalk(
 
   {
     RuleParameters rule_parameters = {crosswalkArea};
-    rpm.insert(std::make_pair(RoleNameString::Refers, rule_parameters));
+    rpm.insert(
+      std::make_pair(Crosswalk::AutowareRoleNameString::CrosswalkPolygon, rule_parameters));
   }
 
   {
     RuleParameters rule_parameters = {crosswalkLanelet};
-    rpm.insert(std::make_pair(RoleNameString::RefLine, rule_parameters));
+    rpm.insert(std::make_pair(RoleNameString::Refers, rule_parameters));
   }
 
   for (const auto & line : stopLine) {
@@ -124,22 +102,12 @@ Crosswalk::Crosswalk(
 
 ConstPolygons3d Crosswalk::crosswalkAreas() const
 {
-  return getConstPoly(parameters(), RoleName::Refers);
-}
-
-Polygons3d Crosswalk::crosswalkAreas()
-{
-  return getPoly(parameters(), RoleName::Refers);
+  return getParameters<ConstPolygon3d>(AutowareRoleNameString::CrosswalkPolygon);
 }
 
 ConstLineStrings3d Crosswalk::stopLines() const
 {
   return getParameters<ConstLineString3d>(RoleName::RefLine);
-}
-
-LineStrings3d Crosswalk::stopLines()
-{
-  return getParameters<LineString3d>(RoleName::RefLine);
 }
 
 ConstLanelet Crosswalk::crosswalkLanelet() const
