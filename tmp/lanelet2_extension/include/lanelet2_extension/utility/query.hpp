@@ -137,7 +137,7 @@ std::vector<lanelet::NoParkingAreaConstPtr> noParkingAreas(const lanelet::ConstL
 std::vector<lanelet::SpeedBumpConstPtr> speedBumps(const lanelet::ConstLanelets & lanelets);
 
 /**
- * [speedBumps extracts Crosswalk regulatory elements from lanelets]
+ * [crosswalks extracts Crosswalk regulatory elements from lanelets]
  * @param lanelets [input lanelets]
  * @return         [crosswalks that are associated with input lanelets]
  */

@@ -42,8 +42,8 @@ public:
    * @brief get the relevant crosswalk area
    * @return crosswalk area
    */
-  [[nodiscard]] ConstPolygons3d crosswalkArea() const;
-  [[nodiscard]] Polygons3d crosswalkArea();
+  [[nodiscard]] ConstPolygons3d crosswalkAreas() const;
+  [[nodiscard]] Polygons3d crosswalkAreas();
 
   [[nodiscard]] ConstLineStrings3d stopLines() const;
   [[nodiscard]] LineStrings3d stopLines();
@@ -51,15 +51,15 @@ public:
   [[nodiscard]] ConstLanelet crosswalkLanelet() const;
 
   /**
-   * @brief add a new no parking area
-   * @param primitive no parking area to add
+   * @brief add a new crosswalk area
+   * @param primitive crosswalk area to add
    */
   void addCrosswalkArea(const Polygon3d & primitive);
 
   /**
-   * @brief remove a no parking area
+   * @brief remove a crosswalk area
    * @param primitive the primitive
-   * @return true if the no parking area existed and was removed
+   * @return true if the crosswalk area existed and was removed
    */
   bool removeCrosswalkArea(const Polygon3d & primitive);
 

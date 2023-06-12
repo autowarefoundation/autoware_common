@@ -122,12 +122,12 @@ Crosswalk::Crosswalk(
 {
 }
 
-ConstPolygons3d Crosswalk::crosswalkArea() const
+ConstPolygons3d Crosswalk::crosswalkAreas() const
 {
   return getConstPoly(parameters(), RoleName::Refers);
 }
 
-Polygons3d Crosswalk::crosswalkArea()
+Polygons3d Crosswalk::crosswalkAreas()
 {
   return getPoly(parameters(), RoleName::Refers);
 }
