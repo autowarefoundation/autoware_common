@@ -204,6 +204,13 @@ The following illustrates how light_bulbs are registered to traffic_light regula
 
 ### Crosswalk
 
+Original Lanelet2 format only requires `subtype=crosswalk` tag to be specified in the corresponding lanelet. However, Autoware requires a regulatory element to be defined on top of that in order to:
+
+- explicitly define the relevant driving lanes even in 3D environment
+- optionally define stop lines associated with the crosswalk
+- enable accurate definition of complex polygons for crosswalk
+
+For the details, refer to this [GitHub discussion](https://github.com/orgs/autowarefoundation/discussions/3036).
 Crosswalk regulatory element can be tied to `ref_line`, `crosswalk_polygon` and `refers`.
 
 ![crosswalk_regulatory elements](crosswalk_regulatory_element.svg)
