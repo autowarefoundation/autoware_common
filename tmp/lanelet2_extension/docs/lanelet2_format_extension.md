@@ -202,6 +202,35 @@ The following illustrates how light_bulbs are registered to traffic_light regula
 </relation>
 ```
 
+### Crosswalk
+
+Original Lanelet2 format only requires `subtype=crosswalk` tag to be specified in the corresponding lanelet. However, Autoware requires a regulatory element to be defined on top of that in order to:
+
+- explicitly define the relevant driving lanes even in 3D environment
+- optionally define stop lines associated with the crosswalk
+- enable accurate definition of complex polygons for crosswalk
+
+For the details, refer to this [GitHub discussion](https://github.com/orgs/autowarefoundation/discussions/3036).
+Crosswalk regulatory element can be tied to `ref_line`, `crosswalk_polygon` and `refers`.
+
+![crosswalk_regulatory elements](crosswalk_regulatory_element.svg)
+
+- `ref_line`: Stop line for the crosswalk.
+- `crosswalk_polygon`: Accurate area of the crosswalk.
+- `refers`: Lanelet that indicates the moving direction of crosswalk users.
+
+_An example:_
+
+```xml
+<relation id="10751">
+  <member type="way" role="ref_line" ref="8123"/>
+  <member type="way" role="crosswalk_polygon" ref="4047"/>
+  <member type="relation" role="refers" ref="2206"/>
+  <tag k="type" v="regulatory_element"/>
+  <tag k="subtype" v="crosswalk"/>
+</relation>
+```
+
 ### Safety Slow Down for Crosswalks
 
 If you wish ego vehicle to slow down to a certain speed from a certain distance while passing over a

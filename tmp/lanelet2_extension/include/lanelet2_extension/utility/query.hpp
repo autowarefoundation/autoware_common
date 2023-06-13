@@ -20,6 +20,7 @@
 // NOLINTBEGIN(readability-identifier-naming)
 
 #include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
+#include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
 #include "lanelet2_extension/regulatory_elements/detection_area.hpp"
 #include "lanelet2_extension/regulatory_elements/no_parking_area.hpp"
 #include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
@@ -47,6 +48,7 @@ using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParking
 using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
 using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
 using SpeedBumpConstPtr = std::shared_ptr<const lanelet::autoware::SpeedBump>;
+using CrosswalkConstPtr = std::shared_ptr<const lanelet::autoware::Crosswalk>;
 }  // namespace lanelet
 
 namespace lanelet::utils::query
@@ -133,6 +135,13 @@ std::vector<lanelet::NoParkingAreaConstPtr> noParkingAreas(const lanelet::ConstL
  * @return         [speed bumps that are associated with input lanelets]
  */
 std::vector<lanelet::SpeedBumpConstPtr> speedBumps(const lanelet::ConstLanelets & lanelets);
+
+/**
+ * [crosswalks extracts Crosswalk regulatory elements from lanelets]
+ * @param lanelets [input lanelets]
+ * @return         [crosswalks that are associated with input lanelets]
+ */
+std::vector<lanelet::CrosswalkConstPtr> crosswalks(const lanelet::ConstLanelets & lanelets);
 
 // query all polygons that has given type in lanelet2 map
 lanelet::ConstPolygons3d getAllPolygonsByType(
