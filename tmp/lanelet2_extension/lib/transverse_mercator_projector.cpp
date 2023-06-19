@@ -31,14 +31,16 @@ TransverseMercatorProjector::TransverseMercatorProjector(Origin origin) : Projec
   central_meridian_ = origin.position.lon;
 
   // Calculate origin in Transverse Mercator coordinate
-  const GeographicLib::TransverseMercatorExact& proj = GeographicLib::TransverseMercatorExact::UTM();
+  const GeographicLib::TransverseMercatorExact & proj =
+    GeographicLib::TransverseMercatorExact::UTM();
   proj.Forward(central_meridian_, origin.position.lat, origin.position.lon, origin_x_, origin_y_);
 }
 
 BasicPoint3d TransverseMercatorProjector::forward(const GPSPoint & gps) const
 {
   BasicPoint3d tm_point{0., 0., gps.ele};
-  const GeographicLib::TransverseMercatorExact& proj = GeographicLib::TransverseMercatorExact::UTM();
+  const GeographicLib::TransverseMercatorExact & proj =
+    GeographicLib::TransverseMercatorExact::UTM();
   proj.Forward(central_meridian_, gps.lat, gps.lon, tm_point.x(), tm_point.y());
   tm_point.x() = tm_point.x() - origin_x_;
   tm_point.y() = tm_point.y() - origin_y_;
@@ -51,7 +53,8 @@ BasicPoint3d TransverseMercatorProjector::forward(const GPSPoint & gps) const
 GPSPoint TransverseMercatorProjector::reverse(const BasicPoint3d & local_point) const
 {
   GPSPoint gps{0.0, 0.0, local_point.z()};
-  const GeographicLib::TransverseMercatorExact& proj = GeographicLib::TransverseMercatorExact::UTM();
+  const GeographicLib::TransverseMercatorExact & proj =
+    GeographicLib::TransverseMercatorExact::UTM();
   proj.Reverse(central_meridian_, local_point.x(), local_point.y(), gps.lat, gps.lon);
   return gps;
 }

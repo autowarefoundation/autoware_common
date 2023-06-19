@@ -19,8 +19,8 @@
 
 // NOLINTBEGIN(readability-identifier-naming)
 
-#include <GeographicLib/TransverseMercatorExact.hpp>
 #include <GeographicLib/MGRS.hpp>
+#include <GeographicLib/TransverseMercatorExact.hpp>
 
 #include <lanelet2_io/Exceptions.h>
 #include <lanelet2_io/Projection.h>
