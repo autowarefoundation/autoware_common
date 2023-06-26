@@ -32,6 +32,7 @@
 
 namespace lanelet::utils
 {
+lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets);
 lanelet::LineString3d generateFineCenterline(
   const lanelet::ConstLanelet & lanelet_obj, const double resolution = 5.0);
 lanelet::ConstLineString3d getCenterlineWithOffset(

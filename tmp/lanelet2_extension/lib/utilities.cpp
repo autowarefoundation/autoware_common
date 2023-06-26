@@ -228,6 +228,7 @@ lanelet::LineString3d getLineStringFromArcLength(
   }
   return lanelet::LineString3d{lanelet::InvalId, points};
 }
+}  // namespace
 
 lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets)
 {
@@ -252,8 +253,6 @@ lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets)
   combined_lanelet.setCenterline(center_line);
   return std::move(combined_lanelet);
 }
-
-}  // namespace
 
 lanelet::LineString3d generateFineCenterline(
   const lanelet::ConstLanelet & lanelet_obj, const double resolution)
