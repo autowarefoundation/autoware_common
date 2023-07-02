@@ -4,7 +4,7 @@
   <name>autoware_utils</name>
   <version>0.1.0</version>
   <description>The autoware_utils package</description>
-  <maintainer email="kenji.miyake@tier4.jp">Kenji Miyake</maintainer>
+  <maintainer email="ryohsuke.mitsudome@tier4.jp">Ryohsuke Mitsudome</maintainer>
   <maintainer email="esteve.fernandez@tier4.jp">Esteve Fernandez</maintainer>
   <license>Apache License 2.0</license>
 
