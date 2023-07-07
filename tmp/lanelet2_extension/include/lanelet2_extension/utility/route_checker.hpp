@@ -17,15 +17,12 @@
 
 // NOLINTBEGIN(readability-identifier-naming)
 
-#include <lanelet2_extension/utility/query.hpp>
-#include <rclcpp/rclcpp.hpp>
-
-#include <autoware_auto_mapping_msgs/msg/had_map_bin.hpp>
 #include <autoware_planning_msgs/msg/lanelet_route.hpp>
+
+#include <lanelet2_core/Forward.h>
 
 namespace lanelet::utils::route
 {
-using autoware_auto_mapping_msgs::msg::HADMapBin;
 using autoware_planning_msgs::msg::LaneletRoute;
 
 bool isRouteValid(const LaneletRoute & route, const lanelet::LaneletMapPtr lanelet_map_ptr_);

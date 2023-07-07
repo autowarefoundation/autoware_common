@@ -18,6 +18,7 @@
 #include "lanelet2_extension/utility/query.hpp"
 
 #include <gtest/gtest.h>
+#include <lanelet2_core/LaneletMap.h>
 
 #include <cmath>
 

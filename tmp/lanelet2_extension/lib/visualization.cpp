@@ -18,6 +18,9 @@
 
 #include "lanelet2_extension/visualization/visualization.hpp"
 
+#include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
+#include "lanelet2_extension/regulatory_elements/detection_area.hpp"
+#include "lanelet2_extension/regulatory_elements/speed_bump.hpp"
 #include "lanelet2_extension/utility/message_conversion.hpp"
 #include "lanelet2_extension/utility/query.hpp"
 #include "lanelet2_extension/utility/utilities.hpp"
