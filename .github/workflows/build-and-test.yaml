@@ -29,6 +29,7 @@ jobs:
         with:
           tool-cache: false
           dotnet: false
+          swap-storage: false
           large-packages: false
 
       - name: Remove exec_depend
