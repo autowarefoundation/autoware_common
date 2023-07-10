@@ -373,6 +373,7 @@ For more details about the `no_drivable_lane` concept and design, please refer t
 ### Intersection area
 
 The polygon of type `intersection_area` can be used for
+
 1. extra collision checking inside the intersection
 2. ensuring sufficient _drivable area_ in addition to the intersection lane on the route when the ego-vehicle needs to avoid parked vehicles just before the intersection.
 
