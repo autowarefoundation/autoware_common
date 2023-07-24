@@ -228,8 +228,9 @@ lanelet::LineString3d getLineStringFromArcLength(
   }
   return lanelet::LineString3d{lanelet::InvalId, points};
 }
+}  // namespace
 
-lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets)
+lanelet::ConstLanelet combineLaneletsShape(const lanelet::ConstLanelets & lanelets)
 {
   lanelet::Points3d lefts;
   lanelet::Points3d rights;
@@ -252,8 +253,6 @@ lanelet::ConstLanelet combineLanelets(const lanelet::ConstLanelets & lanelets)
   combined_lanelet.setCenterline(center_line);
   return std::move(combined_lanelet);
 }
-
-}  // namespace
 
 lanelet::LineString3d generateFineCenterline(
   const lanelet::ConstLanelet & lanelet_obj, const double resolution)
@@ -652,7 +651,7 @@ lanelet::ConstLineString3d getClosestSegment(
 lanelet::CompoundPolygon3d getPolygonFromArcLength(
   const lanelet::ConstLanelets & lanelets, const double s1, const double s2)
 {
-  const auto combined_lanelet = combineLanelets(lanelets);
+  const auto combined_lanelet = combineLaneletsShape(lanelets);
   const auto total_length = getLaneletLength2d(combined_lanelet);
 
   // make sure that s1, and s2 are between [0, lane_length]
