@@ -44,9 +44,6 @@ BasicPoint3d TransverseMercatorProjector::forward(const GPSPoint & gps) const
   proj.Forward(central_meridian_, gps.lat, gps.lon, tm_point.x(), tm_point.y());
   tm_point.x() = tm_point.x() - origin_x_;
   tm_point.y() = tm_point.y() - origin_y_;
-  std::cout << "KOJI632458!!!!!!!!!!!!!!!!!! " << tm_point.x() << ", " << tm_point.y() << std::endl;
-  std::cout << "KOJI6534242534!!!!!!!!!!!!!!!!!! " << origin_x_ << ", " << origin_y_ << std::endl;
-
   return tm_point;
 }
 
