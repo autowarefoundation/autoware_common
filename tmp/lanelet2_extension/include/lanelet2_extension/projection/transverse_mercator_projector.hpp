@@ -12,14 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOLINTBEGIN(readability-identifier-naming)
-
 #ifndef LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
 #define LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
 
 // NOLINTBEGIN(readability-identifier-naming)
 
-#include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/TransverseMercatorExact.hpp>
 
 #include <lanelet2_io/Exceptions.h>
@@ -36,14 +33,14 @@ public:
   explicit TransverseMercatorProjector(Origin origin = Origin({0.0, 0.0}));
 
   /**
-   * [TransverseMercatorProjector::forward projects gps lat/lon to MGRS 100km grid]
+   * [TransverseMercatorProjector::forward projects gps lat/lon to Transverse Mercator coordinate]
    * @param  gps [point with latitude longitude information]
-   * @return     [projected point in MGRS coordinate]
+   * @return     [projected point in Transverse Mercator coordinate]
    */
   BasicPoint3d forward(const GPSPoint & gps) const override;
 
   /**
-   * @param  local_point [3d point in local 100km grid]
+   * @param  local_point [3d point in Transverse Mercator coordinate]
    * @return            [projected point in WGS84]
    */
   GPSPoint reverse(const BasicPoint3d & local_point) const override;
