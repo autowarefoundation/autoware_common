@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// Authors: Simon Thompson, Ryohsuke Mitsudome
 
 #ifndef LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
 #define LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
