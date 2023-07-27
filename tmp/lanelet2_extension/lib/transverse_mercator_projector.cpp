@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOLINTBEGIN(readability-identifier-naming)
+// NOLINTBEGIN(readability-identifier-naming, cppcoreguidelines-pro-type-member-init)
 
 #include "lanelet2_extension/projection/transverse_mercator_projector.hpp"
 
@@ -56,4 +56,4 @@ GPSPoint TransverseMercatorProjector::reverse(const BasicPoint3d & local_point) 
 
 }  // namespace lanelet::projection
 
-// NOLINTEND(readability-identifier-naming)
+// NOLINTEND(readability-identifier-naming, cppcoreguidelines-pro-type-member-init)

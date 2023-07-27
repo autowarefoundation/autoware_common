@@ -15,7 +15,7 @@
 #ifndef LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
 #define LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
 
-// NOLINTBEGIN(readability-identifier-naming)
+// NOLINTBEGIN(readability-identifier-naming, modernize-use-nodiscard)
 
 #include <GeographicLib/TransverseMercatorExact.hpp>
 
@@ -56,6 +56,6 @@ private:
 
 }  // namespace lanelet::projection
 
-// NOLINTEND(readability-identifier-naming)
+// NOLINTEND(readability-identifier-naming, modernize-use-nodiscard)
 
 #endif  // LANELET2_EXTENSION__PROJECTION__TRANSVERSE_MERCATOR_PROJECTOR_HPP_
