@@ -27,6 +27,11 @@ The parser is registered as "autoware_osm_handler" as lanelet parser
 
 MGRS projector projects latitude longitude into MGRS Coordinates.
 
+#### Transverse Mercator Projector
+
+This projector projects latitude and longitude into Transverse Mercator coordinate.
+This is similar to [UTM projector](https://github.com/fzi-forschungszentrum-informatik/Lanelet2/blob/master/lanelet2_projection/src/UTM.cpp) in the Lanelet2 library, but uses a custom central meridian on a given origin.
+
 ### Regulatory Elements
 
 #### Autoware Traffic Light
