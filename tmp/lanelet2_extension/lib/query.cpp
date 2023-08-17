@@ -928,6 +928,30 @@ bool query::getClosestLaneletWithConstrains(
 }
 
 bool query::getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr)
+{
+  if (current_lanelets_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return false;
+  }
+
+  if (lanelets.empty()) {
+    return false;
+  }
+
+  lanelet::BasicPoint2d search_point_2d(search_point.x, search_point.y);
+  for (const auto & llt : lanelets) {
+    if (lanelet::geometry::inside(llt, search_point_2d)) {
+      current_lanelets_ptr->push_back(llt);
+    }
+  }
+
+  return !current_lanelets_ptr->empty();  // return found
+}
+
+bool query::getCurrentLanelets(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
   ConstLanelets * current_lanelets_ptr)
 {

@@ -265,6 +265,10 @@ bool getClosestLaneletWithConstrains(
   const double yaw_threshold = std::numeric_limits<double>::max());
 
 bool getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr);
+
+bool getCurrentLanelets(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
   ConstLanelets * current_lanelets_ptr);
 
