@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP
-#define LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP
+#ifndef LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP_
+#define LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP_
 
 // NOLINTBEGIN(readability-identifier-naming)
 
@@ -51,4 +51,4 @@ using CrosswalkConstPtr = std::shared_ptr<const lanelet::autoware::Crosswalk>;
 
 // NOLINTEND(readability-identifier-naming)
 
-#endif /* LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP */
+#endif  // LANELET2_EXTENSION__REGULATORY_ELEMENTS__FORWARD_HPP_
