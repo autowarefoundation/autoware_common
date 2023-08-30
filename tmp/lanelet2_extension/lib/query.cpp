@@ -18,13 +18,21 @@
 
 #include "lanelet2_extension/utility/query.hpp"
 
+#include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
+#include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
+#include "lanelet2_extension/regulatory_elements/detection_area.hpp"
+#include "lanelet2_extension/regulatory_elements/no_parking_area.hpp"
+#include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
+#include "lanelet2_extension/regulatory_elements/speed_bump.hpp"
 #include "lanelet2_extension/utility/message_conversion.hpp"
 #include "lanelet2_extension/utility/utilities.hpp"
 
 #include <Eigen/Eigen>
 #include <autoware_utils/autoware_utils.hpp>
 
+#include <lanelet2_core/LaneletMap.h>
 #include <lanelet2_core/geometry/Lanelet.h>
+#include <lanelet2_core/primitives/Lanelet.h>
 #include <lanelet2_routing/RoutingGraph.h>
 #include <tf2/utils.h>
 #ifdef ROS_DISTRO_GALACTIC

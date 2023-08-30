@@ -23,7 +23,10 @@
 
 #include <lanelet2_core/geometry/Lanelet.h>
 #include <lanelet2_core/geometry/LineString.h>
+#include <lanelet2_core/geometry/Point.h>
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
+#include <lanelet2_routing/Route.h>
+#include <lanelet2_routing/RoutingGraph.h>
 #include <lanelet2_traffic_rules/TrafficRules.h>
 #include <lanelet2_traffic_rules/TrafficRulesFactory.h>
 
@@ -32,6 +35,8 @@
 #else
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #endif
+
+#include <rclcpp/rclcpp.hpp>
 
 #include <algorithm>
 #include <limits>
@@ -43,6 +48,34 @@ namespace lanelet::utils
 {
 namespace
 {
+
+/// @brief copy the z values between 2 containers based on the 2D arc lengths
+/// @tparam T1 a container of 3D points
+/// @tparam T2 a container of 3D points
+/// @param from points from which the z values will be copied
+/// @param to points to which the z values will be copied
+template <typename T1, typename T2>
+void copyZ(const T1 & from, T2 & to)
+{
+  if (from.empty() || to.empty()) return;
+  to.front().z() = from.front().z();
+  if (from.size() < 2 || to.size() < 2) return;
+  to.back().z() = from.back().z();
+  auto i_from = 1lu;
+  auto s_from = lanelet::geometry::distance2d(from[0], from[1]);
+  auto s_to = 0.0;
+  auto s_from_prev = 0.0;
+  for (auto i_to = 1lu; i_to + 1 < to.size(); ++i_to) {
+    s_to += lanelet::geometry::distance2d(to[i_to - 1], to[i_to]);
+    for (; s_from < s_to && i_from + 1 < from.size(); ++i_from) {
+      s_from_prev = s_from;
+      s_from += lanelet::geometry::distance2d(from[i_from], from[i_from + 1]);
+    }
+    const auto ratio = (s_to - s_from_prev) / (s_from - s_from_prev);
+    to[i_to].z() = from[i_from - 1].z() + ratio * (from[i_from].z() - from[i_from - 1].z());
+  }
+}
+
 [[maybe_unused]] bool exists(const std::vector<int> & array, const int element)
 {
   return std::find(array.begin(), array.end(), element) != array.end();
