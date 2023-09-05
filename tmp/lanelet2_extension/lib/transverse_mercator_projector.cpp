@@ -52,7 +52,7 @@ GPSPoint TransverseMercatorProjector::reverse(const BasicPoint3d & local_point) 
   GPSPoint gps{0.0, 0.0, local_point.z()};
   const GeographicLib::TransverseMercatorExact & proj =
     GeographicLib::TransverseMercatorExact::UTM();
-  
+
   BasicPoint3d local_point_copy = local_point;
   local_point_copy.y() = local_point.y() + origin_y_;
   proj.Reverse(central_meridian_, local_point_copy.x(), local_point_copy.y(), gps.lat, gps.lon);

@@ -17,9 +17,8 @@
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
 #include "lanelet2_extension/projection/transverse_mercator_projector.hpp"
 
-#include <lanelet2_io/Projection.h>
-
 #include <gtest/gtest.h>
+#include <lanelet2_io/Projection.h>
 
 #include <cmath>
 
@@ -83,8 +82,9 @@ TEST(TestSuite, ReverseMGRSProjection)  // NOLINT for gtest
 
 TEST(TestSuite, ForwardTransverseMercatorProjection)  // NOLINT for gtest
 {
-  lanelet::projection::TransverseMercatorProjector projector(lanelet::Origin({35.652832, 139.839478}));
-  
+  lanelet::projection::TransverseMercatorProjector projector(
+    lanelet::Origin({35.652832, 139.839478}));
+
   // lat/lon in Tokyo
   lanelet::GPSPoint gps_point;
   gps_point.lat = 35.652832;
@@ -105,7 +105,7 @@ TEST(TestSuite, ForwardTransverseMercatorProjection)  // NOLINT for gtest
 TEST(TestSuite, ForwardAndReverseTransverseMercatorProjection)  // NOLINT for gtest
 {
   lanelet::projection::TransverseMercatorProjector projector(lanelet::Origin({35.0, 139.0}));
-  
+
   // lat/lon in Tokyo
   lanelet::GPSPoint gps_point;
   gps_point.lat = 35.652832;
@@ -117,8 +117,10 @@ TEST(TestSuite, ForwardAndReverseTransverseMercatorProjection)  // NOLINT for gt
   // projected z value should not change
   ASSERT_DOUBLE_EQ(gps_point_converted.ele, gps_point.ele)
     << "Forward projected z value should be " << gps_point.ele;
-  EXPECT_NEAR(gps_point_converted.lat, gps_point.lat, 0.0001) << "Forward and Reversed latitude should match the original latitude";
-  EXPECT_NEAR(gps_point_converted.lon, gps_point.lon, 0.0001) << "Forward and Reversed longitude should match the original longitude";
+  EXPECT_NEAR(gps_point_converted.lat, gps_point.lat, 0.0001)
+    << "Forward and Reversed latitude should match the original latitude";
+  EXPECT_NEAR(gps_point_converted.lon, gps_point.lon, 0.0001)
+    << "Forward and Reversed longitude should match the original longitude";
 }
 
 int main(int argc, char ** argv)
