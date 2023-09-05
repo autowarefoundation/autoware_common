@@ -102,6 +102,32 @@ TEST(TestSuite, ForwardTransverseMercatorProjection)  // NOLINT for gtest
   ASSERT_DOUBLE_EQ(rounded_y_mm, 0.0) << "Forward projected y value should be " << 0.0;
 }
 
+TEST(TestSuite, ReverseTransverseMercatorProjection)  // NOLINT for gtest
+{
+  lanelet::projection::TransverseMercatorProjector projector(lanelet::Origin({35.652832, 139.839478}));
+
+  lanelet::BasicPoint3d local_point;
+  local_point.x() = 0.0;
+  local_point.y() = 0.0;
+  local_point.z() = 12.3456789;
+
+  lanelet::GPSPoint gps_point = projector.reverse(local_point);
+
+  // projected z value should not change
+  ASSERT_DOUBLE_EQ(gps_point.ele, local_point.z())
+    << "Reverse projected z value should be " << local_point.z();
+
+  // https://www.movable-type.co.uk/scripts/latlong-utm-mgrs.html
+  // round the projected value since the above reference only gives value up to
+  // precision of 1e-8
+  double rounded_lat = round(gps_point.lat * 1e8) / 1e8;
+  ASSERT_DOUBLE_EQ(rounded_lat, 35.652832)
+    << "Reverse projected latitude value should be " << 35.652832;
+  double rounded_lon = round(gps_point.lon * 1e8) / 1e8;
+  ASSERT_DOUBLE_EQ(rounded_lon, 139.839478)
+    << "Reverse projected longitude value should be " << 139.839478;
+}
+
 TEST(TestSuite, ForwardAndReverseTransverseMercatorProjection)  // NOLINT for gtest
 {
   lanelet::projection::TransverseMercatorProjector projector(lanelet::Origin({35.0, 139.0}));
