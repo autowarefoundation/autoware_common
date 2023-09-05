@@ -104,7 +104,8 @@ TEST(TestSuite, ForwardTransverseMercatorProjection)  // NOLINT for gtest
 
 TEST(TestSuite, ReverseTransverseMercatorProjection)  // NOLINT for gtest
 {
-  lanelet::projection::TransverseMercatorProjector projector(lanelet::Origin({35.652832, 139.839478}));
+  lanelet::projection::TransverseMercatorProjector projector(
+    lanelet::Origin({35.652832, 139.839478}));
 
   lanelet::BasicPoint3d local_point;
   local_point.x() = 0.0;
