@@ -896,7 +896,6 @@ bool query::getClosestLaneletWithConstrains(
           const std::pair<lanelet::ConstLanelet, double> & x,
           std::pair<lanelet::ConstLanelet, double> & y) { return x.second < y.second; });
     } else {
-      std::cerr << "there are no lanelets close enough!" << std::endl;
       return found;
     }
   }
