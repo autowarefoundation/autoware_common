@@ -40,8 +40,10 @@ BasicPoint3d TransverseMercatorProjector::forward(const GPSPoint & gps) const
   const GeographicLib::TransverseMercatorExact & proj =
     GeographicLib::TransverseMercatorExact::UTM();
   proj.Forward(central_meridian_, gps.lat, gps.lon, tm_point.x(), tm_point.y());
-  tm_point.x() = tm_point.x() - origin_x_;
+
+  // x is already aligned with origin as it is projected in transverse mercator
   tm_point.y() = tm_point.y() - origin_y_;
+
   return tm_point;
 }
 
@@ -50,7 +52,10 @@ GPSPoint TransverseMercatorProjector::reverse(const BasicPoint3d & local_point) 
   GPSPoint gps{0.0, 0.0, local_point.z()};
   const GeographicLib::TransverseMercatorExact & proj =
     GeographicLib::TransverseMercatorExact::UTM();
-  proj.Reverse(central_meridian_, local_point.x(), local_point.y(), gps.lat, gps.lon);
+
+  BasicPoint3d local_point_copy = local_point;
+  local_point_copy.y() = local_point.y() + origin_y_;
+  proj.Reverse(central_meridian_, local_point_copy.x(), local_point_copy.y(), gps.lat, gps.lon);
   return gps;
 }
 
