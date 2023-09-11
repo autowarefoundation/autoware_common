@@ -305,6 +305,19 @@ std::vector<lanelet::CrosswalkConstPtr> query::crosswalks(const lanelet::ConstLa
   return cw_reg_elems;
 }
 
+lanelet::ConstLineStrings3d query::curbstones(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+{
+  lanelet::ConstLineStrings3d curbstones;
+  for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
+    const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
+    if (type == "curbstone") {
+      curbstones.push_back(ls);
+    }
+  }
+  return curbstones;
+}
+
 lanelet::ConstPolygons3d query::getAllPolygonsByType(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type)
 {
