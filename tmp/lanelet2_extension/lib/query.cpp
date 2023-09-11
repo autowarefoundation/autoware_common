@@ -18,13 +18,21 @@
 
 #include "lanelet2_extension/utility/query.hpp"
 
+#include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
+#include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
+#include "lanelet2_extension/regulatory_elements/detection_area.hpp"
+#include "lanelet2_extension/regulatory_elements/no_parking_area.hpp"
+#include "lanelet2_extension/regulatory_elements/no_stopping_area.hpp"
+#include "lanelet2_extension/regulatory_elements/speed_bump.hpp"
 #include "lanelet2_extension/utility/message_conversion.hpp"
 #include "lanelet2_extension/utility/utilities.hpp"
 
 #include <Eigen/Eigen>
 #include <autoware_utils/autoware_utils.hpp>
 
+#include <lanelet2_core/LaneletMap.h>
 #include <lanelet2_core/geometry/Lanelet.h>
+#include <lanelet2_core/primitives/Lanelet.h>
 #include <lanelet2_routing/RoutingGraph.h>
 #include <tf2/utils.h>
 #ifdef ROS_DISTRO_GALACTIC
@@ -924,6 +932,30 @@ bool query::getClosestLaneletWithConstrains(
   }
 
   return found;
+}
+
+bool query::getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr)
+{
+  if (current_lanelets_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return false;
+  }
+
+  if (lanelets.empty()) {
+    return false;
+  }
+
+  lanelet::BasicPoint2d search_point_2d(search_point.x, search_point.y);
+  for (const auto & llt : lanelets) {
+    if (lanelet::geometry::inside(llt, search_point_2d)) {
+      current_lanelets_ptr->push_back(llt);
+    }
+  }
+
+  return !current_lanelets_ptr->empty();  // return found
 }
 
 bool query::getCurrentLanelets(

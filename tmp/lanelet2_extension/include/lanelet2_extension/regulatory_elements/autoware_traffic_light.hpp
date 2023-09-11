@@ -19,11 +19,12 @@
 
 // NOLINTBEGIN(readability-identifier-naming)
 
-#include <lanelet2_core/primitives/BasicRegulatoryElements.h>
+#include <lanelet2_extension/regulatory_elements/Forward.hpp>
+
+#include <lanelet2_core/Forward.h>
 #include <lanelet2_core/primitives/Lanelet.h>
 
 #include <memory>
-#include <vector>
 
 namespace lanelet::autoware
 {
@@ -66,7 +67,7 @@ public:
   void addLightBulbs(const LineStringOrPolygon3d & primitive);
 
   /**
-   * @brief remove a traffic light bulb
+p   * @brief remove a traffic light bulb
    * @param primitive the primitive
    * @return true if the traffic light bulb existed and was removed
    */

@@ -34,22 +34,8 @@
 #include <lanelet2_routing/RoutingGraph.h>
 
 #include <limits>
-#include <memory>
 #include <string>
 #include <vector>
-
-namespace lanelet
-{
-using TrafficSignConstPtr = std::shared_ptr<const lanelet::TrafficSign>;
-using TrafficLightConstPtr = std::shared_ptr<const lanelet::TrafficLight>;
-using AutowareTrafficLightConstPtr = std::shared_ptr<const lanelet::autoware::AutowareTrafficLight>;
-using DetectionAreaConstPtr = std::shared_ptr<const lanelet::autoware::DetectionArea>;
-using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
-using NoStoppingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoStoppingArea>;
-using NoParkingAreaConstPtr = std::shared_ptr<const lanelet::autoware::NoParkingArea>;
-using SpeedBumpConstPtr = std::shared_ptr<const lanelet::autoware::SpeedBump>;
-using CrosswalkConstPtr = std::shared_ptr<const lanelet::autoware::Crosswalk>;
-}  // namespace lanelet
 
 namespace lanelet::utils::query
 {
@@ -263,6 +249,10 @@ bool getClosestLaneletWithConstrains(
   ConstLanelet * closest_lanelet_ptr,
   const double dist_threshold = std::numeric_limits<double>::max(),
   const double yaw_threshold = std::numeric_limits<double>::max());
+
+bool getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr);
 
 bool getCurrentLanelets(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,

@@ -17,6 +17,9 @@
 #include "lanelet2_extension/utility/route_checker.hpp"
 
 #include <lanelet2_extension/utility/message_conversion.hpp>
+#include <lanelet2_extension/utility/query.hpp>
+
+#include <lanelet2_core/LaneletMap.h>
 
 namespace lanelet::utils
 {

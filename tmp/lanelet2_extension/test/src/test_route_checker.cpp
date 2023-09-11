@@ -21,6 +21,7 @@
 #include <autoware_planning_msgs/msg/lanelet_route.hpp>
 
 #include <gtest/gtest.h>
+#include <lanelet2_core/LaneletMap.h>
 
 using lanelet::Lanelet;
 using lanelet::LineString3d;
