@@ -112,8 +112,6 @@ bool inputLightMarker(visualization_msgs::msg::Marker * marker, const lanelet::C
     return false;
   }
 
-  marker->id = static_cast<int32_t>(p.id());
-
   geometry_msgs::msg::Point point;
   marker->pose.position.x = p.x();
   marker->pose.position.y = p.y();
@@ -540,6 +538,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
   const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
 {
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
+  int32_t marker_id = 0;
 
   for (const auto & tl : tl_reg_elems) {
     const auto lights = tl->trafficLights();
@@ -552,7 +551,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.header.frame_id = "map";
         marker.header.stamp = rclcpp::Time();
         marker.ns = "traffic_light_id";
-        marker.id = static_cast<int32_t>(ls.id());
+        marker.id = marker_id++;
         marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
         marker.lifetime = duration;
         marker.action = visualization_msgs::msg::Marker::ADD;
