@@ -305,8 +305,7 @@ std::vector<lanelet::CrosswalkConstPtr> query::crosswalks(const lanelet::ConstLa
   return cw_reg_elems;
 }
 
-lanelet::ConstLineStrings3d query::curbstones(
-  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+lanelet::ConstLineStrings3d query::curbstones(const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
 {
   lanelet::ConstLineStrings3d curbstones;
   for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
