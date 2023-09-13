@@ -129,6 +129,9 @@ std::vector<lanelet::SpeedBumpConstPtr> speedBumps(const lanelet::ConstLanelets 
  */
 std::vector<lanelet::CrosswalkConstPtr> crosswalks(const lanelet::ConstLanelets & lanelets);
 
+// query all curbstones in lanelet2 map
+lanelet::ConstLineStrings3d curbstones(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+
 // query all polygons that has given type in lanelet2 map
 lanelet::ConstPolygons3d getAllPolygonsByType(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type);
