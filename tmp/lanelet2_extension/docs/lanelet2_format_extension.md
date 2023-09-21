@@ -231,6 +231,47 @@ _An example:_
 </relation>
 ```
 
+### Traffic Lights for Crosswalks
+
+It can define not only traffic lights for vehicles but also for crosswalk users by using regulatory element. In this case, the crosswalk lanelet needs to refer the traffic light regulatory element.
+
+![crosswalk_traffic_light](crosswalk_traffic_light.svg)
+
+_An example:_
+
+```xml
+<way id="179745">
+  <nd ref="179743"/>
+  <nd ref="179744"/>
+  <tag k="type" v="traffic_light"/>
+  <tag k="subtype" v="solid"/>
+  <tag k="height" v="0.5"/>
+</way>
+
+...
+
+<relation id="179750">
+  <member type="way" role="refers" ref="179745"/>
+  <member type="way" role="refers" ref="179756"/>
+  <tag k="type" v="regulatory_element"/>
+  <tag k="subtype" v="traffic_light"/>
+</relation>
+
+...
+
+<relation id="1556">
+  <member type="way" role="left" ref="1449"/>
+  <member type="way" role="right" ref="1450"/>
+  <member type="relation" role="regulatory_element" ref="179750"/>
+  <tag k="type" v="lanelet"/>
+  <tag k="subtype" v="crosswalk"/>
+  <tag k="speed_limit" v="10"/>
+  <tag k="location" v="urban"/>
+  <tag k="one_way" v="no"/>
+  <tag k="participant:pedestrian" v="yes"/>
+</relation>
+```
+
 ### Safety Slow Down for Crosswalks
 
 If you wish ego vehicle to slow down to a certain speed from a certain distance while passing over a
