@@ -369,6 +369,18 @@ lanelet::ConstLineStrings3d query::getAllPartitions(
   return partitions;
 }
 
+lanelet::ConstLineStrings3d query::getAllFences(const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+{
+  lanelet::ConstLineStrings3d fences;
+  for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
+    const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
+    if (type == "fence") {
+      fences.push_back(ls);
+    }
+  }
+  return fences;
+}
+
 lanelet::ConstLineStrings3d query::getAllPedestrianMarkings(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
 {
