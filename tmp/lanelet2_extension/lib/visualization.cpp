@@ -569,7 +569,7 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.color = c;
         marker.scale.z = scale;
         marker.frame_locked = false;
-        marker.text = std::to_string(ls.id());
+        marker.text = std::to_string(tl->id());
         tl_id_marker_array.markers.push_back(marker);
       }
     }
