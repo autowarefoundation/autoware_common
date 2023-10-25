@@ -1458,6 +1458,25 @@ void visualization::pushArrowsMarker(
   }
 }
 
+visualization_msgs::msg::MarkerArray visualization::intersectionAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & intersection_areas, const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+  if (intersection_areas.empty()) {
+    return marker_array;
+  }
+
+  visualization_msgs::msg::Marker marker = createPolygonMarker("intersection_area", c);
+  for (const auto & polygon : intersection_areas) {
+    pushPolygonMarker(&marker, polygon, c);
+  }
+
+  if (!marker.points.empty()) {
+    marker_array.markers.push_back(marker);
+  }
+  return marker_array;
+}
+
 visualization_msgs::msg::MarkerArray visualization::noObstacleSegmentationAreaAsMarkerArray(
   const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
   const std_msgs::msg::ColorRGBA & c)

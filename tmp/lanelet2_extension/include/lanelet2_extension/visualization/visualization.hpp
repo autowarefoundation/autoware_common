@@ -302,6 +302,14 @@ visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
 
 /**
+ * [intersectionAreaAsMarkerArray creates marker array to visualize intersection area]
+ * @param  intersection_areas [intersection area polygon]
+ * @param  c                  [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray intersectionAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & intersection_areas, const std_msgs::msg::ColorRGBA & c);
+
+/**
  * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
  * segmentation area]
  * @param  no_obstacle_segmentation_area [no obstacle segmentation area polygon]
