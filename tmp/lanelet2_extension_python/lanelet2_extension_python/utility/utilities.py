@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 import lanelet2_extension_python._lanelet2_extension_python_boost_python_utility as _utility_cpp
-from geometry_msgs.msg import Pose, Point
-from rclpy.serialization import (
-    serialize_message,
-    deserialize_message,
-)
+from rclpy.serialization import deserialize_message
+from rclpy.serialization import serialize_message
 
 combineLaneletsShape = _utility_cpp.combineLaneletsShape
 generateFineCenterline = _utility_cpp.generateFineCenterline
@@ -57,6 +56,4 @@ def getLateralDistanceToCenterline(lanelet, pose: Pose):
 
 def getLateralDistanceToClosestLanelet(lanelet_sequence, pose: Pose):
     pose_byte = serialize_message(pose)
-    return _utility_cpp.getLateralDistanceToClosestLanelet(
-        lanelet_sequence, pose_byte
-    )
+    return _utility_cpp.getLateralDistanceToClosestLanelet(lanelet_sequence, pose_byte)

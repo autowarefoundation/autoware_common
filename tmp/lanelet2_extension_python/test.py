@@ -1,12 +1,11 @@
-import lanelet2_extension_python
-from lanelet2_extension_python.utility.utilities import *
-from lanelet2_extension_python.projection import MGRSProjector
-
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 import lanelet2
 import lanelet2.geometry
+import lanelet2_extension_python
 from lanelet2_extension_python.projection import MGRSProjector
+from lanelet2_extension_python.utility.utilities import *
 import numpy as np
-from geometry_msgs.msg import Point, Pose
 
 
 def print_layer(layer, layerName):
@@ -55,18 +54,12 @@ if __name__ == "__main__":
     graph = lanelet2.routing.RoutingGraph(ll2_map, traffic_rules)
     ## get conflicting lanelets
     conflictings = graph.conflicting(lanelet56)
-    print(
-        f"lanelet56 is conflicting with {[conflicting.id for conflicting in conflictings]}"
-    )
+    print(f"lanelet56 is conflicting with {[conflicting.id for conflicting in conflictings]}")
     ## get following lanelets
     followings = graph.following(lanelet56)
-    print(
-        f"lanelet56 is connected to {[following.id for following in followings]}"
-    )
+    print(f"lanelet56 is connected to {[following.id for following in followings]}")
     previouses = graph.previous(lanelet56)
-    print(
-        f"lanelet56 is followed by {[previous.id for previous in previouses]}"
-    )
+    print(f"lanelet56 is followed by {[previous.id for previous in previouses]}")
 
     centerline = lanelet56.centerline
     print(
@@ -97,9 +90,7 @@ if __name__ == "__main__":
     print(f"pose = [{pose.position.x}, {pose.position.y}, {pose.position.z}]")
 
     arc_coord = getArcCoordinates([lanelet56], pose)
-    print(
-        f"getArcCoordinates(lanelet56, pose) = {arc_coord.distance}, {arc_coord.length}"
-    )
+    print(f"getArcCoordinates(lanelet56, pose) = {arc_coord.distance}, {arc_coord.length}")
 
     lanelet_angle = getLaneletAngle(lanelet56, pose.position)
     print(lanelet_angle)

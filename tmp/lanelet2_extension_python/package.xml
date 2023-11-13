@@ -11,6 +11,7 @@
   <buildtool_depend>autoware_cmake</buildtool_depend>
   <buildtool_depend>python_cmake_module</buildtool_depend>
 
+  <depend>geometry_msgs</depend>
   <depend>lanelet2_core</depend>
   <depend>lanelet2_extension</depend>
   <depend>lanelet2_io</depend>
@@ -21,7 +22,6 @@
   <depend>lanelet2_validation</depend>
   <depend>libboost-python-dev</depend>
   <depend>rclcpp</depend>
-  <depend>geometry_msgs</depend>
 
   <test_depend>ament_cmake_ros</test_depend>
 
