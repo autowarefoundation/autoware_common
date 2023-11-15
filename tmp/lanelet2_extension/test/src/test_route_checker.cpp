@@ -17,7 +17,7 @@
 #include "lanelet2_extension/utility/message_conversion.hpp"
 #include "lanelet2_extension/utility/route_checker.hpp"
 
-#include <autoware_auto_mapping_msgs/msg/had_map_bin.hpp>
+#include <autoware_map_msgs/msg/lanelet_map_bin.hpp>
 #include <autoware_planning_msgs/msg/lanelet_route.hpp>
 
 #include <gtest/gtest.h>
@@ -74,7 +74,7 @@ private:
 
 TEST_F(TestSuite, isRouteValid)  // NOLINT for gtest
 {
-  autoware_auto_mapping_msgs::msg::HADMapBin bin_msg;
+  autoware_map_msgs::msg::LaneletMapBin bin_msg;
 
   const auto route_ptr1 =
     std::make_shared<autoware_planning_msgs::msg::LaneletRoute>(sample_route1);
