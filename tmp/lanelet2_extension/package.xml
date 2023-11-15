@@ -10,8 +10,8 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <buildtool_depend>autoware_cmake</buildtool_depend>
 
-  <depend>autoware_map_msgs</depend>
   <depend>autoware_auto_planning_msgs</depend>
+  <depend>autoware_map_msgs</depend>
   <depend>autoware_planning_msgs</depend>
   <depend>autoware_utils</depend>
   <depend>geographiclib</depend>
