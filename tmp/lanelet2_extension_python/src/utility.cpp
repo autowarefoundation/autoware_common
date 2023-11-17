@@ -1,3 +1,4 @@
+#include <lanelet2_extension/utility/query.hpp>
 #include <lanelet2_extension/utility/utilities.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/serialization.hpp>
@@ -7,7 +8,6 @@
 
 #include <lanelet2_core/geometry/Polygon.h>
 #include <lanelet2_core/primitives/Lanelet.h>
-#include <lanelet2_python/internal/converter.h>
 
 #include <iostream>
 #include <string>
@@ -143,6 +143,7 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(isInLanelet_overload, ::isInLanelet, 2, 3)
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {
+  // utilities.cpp
   bp::def("combineLaneletsShape", lanelet::utils::combineLaneletsShape);
   bp::def(
     "generateFineCenterline", lanelet::utils::generateFineCenterline,
@@ -179,4 +180,12 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("getLateralDistanceToCenterline", ::getLateralDistanceToCenterline);  // depends ros msg
   bp::def(
     "getLateralDistanceToClosestLanelet", ::getLateralDistanceToClosestLanelet);  // depends ros msg
+  // query.cpp
+  bp::def("laneletLayer", lanelet::utils::query::laneletLayer);
+  bp::def("subtypeLanelets", lanelet::utils::query::subtypeLanelets);
+  bp::def("crosswalkLanelets", lanelet::utils::query::crosswalkLanelets);
+  bp::def("walkwayLanelets", lanelet::utils::query::walkwayLanelets);
+  bp::def("roadLanelets", lanelet::utils::query::roadLanelets);
+  bp::def("shoulderLanelets", lanelet::utils::query::shoulderLanelets);
+  bp::def("trafficLights", lanelet::utils::query::trafficLights);
 }

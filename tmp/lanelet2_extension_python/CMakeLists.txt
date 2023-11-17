@@ -21,7 +21,10 @@ ament_auto_add_library(_${PROJECT_NAME}_boost_python_utility SHARED
 ament_auto_add_library(_${PROJECT_NAME}_boost_python_projection SHARED
   src/projection.cpp
 )
-install(TARGETS _${PROJECT_NAME}_boost_python_utility _${PROJECT_NAME}_boost_python_projection
+ament_auto_add_library(_${PROJECT_NAME}_boost_python_regulatory_elements SHARED
+  src/regulatory_elements.cpp
+)
+install(TARGETS _${PROJECT_NAME}_boost_python_utility _${PROJECT_NAME}_boost_python_projection _${PROJECT_NAME}_boost_python_regulatory_elements
   DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}"
 )
 

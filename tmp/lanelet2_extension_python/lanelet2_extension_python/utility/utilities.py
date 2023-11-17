@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
 import lanelet2_extension_python._lanelet2_extension_python_boost_python_utility as _utility_cpp
