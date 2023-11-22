@@ -39,7 +39,7 @@
 
 namespace lanelet::utils::conversion
 {
-void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_auto_mapping_msgs::msg::HADMapBin * msg)
+void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_map_msgs::msg::LaneletMapBin * msg)
 {
   if (msg == nullptr) {
     std::cerr << __FUNCTION__ << "msg is null pointer!";
@@ -58,7 +58,7 @@ void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_auto_mapping_msgs::ms
   msg->data.assign(data_str.begin(), data_str.end());
 }
 
-void fromBinMsg(const autoware_auto_mapping_msgs::msg::HADMapBin & msg, lanelet::LaneletMapPtr map)
+void fromBinMsg(const autoware_map_msgs::msg::LaneletMapBin & msg, lanelet::LaneletMapPtr map)
 {
   if (!map) {
     std::cerr << __FUNCTION__ << ": map is null pointer!";
@@ -79,7 +79,7 @@ void fromBinMsg(const autoware_auto_mapping_msgs::msg::HADMapBin & msg, lanelet:
 }
 
 void fromBinMsg(
-  const autoware_auto_mapping_msgs::msg::HADMapBin & msg, lanelet::LaneletMapPtr map,
+  const autoware_map_msgs::msg::LaneletMapBin & msg, lanelet::LaneletMapPtr map,
   lanelet::traffic_rules::TrafficRulesPtr * traffic_rules,
   lanelet::routing::RoutingGraphPtr * routing_graph)
 {

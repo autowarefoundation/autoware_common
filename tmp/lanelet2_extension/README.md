@@ -54,7 +54,7 @@ Autoware intersection module requires the information on which lanes can be igno
 This contains functions to convert lanelet map objects into ROS messages.
 Currently it contains following conversions:
 
-- lanelet::LaneletMapPtr to/from autoware_auto_mapping_msgs::msg::HADMapBin
+- lanelet::LaneletMapPtr to/from autoware_map_msgs::msg::LaneletMapBin
 - lanelet::Point3d to geometry_msgs::Point
 - lanelet::Point2d to geometry_msgs::Point
 - lanelet::BasicPoint3d to geometry_msgs::Point
