@@ -333,6 +333,12 @@ visualization_msgs::msg::MarkerArray hatchedRoadMarkingsAreaAsMarkerArray(
   const lanelet::ConstPolygons3d & hatched_road_markings_area,
   const std_msgs::msg::ColorRGBA & area_color, const std_msgs::msg::ColorRGBA & line_color);
 
+visualization_msgs::msg::MarkerArray gnssavailableareaPolygonsAsMarkerArray(
+  const lanelet::ConstPolygons3d & gnss_available_polygons, const std_msgs::msg::ColorRGBA & c);
+
+visualization_msgs::msg::MarkerArray switchingareaPolygonsAsMarkerArray(
+  const lanelet::ConstPolygons3d & swiching_area_polygons, const std_msgs::msg::ColorRGBA & c);
+
 }  // namespace lanelet::visualization
 
 // NOLINTEND(readability-identifier-naming)

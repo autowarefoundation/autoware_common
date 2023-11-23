@@ -1543,6 +1543,48 @@ visualization_msgs::msg::MarkerArray visualization::hatchedRoadMarkingsAreaAsMar
 
   return marker_array;
 }
+
+visualization_msgs::msg::MarkerArray visualization::gnssavailableareaPolygonsAsMarkerArray(
+  const lanelet::ConstPolygons3d & gnss_available_polygons, const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+
+  if (gnss_available_polygons.empty()) {
+    return marker_array;
+  }
+
+  visualization_msgs::msg::Marker marker = createPolygonMarker("gnss_available_area", c);
+  for (const auto & polygon : gnss_available_polygons) {
+    pushPolygonMarker(&marker, polygon, c);
+  }
+
+  if (!marker.points.empty()) {
+    marker_array.markers.push_back(marker);
+  }
+  return marker_array;
+}
+
+visualization_msgs::msg::MarkerArray visualization::switchingareaPolygonsAsMarkerArray(
+  const lanelet::ConstPolygons3d & switching_polygons, const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+
+  if (switching_polygons.empty()) {
+    return marker_array;
+  }
+
+  visualization_msgs::msg::Marker marker = createPolygonMarker("switching_area", c);
+  for (const auto & polygon : switching_polygons) {
+    pushPolygonMarker(&marker, polygon, c);
+  }
+
+  if (!marker.points.empty()) {
+    marker_array.markers.push_back(marker);
+  }
+  return marker_array;
+}
+
+
 }  // namespace lanelet
 
 // NOLINTEND(readability-identifier-naming)

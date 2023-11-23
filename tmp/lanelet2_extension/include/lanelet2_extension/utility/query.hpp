@@ -290,6 +290,9 @@ std::vector<lanelet::ConstLanelets> getPrecedingLaneletSequences(
   const routing::RoutingGraphPtr & graph, const lanelet::ConstLanelet & lanelet,
   const double length, const lanelet::ConstLanelets & exclude_lanelets = {});
 
+lanelet::ConstPolygons3d getAllGnssAvailableArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+lanelet::ConstPolygons3d getAllSwitchingArea(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+
 }  // namespace lanelet::utils::query
 
 // NOLINTEND(readability-identifier-naming)
