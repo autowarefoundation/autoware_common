@@ -410,3 +410,70 @@ _An example:_
 ```
 
 For more details about the `no_drivable_lane` concept and design, please refer to the [**_no-drivable-lane-design_**](https://github.com/autowarefoundation/autoware.universe/blob/main/planning/behavior_velocity_no_drivable_lane_module/README.md) document.
+
+### Localization Landmarks
+
+Landmarks, such as AR-Tags, can be defined into the lanelet map to aid localization module.
+
+Landmark Specifications:
+
+- **Shape**: Landmarks must be flat and defined as a polygon with exactly four vertices.
+- **Vertex Definition**: Vertices must be defined in a counter-clockwise order.
+- **Coordinate System** and Vertex Order:
+  - The x-axis must be parallel to the vector extending from the first vertex to the second vertex.
+  - The y-axis must be parallel to the vector extending from the second vertex to the third vertex.
+- **Required Attributes**:
+  - Specify pose_marker for type `<tag k="type" v="pose_marker"/>`
+  - Specify the type of the landmark for subtype `<tag k="subtype" v="apriltag_16h5"/>`
+  - Specify the ID of the landmark for marker_id `<tag k="marker_id" v="0"/>`
+    - ID can be assigned arbitrarily as a string, but the same ID must be assigned for the same marker type
+    - For example, apiltag_16h5 has 30 different IDs from 0 to 29. If multiple tags of the same type are to be placed in one environment, they should be assigned the same ID.
+
+![localization_landmark](./localization_landmark.drawio.svg)
+
+_An example:_
+
+```xml
+...
+
+  <node id="1" lat="35.8xxxxx" lon="139.6xxxxx">
+    <tag k="mgrs_code" v="99XXX000000"/>
+    <tag k="local_x" v="22.2356"/>
+    <tag k="local_y" v="87.4506"/>
+    <tag k="ele" v="2.1725"/>
+  </node>
+  <node id="2" lat="35.8xxxxx" lon="139.6xxxxx">
+    <tag k="mgrs_code" v="99XXX000000"/>
+    <tag k="local_x" v="22.639"/>
+    <tag k="local_y" v="87.5886"/>
+    <tag k="ele" v="2.5947"/>
+  </node>
+  <node id="3" lat="35.8xxxxx" lon="139.6xxxxx">
+    <tag k="mgrs_code" v="99XXX000000"/>
+    <tag k="local_x" v="22.2331"/>
+    <tag k="local_y" v="87.4713"/>
+    <tag k="ele" v="3.0208"/>
+  </node>
+  <node id="4" lat="35.8xxxxx" lon="139.6xxxxx">
+    <tag k="mgrs_code" v="99XXX000000"/>
+    <tag k="local_x" v="21.8298"/>
+    <tag k="local_y" v="87.3332"/>
+    <tag k="ele" v="2.5985"/>
+  </node>
+
+...
+
+  <way id="5">
+    <nd ref="1"/>
+    <nd ref="2"/>
+    <nd ref="3"/>
+    <nd ref="4"/>
+    <tag k="type" v="pose_marker"/>
+    <tag k="subtype" v="apriltag_16h5"/>
+    <tag k="area" v="yes"/>
+    <tag k="marker_id" v="0"/>
+  </way>
+
+...
+
+```

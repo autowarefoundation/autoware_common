@@ -35,6 +35,7 @@ ament_auto_add_library(lanelet2_extension_lib SHARED
   lib/autoware_traffic_light.cpp
   lib/crosswalk.cpp
   lib/detection_area.cpp
+  lib/landmark.cpp
   lib/no_parking_area.cpp
   lib/no_stopping_area.cpp
   lib/message_conversion.cpp
