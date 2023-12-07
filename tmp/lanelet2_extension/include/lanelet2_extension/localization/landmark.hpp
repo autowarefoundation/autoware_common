@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LANELET2_EXTENSION__LOCALIZATION_LANDMARK__LANDMARK_MANAGER_HPP_
-#define LANELET2_EXTENSION__LOCALIZATION_LANDMARK__LANDMARK_MANAGER_HPP_
+#ifndef LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
+#define LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
 
 #include "autoware_auto_mapping_msgs/msg/had_map_bin.hpp"
 #include <geometry_msgs/msg/pose.hpp>
@@ -36,4 +36,4 @@ std::vector<Landmark> parseLandmarks(
 
 }  // namespace lanelet::localization
 
-#endif  // LANELET2_EXTENSION__LOCALIZATION_LANDMARK__LANDMARK_MANAGER_HPP_
+#endif  // LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
