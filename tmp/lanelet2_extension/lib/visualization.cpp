@@ -992,14 +992,14 @@ visualization_msgs::msg::MarkerArray visualization::parkingSpacesAsMarkerArray(
 
 visualization_msgs::msg::MarkerArray visualization::generateLaneletIdMarker(
   const lanelet::ConstLanelets & road_lanelets, const std_msgs::msg::ColorRGBA & c,
-  const double scale)
+  const std::string & ns, const double scale)
 {
   visualization_msgs::msg::MarkerArray markers;
   for (const auto & ll : road_lanelets) {
     visualization_msgs::msg::Marker marker;
     marker.header.frame_id = "map";
     marker.header.stamp = rclcpp::Clock().now();
-    marker.ns = "lanelet_id";
+    marker.ns = ns;
     marker.id = static_cast<int32_t>(ll.id());
     marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
     marker.action = visualization_msgs::msg::Marker::ADD;
