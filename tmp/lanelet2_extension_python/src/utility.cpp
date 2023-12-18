@@ -126,6 +126,110 @@ double getLateralDistanceToClosestLanelet(
   serializer.deserialize_message(&serialized_msg, &pose);
   return lanelet::utils::getLateralDistanceToClosestLanelet(lanelet_sequence, pose);
 }
+
+lanelet::ConstLanelets getLaneletsWithinRange(
+  const lanelet::ConstLanelets & lanelets, const std::string & point_byte, const double range)
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + point_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
+  for (size_t i = 0; i < point_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+  }
+  geometry_msgs::msg::Point point;
+  static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
+  serializer.deserialize_message(&serialized_msg, &point);
+  return lanelet::utils::query::getLaneletsWithinRange(lanelets, point, range);
+}
+
+lanelet::ConstLanelets getLaneChangeableNeighbors(
+  const lanelet::routing::RoutingGraphPtr & graph, const lanelet::ConstLanelets & road_lanelets,
+  const std::string & point_byte)
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + point_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
+  for (size_t i = 0; i < point_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+  }
+  geometry_msgs::msg::Point point;
+  static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
+  serializer.deserialize_message(&serialized_msg, &point);
+  return lanelet::utils::query::getLaneChangeableNeighbors(graph, road_lanelets, point);
+}
+
+lanelet::ConstLanelets getAllNeighbors(
+  const lanelet::routing::RoutingGraphPtr & graph, const lanelet::ConstLanelets & road_lanelets,
+  const std::string & point_byte)
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + point_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
+  for (size_t i = 0; i < point_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+  }
+  geometry_msgs::msg::Point point;
+  static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
+  serializer.deserialize_message(&serialized_msg, &point);
+  return lanelet::utils::query::getAllNeighbors(graph, road_lanelets, point);
+}
+
+bool getClosestLaneletWithConstrains(
+  const lanelet::ConstLanelets & lanelets, const std::string & pose_byte,
+  lanelet::ConstLanelet * closest_lanelet_ptr,
+  const double dist_threshold = std::numeric_limits<double>::max(),
+  const double yaw_threshold = std::numeric_limits<double>::max())
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + pose_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
+  for (size_t i = 0; i < pose_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+  }
+  geometry_msgs::msg::Pose pose;
+  static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
+  serializer.deserialize_message(&serialized_msg, &pose);
+  return lanelet::utils::query::getClosestLaneletWithConstrains(
+    lanelets, pose, closest_lanelet_ptr, dist_threshold, yaw_threshold);
+}
+
+bool getCurrentLanelets_point(
+  const lanelet::ConstLanelets & lanelets, const std::string & point_byte,
+  lanelet::ConstLanelets * current_lanelets_ptr)
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + point_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
+  for (size_t i = 0; i < point_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+  }
+  geometry_msgs::msg::Point point;
+  static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
+  serializer.deserialize_message(&serialized_msg, &point);
+  return lanelet::utils::query::getCurrentLanelets(lanelets, point, current_lanelets_ptr);
+}
+
+bool getCurrentLanelets_pose(
+  const lanelet::ConstLanelets & lanelets, const std::string & pose_byte,
+  lanelet::ConstLanelets * current_lanelets_ptr)
+{
+  rclcpp::SerializedMessage serialized_msg;
+  static constexpr size_t message_header_length = 8u;
+  serialized_msg.reserve(message_header_length + pose_byte.size());
+  serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
+  for (size_t i = 0; i < pose_byte.size(); ++i) {
+    serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+  }
+  geometry_msgs::msg::Pose pose;
+  static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
+  serializer.deserialize_message(&serialized_msg, &pose);
+  return lanelet::utils::query::getCurrentLanelets(lanelets, pose, current_lanelets_ptr);
+}
 }  // namespace
 
 // for handling functions with default arguments
@@ -140,6 +244,10 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   overwriteLaneletsCenterline_overload, lanelet::utils::overwriteLaneletsCenterline, 1, 3)
 BOOST_PYTHON_FUNCTION_OVERLOADS(isInLanelet_overload, ::isInLanelet, 2, 3)
+BOOST_PYTHON_FUNCTION_OVERLOADS(
+  getPrecedingLaneletSequences_overload, lanelet::utils::query::getPrecedingLaneletSequences, 3, 4)
+BOOST_PYTHON_FUNCTION_OVERLOADS(
+  getClosestLaneletWithConstrains_overload, ::getClosestLaneletWithConstrains, 3, 5)
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {
@@ -180,6 +288,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("getLateralDistanceToCenterline", ::getLateralDistanceToCenterline);  // depends ros msg
   bp::def(
     "getLateralDistanceToClosestLanelet", ::getLateralDistanceToClosestLanelet);  // depends ros msg
+
   // query.cpp
   bp::def("laneletLayer", lanelet::utils::query::laneletLayer);
   bp::def("subtypeLanelets", lanelet::utils::query::subtypeLanelets);
@@ -188,4 +297,81 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("roadLanelets", lanelet::utils::query::roadLanelets);
   bp::def("shoulderLanelets", lanelet::utils::query::shoulderLanelets);
   bp::def("trafficLights", lanelet::utils::query::trafficLights);
+  bp::def("autowareTrafficLights", lanelet::utils::query::autowareTrafficLights);
+  bp::def("detectionAreas", lanelet::utils::query::detectionAreas);
+  bp::def("noStoppingAreas", lanelet::utils::query::noStoppingAreas);
+  bp::def("noParkingAreas", lanelet::utils::query::noParkingAreas);
+  bp::def("speedBumps", lanelet::utils::query::speedBumps);
+  bp::def("crosswalks", lanelet::utils::query::crosswalks);
+  bp::def("curbstones", lanelet::utils::query::curbstones);
+  bp::def("getAllPolygonsByType", lanelet::utils::query::getAllPolygonsByType);
+  bp::def("getAllObstaclePolygons", lanelet::utils::query::getAllObstaclePolygons);
+  bp::def("getAllParkingLots", lanelet::utils::query::getAllParkingLots);
+  bp::def("getAllPartitions", lanelet::utils::query::getAllPartitions);
+  bp::def("getAllFences", lanelet::utils::query::getAllFences);
+  bp::def("getAllPedestrianMarkings", lanelet::utils::query::getAllPedestrianMarkings);
+  bp::def("getAllParkingSpaces", lanelet::utils::query::getAllParkingSpaces);
+  bp::def<lanelet::ConstLineStrings3d(
+    const lanelet::ConstLanelet &, const lanelet::LaneletMapConstPtr &)>(
+    "getLinkedParkingSpaces", lanelet::utils::query::getLinkedParkingSpaces);
+  bp::def<lanelet::ConstLineStrings3d(
+    const lanelet::ConstLanelet &, const lanelet::ConstLineStrings3d &,
+    const lanelet::ConstPolygons3d &)>(
+    "getLinkedParkingSpaces", lanelet::utils::query::getLinkedParkingSpaces);
+  bp::def<bool(
+    const lanelet::ConstLineString3d &, const lanelet::ConstLanelets &,
+    const lanelet::ConstPolygons3d &, lanelet::ConstLanelet *)>(
+    "getLinkedLanelet", lanelet::utils::query::getLinkedLanelet);
+  bp::def<bool(
+    const lanelet::ConstLineString3d &, const lanelet::LaneletMapConstPtr &,
+    lanelet::ConstLanelet *)>("getLinkedLanelet", lanelet::utils::query::getLinkedLanelet);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::ConstLineString3d &, const lanelet::ConstLanelets &,
+    const lanelet::ConstPolygons3d &)>(
+    "getLinkedLanelets", lanelet::utils::query::getLinkedLanelets);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::ConstLineString3d &, const lanelet::LaneletMapConstPtr &)>(
+    "getLinkedLanelets", lanelet::utils::query::getLinkedLanelets);
+  bp::def<bool(
+    const lanelet::ConstLanelet &, const lanelet::ConstPolygons3d &, lanelet::ConstPolygon3d *)>(
+    "getLinkedParkingLot", lanelet::utils::query::getLinkedParkingLot);
+  bp::def<bool(
+    const lanelet::BasicPoint2d &, const lanelet::ConstPolygons3d &, lanelet::ConstPolygon3d *)>(
+    "getLinkedParkingLot", lanelet::utils::query::getLinkedParkingLot);
+  bp::def<bool(
+    const lanelet::ConstLineString3d &, const lanelet::ConstPolygons3d &,
+    lanelet::ConstPolygon3d *)>("getLinkedParkingLot", lanelet::utils::query::getLinkedParkingLot);
+  bp::def("stopLinesLanelets", lanelet::utils::query::stopLinesLanelets);
+  bp::def("stopLinesLanelet", lanelet::utils::query::stopLinesLanelet);
+  bp::def("stopSignStopLines", lanelet::utils::query::stopSignStopLines);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::ConstLanelets &, const lanelet::BasicPoint2d &, const double)>(
+    "getLaneletsWithinRange", lanelet::utils::query::getLaneletsWithinRange);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::ConstLanelets &, const std::string &, const double)>(
+    "getLaneletsWithinRange", ::getLaneletsWithinRange);  // depends on ros msg
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::routing::RoutingGraphPtr &, const lanelet::ConstLanelet &)>(
+    "getLaneChangeableNeighbors", lanelet::utils::query::getLaneChangeableNeighbors);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::routing::RoutingGraphPtr &, const lanelet::ConstLanelets &,
+    const std::string &)>(
+    "getLaneChangeableNeighbors", ::getLaneChangeableNeighbors);  // depends on ros msg
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::routing::RoutingGraphPtr &, const lanelet::ConstLanelet &)>(
+    "getAllNeighbors", lanelet::utils::query::getAllNeighbors);
+  bp::def<lanelet::ConstLanelets(
+    const lanelet::routing::RoutingGraphPtr &, const lanelet::ConstLanelets &,
+    const std::string &)>("getAllNeighbors", ::getAllNeighbors);
+  bp::def("getAllNeighborsLeft", lanelet::utils::query::getAllNeighborsLeft);
+  bp::def("getAllNeighborsRight", lanelet::utils::query::getAllNeighborsRight);
+  bp::def(
+    "getClosestLaneletWithConstrains", ::getClosestLaneletWithConstrains,
+    getClosestLaneletWithConstrains_overload());                    // depends on ros msg
+  bp::def("getCurrentLanelets_point", ::getCurrentLanelets_point);  // depends on ros msg
+  bp::def("getCurrentLanelets_pose", ::getCurrentLanelets_pose);    // depends on ros msg
+  bp::def("getSucceedingLaneletSequences", lanelet::utils::query::getSucceedingLaneletSequences);
+  bp::def(
+    "getPrecedingLaneletSequences", lanelet::utils::query::getPrecedingLaneletSequences,
+    getPrecedingLaneletSequences_overload());
 }
