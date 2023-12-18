@@ -410,3 +410,43 @@ _An example:_
 ```
 
 For more details about the `no_drivable_lane` concept and design, please refer to the [**_no-drivable-lane-design_**](https://github.com/autowarefoundation/autoware.universe/blob/main/planning/behavior_velocity_no_drivable_lane_module/README.md) document.
+
+### Intersection area
+
+The polygon of type `intersection_area` can be used for
+
+1. extra collision checking inside the intersection
+2. ensuring sufficient _drivable area_ in addition to the intersection lane on the route when the ego-vehicle needs to avoid parked vehicles just before the intersection.
+
+The `intersection_area` tag needs to be properly associated with each lanelet in the intersection (if the tag is defined).
+
+_An example:_
+
+```xml
+<!-- intersection_area of the id 1000 -->
+<way id="1000">
+    <!-- outer points -->
+    <nd ref="100"/>
+    <nd ref="102"/>
+    <nd ref="103"/>
+    ...
+    <nd ref="120"/>
+    <tag k="type" v="intersection_area"/>
+    <tag k="area" v="yes"/>
+</way>
+
+<!-- associate the above intersection_area with each intersection lane -->
+<relation id="10000">
+    <member type="way" role="left" ref="2000"/>
+    <member type="way" role="right" ref="3000"/>
+    <member type="relation" role="regulatory_element" ref="20000"/>
+    <tag k="type" v="lanelet"/>
+    <tag k="subtype" v="road"/>
+    <tag k="turn_direction" v="straight"/>
+    <tag k="intersection_area" v="1000"/>
+</relation>
+```
+
+The `intersection_area` should cover the entire drivable area inside the intersection as illustrated in the following figure with red solid line.
+
+![intersection_area tagging](intersection_area.drawio.svg)
