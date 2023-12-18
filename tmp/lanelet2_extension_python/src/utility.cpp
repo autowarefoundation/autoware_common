@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 namespace bp = boost::python;
 
 namespace
@@ -375,3 +377,5 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     "getPrecedingLaneletSequences", lanelet::utils::query::getPrecedingLaneletSequences,
     getPrecedingLaneletSequences_overload());
 }
+
+// NOLINTEND(readability-identifier-naming)
