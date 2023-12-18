@@ -57,7 +57,7 @@ public:
     return getParameters<ConstLineString3d>("start_line").front();
   }
 
-  [[nodiscard]] ConstLineStrings3d getEndLines() const
+  [[nodiscard]] ConstLineStrings3d getEndLine() const
   {
     return getParameters<ConstLineString3d>("end_line");
   }

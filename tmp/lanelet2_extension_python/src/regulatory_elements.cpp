@@ -2,6 +2,7 @@
 #include <lanelet2_extension/regulatory_elements/crosswalk.hpp>
 #include <lanelet2_extension/regulatory_elements/detection_area.hpp>
 #include <lanelet2_extension/regulatory_elements/no_parking_area.hpp>
+#include <lanelet2_extension/regulatory_elements/no_stopping_area.hpp>
 #include <lanelet2_extension/regulatory_elements/road_marking.hpp>
 #include <lanelet2_extension/regulatory_elements/speed_bump.hpp>
 #include <lanelet2_extension/regulatory_elements/virtual_traffic_light.hpp>
@@ -130,4 +131,150 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_regulatory_elements)
       });
   implicitly_convertible<
     std::shared_ptr<lanelet::autoware::Crosswalk>, lanelet::RegulatoryElementPtr>();
+
+  // detection_area
+  class_<
+    lanelet::autoware::DetectionArea, boost::noncopyable,
+    std::shared_ptr<lanelet::autoware::DetectionArea>, bases<lanelet::RegulatoryElement>>(
+    "DetectionArea", "detection_area regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::DetectionArea::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("detectionAreas"), arg("stopLine"))))
+    .def(
+      "detectionAreas",
+      +[](lanelet::autoware::DetectionArea & self) { return self.detectionAreas(); })
+    .def("addDetectionArea", &lanelet::autoware::DetectionArea::addDetectionArea)
+    .def("removeDetectionArea", &lanelet::autoware::DetectionArea::removeDetectionArea)
+    .def(
+      "stopLine", +[](lanelet::autoware::DetectionArea & self) { return self.stopLine(); })
+    .def("setStopLine", &lanelet::autoware::DetectionArea::setStopLine)
+    .def("removeStopLine", &lanelet::autoware::DetectionArea::removeStopLine)
+    .def(
+      "__repr__", +[](lanelet::autoware::DetectionArea & r) {
+        return makeRepr(
+          "DetectionArea", r.id(), repr(dict(r.constData()->parameters)), repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::DetectionArea>, lanelet::RegulatoryElementPtr>();
+
+  // no_parking_area
+  class_<
+    lanelet::autoware::NoParkingArea, boost::noncopyable,
+    std::shared_ptr<lanelet::autoware::NoParkingArea>, bases<lanelet::RegulatoryElement>>(
+    "NoParkingArea", "no_parking_area regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::NoParkingArea::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("no_parking_areas"))))
+    .def(
+      "noParkingAreas",
+      +[](lanelet::autoware::NoParkingArea & self) { return self.noParkingAreas(); })
+    .def("addNoParkingArea", &lanelet::autoware::NoParkingArea::addNoParkingArea)
+    .def("removeNoParkingArea", &lanelet::autoware::NoParkingArea::removeNoParkingArea)
+    .def(
+      "__repr__", +[](lanelet::autoware::NoParkingArea & r) {
+        return makeRepr(
+          "NoParkingArea", r.id(), repr(dict(r.constData()->parameters)), repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::NoParkingArea>, lanelet::RegulatoryElementPtr>();
+
+  // no_stopping_area
+  class_<
+    lanelet::autoware::NoStoppingArea, boost::noncopyable,
+    std::shared_ptr<lanelet::autoware::NoStoppingArea>, bases<lanelet::RegulatoryElement>>(
+    "NoStoppingArea", "no_stopping_area regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::NoStoppingArea::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("no_stopping_areas"),
+                     arg("stopLine") = lanelet::Optional<lanelet::LineString3d>())))
+    .def(
+      "noStoppingAreas",
+      +[](lanelet::autoware::NoStoppingArea & self) { return self.noStoppingAreas(); })
+    .def("addNoStoppingArea", &lanelet::autoware::NoStoppingArea::addNoStoppingArea)
+    .def("removeNoStoppingArea", &lanelet::autoware::NoStoppingArea::removeNoStoppingArea)
+    .def(
+      "stopLine", +[](lanelet::autoware::NoStoppingArea & self) { return self.stopLine(); })
+    .def("setStopLine", &lanelet::autoware::NoStoppingArea::setStopLine)
+    .def("removeStopLine", &lanelet::autoware::NoStoppingArea::removeStopLine)
+    .def(
+      "__repr__", +[](lanelet::autoware::NoParkingArea & r) {
+        return makeRepr(
+          "NoParkingArea", r.id(), repr(dict(r.constData()->parameters)), repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::NoStoppingArea>, lanelet::RegulatoryElementPtr>();
+
+  // road_marking
+  class_<
+    lanelet::autoware::RoadMarking, boost::noncopyable,
+    std::shared_ptr<lanelet::autoware::RoadMarking>, bases<lanelet::RegulatoryElement>>(
+    "RoadMarking", "road_marking regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::RoadMarking::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("road_maring"))))
+    .def(
+      "roadMarking", +[](lanelet::autoware::RoadMarking & self) { return self.roadMarking(); })
+    .def("setRoadMarking", &lanelet::autoware::RoadMarking::setRoadMarking)
+    .def("removeRoadMarking", &lanelet::autoware::RoadMarking::removeRoadMarking)
+    .def(
+      "__repr__", +[](lanelet::autoware::RoadMarking & r) {
+        return makeRepr(
+          "RoadMarking", r.id(), repr(dict(r.constData()->parameters)), repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::RoadMarking>, lanelet::RegulatoryElementPtr>();
+
+  // speed_bump
+  class_<
+    lanelet::autoware::SpeedBump, boost::noncopyable, std::shared_ptr<lanelet::autoware::SpeedBump>,
+    bases<lanelet::RegulatoryElement>>("SpeedBump", "speed_bump regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::SpeedBump::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("speed_bump"))))
+    .def(
+      "speedBump", +[](lanelet::autoware::SpeedBump & self) { return self.speedBump(); })
+    .def("addSpeedBump", &lanelet::autoware::SpeedBump::addSpeedBump)
+    .def("removeSpeedBump", &lanelet::autoware::SpeedBump::removeSpeedBump)
+    .def(
+      "__repr__", +[](lanelet::autoware::SpeedBump & r) {
+        return makeRepr(
+          "SpeedBump", r.id(), repr(dict(r.constData()->parameters)), repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::SpeedBump>, lanelet::RegulatoryElementPtr>();
+
+  // virtual_traffic_light
+  class_<
+    lanelet::autoware::VirtualTrafficLight, boost::noncopyable,
+    std::shared_ptr<lanelet::autoware::VirtualTrafficLight>, bases<lanelet::RegulatoryElement>>(
+    "VirtualTrafficLight", "virtual_traffic_light regulatory element", no_init)
+    .def(
+      "__init__", make_constructor(
+                    &lanelet::autoware::VirtualTrafficLight::make, default_call_policies(),
+                    (arg("Id"), arg("attributes"), arg("virtual_traffic_light"))))
+    .def(
+      "getVirtualTrafficLight",
+      +[](lanelet::autoware::VirtualTrafficLight & self) { return self.getVirtualTrafficLight(); })
+    .def(
+      "getStopLine",
+      +[](lanelet::autoware::VirtualTrafficLight & self) { return self.getStopLine(); })
+    .def(
+      "getStartLine",
+      +[](lanelet::autoware::VirtualTrafficLight & self) { return self.getStartLine(); })
+    .def(
+      "getEndLine",
+      +[](lanelet::autoware::VirtualTrafficLight & self) { return self.getEndLine(); })
+    .def(
+      "__repr__", +[](lanelet::autoware::VirtualTrafficLight & r) {
+        return makeRepr(
+          "VirtualTrafficLight", r.id(), repr(dict(r.constData()->parameters)),
+          repr(r.attributes()));
+      });
+  implicitly_convertible<
+    std::shared_ptr<lanelet::autoware::VirtualTrafficLight>, lanelet::RegulatoryElementPtr>();
 }
