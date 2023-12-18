@@ -291,12 +291,13 @@ visualization_msgs::msg::MarkerArray parkingSpacesAsMarkerArray(
  * @param road_lanelets [road lanelets]
  * @param c [color of the marker]
  * @param duration [lifetime of the marker]
+ * @param ns [namespace of the marker]
  * @param scale [scale of the marker]
  * @return visualization_msgs::msg::MarkerArray
  */
 visualization_msgs::msg::MarkerArray generateLaneletIdMarker(
   const lanelet::ConstLanelets & road_lanelets, const std_msgs::msg::ColorRGBA & c,
-  const double scale = 0.5);
+  const std::string & ns = "lanelet_id", const double scale = 0.5);
 
 visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
   const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
