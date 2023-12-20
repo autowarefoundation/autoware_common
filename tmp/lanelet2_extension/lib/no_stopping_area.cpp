@@ -155,6 +155,8 @@ void NoStoppingArea::removeStopLine()
   parameters()[RoleName::RefLine] = {};
 }
 
+RegisterRegulatoryElement<NoStoppingArea> regNoStoppingArea;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

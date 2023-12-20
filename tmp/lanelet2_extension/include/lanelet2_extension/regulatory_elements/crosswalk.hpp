@@ -75,15 +75,15 @@ public:
   bool removeCrosswalkArea(const Polygon3d & primitive);
 
 private:
-  // the following lines are required so that lanelet2 can create this object
-  // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<Crosswalk>;
   Crosswalk(
     Id id, const AttributeMap & attributes, const Lanelet & crosswalk_lanelet,
     const Polygon3d & crosswalk_area, const LineStrings3d & stop_line);
+
+  // the following lines are required so that lanelet2 can create this object
+  // when loading a map with this regulatory element
+  friend class RegisterRegulatoryElement<Crosswalk>;
   explicit Crosswalk(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<Crosswalk> regCrosswalk;
 
 }  // namespace lanelet::autoware
 

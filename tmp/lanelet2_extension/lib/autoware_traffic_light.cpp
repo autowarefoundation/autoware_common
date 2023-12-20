@@ -142,6 +142,8 @@ bool AutowareTrafficLight::removeLightBulbs(const LineStringOrPolygon3d & primit
     primitive.asRuleParameter(), &parameters().find(AutowareRoleNameString::LightBulbs)->second);
 }
 
+RegisterRegulatoryElement<AutowareTrafficLight> regAutowareTrafficLight;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

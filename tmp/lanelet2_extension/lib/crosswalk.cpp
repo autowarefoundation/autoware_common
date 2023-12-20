@@ -124,6 +124,9 @@ bool Crosswalk::removeCrosswalkArea(const Polygon3d & primitive)
 {
   return findAndErase(primitive, &parameters().find("crosswalk")->second);
 }
+
+RegisterRegulatoryElement<Crosswalk> regCrosswalk;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

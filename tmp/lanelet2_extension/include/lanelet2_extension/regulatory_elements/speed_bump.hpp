@@ -59,13 +59,13 @@ public:
   bool removeSpeedBump(const Polygon3d & primitive);
 
 private:
+  SpeedBump(Id id, const AttributeMap & attributes, const Polygon3d & speed_bump);
+
   // the following lines are required so that lanelet2 can create this object
   // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<SpeedBump>;
-  SpeedBump(Id id, const AttributeMap & attributes, const Polygon3d & speed_bump);
+  friend class RegisterRegulatoryElement<SpeedBump>;
   explicit SpeedBump(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<SpeedBump> regSpeedBump;
 
 }  // namespace lanelet::autoware
 
