@@ -16,7 +16,8 @@
 #define LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
 
 #include "autoware_auto_mapping_msgs/msg/had_map_bin.hpp"
-#include <geometry_msgs/msg/pose.hpp>
+
+#include <lanelet2_core/primitives/Polygon.h>
 
 #include <string>
 #include <vector>
@@ -24,15 +25,9 @@
 namespace lanelet::localization
 {
 
-struct Landmark
-{
-  std::string id;
-  geometry_msgs::msg::Pose pose;
-};
-
-std::vector<Landmark> parseLandmarks(
+std::vector<lanelet::Polygon3d> parseLandmarkPolygons(
   const autoware_auto_mapping_msgs::msg::HADMapBin::ConstSharedPtr & msg,
-  const std::string & target_subtype, const double volume_threshold = 1e-5);
+  const std::string & target_subtype);
 
 }  // namespace lanelet::localization
 
