@@ -417,6 +417,8 @@ Landmarks, such as AR-Tags, can be defined into the lanelet map to aid localizat
 
 Landmark Specifications:
 
+<!-- cspell:ignore apiltag -->
+
 - **Shape**: Landmarks must be flat and defined as a polygon with exactly four vertices.
 - **Vertex Definition**: Vertices must be defined in a counter-clockwise order.
 - **Coordinate System** and Vertex Order:
