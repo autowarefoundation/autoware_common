@@ -275,12 +275,20 @@ visualization_msgs::msg::MarkerArray crosswalkAreasAsMarkerArray(
   const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
 
 /**
- * [pedestrianMarkingsAsMarkerArray creates marker array to visualize pedestrian markings]
- * @param  pedestrian_markings [pedestrian marking polygon]
+ * [pedestrianPolygonMarkingsAsMarkerArray creates marker array to visualize pedestrian polygon markings]
+ * @param  pedestrian_polygon_markings [pedestrian marking polygon]
  * @param  c            [color of the marker]
  */
-visualization_msgs::msg::MarkerArray pedestrianMarkingsAsMarkerArray(
-  const lanelet::ConstLineStrings3d & pedestrian_markings, const std_msgs::msg::ColorRGBA & c);
+visualization_msgs::msg::MarkerArray pedestrianPolygonMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings, const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [pedestrianLineMarkingsAsMarkerArray creates marker array to visualize pedestrian line markings]
+ * @param  pedestrian_line_markings [pedestrian marking line]
+ * @param  c            [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray pedestrianLineMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_line_markings, const std_msgs::msg::ColorRGBA & c);
 
 /**
  * [parkingLotsAsMarkerArray creates marker array to visualize parking lots]

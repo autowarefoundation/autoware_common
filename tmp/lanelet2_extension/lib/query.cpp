@@ -381,17 +381,30 @@ lanelet::ConstLineStrings3d query::getAllFences(const lanelet::LaneletMapConstPt
   return fences;
 }
 
-lanelet::ConstLineStrings3d query::getAllPedestrianMarkings(
+lanelet::ConstLineStrings3d query::getAllPedestrianPolygonMarkings(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
 {
-  lanelet::ConstLineStrings3d pedestrian_markings;
+  lanelet::ConstLineStrings3d pedestrian_polygon_markings;
   for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
     const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
-    if (type == "pedestrian_marking") {
-      pedestrian_markings.push_back(ls);
+    if ((type == "pedestrian_marking") && (ls.size() >= 3)) {
+      pedestrian_polygon_markings.push_back(ls);
     }
   }
-  return pedestrian_markings;
+  return pedestrian_polygon_markings;
+}
+
+lanelet::ConstLineStrings3d query::getAllPedestrianLineMarkings(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+{
+  lanelet::ConstLineStrings3d pedestrian_line_markings;
+  for (const auto & ls : lanelet_map_ptr->lineStringLayer) {
+    const std::string type = ls.attributeOr(lanelet::AttributeName::Type, "none");
+    if ((type == "pedestrian_marking") && (ls.size() < 3)) {
+      pedestrian_line_markings.push_back(ls);
+    }
+  }
+  return pedestrian_line_markings;
 }
 
 lanelet::ConstLineStrings3d query::getAllParkingSpaces(
