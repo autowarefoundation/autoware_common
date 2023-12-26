@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 namespace lanelet::localization
 {
 
@@ -30,5 +32,7 @@ std::vector<lanelet::Polygon3d> parseLandmarkPolygons(
   const std::string & target_subtype);
 
 }  // namespace lanelet::localization
+
+// NOLINTEND(readability-identifier-naming)
 
 #endif  // LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
