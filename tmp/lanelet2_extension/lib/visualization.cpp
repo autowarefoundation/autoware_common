@@ -975,14 +975,16 @@ visualization_msgs::msg::MarkerArray visualization::crosswalkAreasAsMarkerArray(
 }
 
 visualization_msgs::msg::MarkerArray visualization::pedestrianPolygonMarkingsAsMarkerArray(
-  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings, const std_msgs::msg::ColorRGBA & c)
+  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings,
+  const std_msgs::msg::ColorRGBA & c)
 {
   visualization_msgs::msg::MarkerArray marker_array;
   if (pedestrian_polygon_markings.empty()) {
     return marker_array;
   }
 
-  visualization_msgs::msg::Marker polygon_marker = createPolygonMarker("pedestrian_polygon_marking", c);
+  visualization_msgs::msg::Marker polygon_marker =
+    createPolygonMarker("pedestrian_polygon_marking", c);
   for (const auto & linestring : pedestrian_polygon_markings) {
     lanelet::ConstPolygon3d polygon;
     if (utils::lineStringToPolygon(linestring, &polygon)) {
@@ -1008,16 +1010,14 @@ visualization_msgs::msg::MarkerArray visualization::pedestrianLineMarkingsAsMark
   if (pedestrian_line_markings.empty()) {
     return marker_array;
   }
-  
+
   const float lss = 0.1;  // line string size
   visualization_msgs::msg::Marker line_marker;
-  visualization::initLineStringMarker(
-    &line_marker, "map", "pedestrian_line_marking", c);
+  visualization::initLineStringMarker(&line_marker, "map", "pedestrian_line_marking", c);
 
   for (const auto & linestring : pedestrian_line_markings) {
-    if ((linestring.size() < 3) && (linestring.front().id() != linestring.back().id())){
+    if ((linestring.size() < 3) && (linestring.front().id() != linestring.back().id())) {
       pushLineStringMarker(&line_marker, linestring, c, lss);
-
     }
   }
 
