@@ -16,6 +16,8 @@ def test_io(map_path, projection):
 
 def test_utility_query(lanelet_map, routing_graph):
     lanelets = query.laneletLayer(lanelet_map)
+    lanelet56 = lanelet_map.laneletLayer.get(56)
+    lanelet108 = lanelet_map.laneletLayer.get(108)
     print(f"{len(lanelets)=}")
     print(f"""{len(query.subtypeLanelets(lanelets, "road"))=}""")
     print(f"""{len(query.subtypeLanelets(lanelets, "road"))=}""")
@@ -30,6 +32,20 @@ def test_utility_query(lanelet_map, routing_graph):
     print(f"""{len(query.noParkingAreas(lanelets))=}""")
     print(f"""{len(query.speedBumps(lanelets))=}""")
     print(f"""{len(query.crosswalks(lanelets))=}""")
+    print(f"""{len(query.curbstones(lanelet_map))=}""")
+    print(f"""{len(query.getAllPolygonsByType(lanelet_map, "parking_lot"))=}""")
+    print(f"""{len(query.getAllParkingLots(lanelet_map))=}""")
+    print(f"""{len(query.getAllPartitions(lanelet_map))=}""")
+    print(f"""{len(query.getAllParkingSpaces(lanelet_map))=}""")
+    print(f"""{len(query.getAllFences(lanelet_map))=}""")
+    print(f"""{len(query.getAllPedestrianMarkings(lanelet_map))=}""")
+    print(f"""{len(query.getLinkedParkingSpaces(lanelet56, lanelet_map))=}""")
+    print(
+        f"""{len(query.getLinkedParkingSpaces(lanelet56, query.getAllParkingSpaces(lanelet_map), query.getAllParkingLots(lanelet_map)))=}"""
+    )
+    print(f"""{len(query.stopLinesLanelets(lanelets))=}""")
+    print(f"""{len(query.stopLinesLanelet(lanelet108))=}""")
+    print(f"""{len(query.stopSignStopLines(lanelets))=}""")
 
 
 def test_utility_utilities():

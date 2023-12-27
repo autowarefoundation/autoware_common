@@ -259,6 +259,15 @@ lanelet::ConstLanelets subtypeLanelets(
 }  // namespace
 
 // for handling functions with default arguments
+/// query.cpp
+BOOST_PYTHON_FUNCTION_OVERLOADS(
+  stopSignStopLines_overload, lanelet::utils::query::stopSignStopLines, 1, 2)
+BOOST_PYTHON_FUNCTION_OVERLOADS(
+  getClosestLaneletWithConstrains_overload, ::getClosestLaneletWithConstrains, 3, 5)
+BOOST_PYTHON_FUNCTION_OVERLOADS(
+  getPrecedingLaneletSequences_overload, lanelet::utils::query::getPrecedingLaneletSequences, 3, 4)
+
+/// utilities.cpp
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   generateFineCenterline_overload, lanelet::utils::generateFineCenterline, 1, 2)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
@@ -270,10 +279,6 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   overwriteLaneletsCenterline_overload, lanelet::utils::overwriteLaneletsCenterline, 1, 3)
 BOOST_PYTHON_FUNCTION_OVERLOADS(isInLanelet_overload, ::isInLanelet, 2, 3)
-BOOST_PYTHON_FUNCTION_OVERLOADS(
-  getPrecedingLaneletSequences_overload, lanelet::utils::query::getPrecedingLaneletSequences, 3, 4)
-BOOST_PYTHON_FUNCTION_OVERLOADS(
-  getClosestLaneletWithConstrains_overload, ::getClosestLaneletWithConstrains, 3, 5)
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {
@@ -316,19 +321,6 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     "getLateralDistanceToClosestLanelet", ::getLateralDistanceToClosestLanelet);  // depends ros msg
 
   // query.cpp
-  /// AutowareTrafficLightConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::AutowareTrafficLightConstPtr>>();
-  /// DetectionAreaConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::DetectionAreaConstPtr>>();
-  /// NoParkingAreaConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::NoParkingAreaConstPtr>>();
-  /// NoStoppingAreaConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::NoStoppingAreaConstPtr>>();
-  /// SpeedBumpConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::SpeedBumpConstPtr>>();
-  /// CrosswalkConstPtr
-  converters::VectorToListConverter<std::vector<lanelet::CrosswalkConstPtr>>();
-
   bp::def("laneletLayer", lanelet::utils::query::laneletLayer);
   bp::def("subtypeLanelets", ::subtypeLanelets);
   bp::def("crosswalkLanelets", lanelet::utils::query::crosswalkLanelets);
@@ -336,12 +328,25 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("roadLanelets", lanelet::utils::query::roadLanelets);
   bp::def("shoulderLanelets", lanelet::utils::query::shoulderLanelets);
   bp::def("trafficLights", lanelet::utils::query::trafficLights);
+
   bp::def("autowareTrafficLights", lanelet::utils::query::autowareTrafficLights);
+  converters::VectorToListConverter<std::vector<lanelet::AutowareTrafficLightConstPtr>>();
+
   bp::def("detectionAreas", lanelet::utils::query::detectionAreas);
+  converters::VectorToListConverter<std::vector<lanelet::DetectionAreaConstPtr>>();
+
   bp::def("noStoppingAreas", lanelet::utils::query::noStoppingAreas);
+  converters::VectorToListConverter<std::vector<lanelet::NoStoppingAreaConstPtr>>();
+
   bp::def("noParkingAreas", lanelet::utils::query::noParkingAreas);
+  converters::VectorToListConverter<std::vector<lanelet::NoParkingAreaConstPtr>>();
+
   bp::def("speedBumps", lanelet::utils::query::speedBumps);
+  converters::VectorToListConverter<std::vector<lanelet::SpeedBumpConstPtr>>();
+
   bp::def("crosswalks", lanelet::utils::query::crosswalks);
+  converters::VectorToListConverter<std::vector<lanelet::CrosswalkConstPtr>>();
+
   bp::def("curbstones", lanelet::utils::query::curbstones);
   bp::def("getAllPolygonsByType", lanelet::utils::query::getAllPolygonsByType);
   bp::def("getAllObstaclePolygons", lanelet::utils::query::getAllObstaclePolygons);
@@ -350,6 +355,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("getAllFences", lanelet::utils::query::getAllFences);
   bp::def("getAllPedestrianMarkings", lanelet::utils::query::getAllPedestrianMarkings);
   bp::def("getAllParkingSpaces", lanelet::utils::query::getAllParkingSpaces);
+
   bp::def<lanelet::ConstLineStrings3d(
     const lanelet::ConstLanelet &, const lanelet::LaneletMapConstPtr &)>(
     "getLinkedParkingSpaces", lanelet::utils::query::getLinkedParkingSpaces);
@@ -357,6 +363,11 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     const lanelet::ConstLanelet &, const lanelet::ConstLineStrings3d &,
     const lanelet::ConstPolygons3d &)>(
     "getLinkedParkingSpaces", lanelet::utils::query::getLinkedParkingSpaces);
+  bp::class_<lanelet::ConstLineStrings3d>("lanelet::ConstLineStrings3d")
+    .def(bp::vector_indexing_suite<lanelet::ConstLineStrings3d>());
+  bp::class_<lanelet::ConstPolygons3d>("lanelet::ConstPolygons3d")
+    .def(bp::vector_indexing_suite<lanelet::ConstPolygons3d>());
+
   bp::def<bool(
     const lanelet::ConstLineString3d &, const lanelet::ConstLanelets &,
     const lanelet::ConstPolygons3d &, lanelet::ConstLanelet *)>(
@@ -382,7 +393,8 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     lanelet::ConstPolygon3d *)>("getLinkedParkingLot", lanelet::utils::query::getLinkedParkingLot);
   bp::def("stopLinesLanelets", lanelet::utils::query::stopLinesLanelets);
   bp::def("stopLinesLanelet", lanelet::utils::query::stopLinesLanelet);
-  bp::def("stopSignStopLines", lanelet::utils::query::stopSignStopLines);
+  bp::def(
+    "stopSignStopLines", lanelet::utils::query::stopSignStopLines, stopSignStopLines_overload());
   bp::def<lanelet::ConstLanelets(
     const lanelet::ConstLanelets &, const lanelet::BasicPoint2d &, const double)>(
     "getLaneletsWithinRange", lanelet::utils::query::getLaneletsWithinRange);
