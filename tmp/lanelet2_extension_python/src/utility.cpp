@@ -363,6 +363,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     const lanelet::ConstLanelet &, const lanelet::ConstLineStrings3d &,
     const lanelet::ConstPolygons3d &)>(
     "getLinkedParkingSpaces", lanelet::utils::query::getLinkedParkingSpaces);
+  // NOTE: this causes RuntimeWarning for duplicate to-Python converter
   bp::class_<lanelet::ConstLineStrings3d>("lanelet::ConstLineStrings3d")
     .def(bp::vector_indexing_suite<lanelet::ConstLineStrings3d>());
   bp::class_<lanelet::ConstPolygons3d>("lanelet::ConstPolygons3d")
@@ -421,6 +422,8 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     getClosestLaneletWithConstrains_overload());                    // depends on ros msg
   bp::def("getCurrentLanelets_point", ::getCurrentLanelets_point);  // depends on ros msg
   bp::def("getCurrentLanelets_pose", ::getCurrentLanelets_pose);    // depends on ros msg
+  bp::class_<lanelet::ConstLanelets>("lanelet::ConstLanelets")
+    .def(bp::vector_indexing_suite<lanelet::ConstLanelets>());
   bp::def("getSucceedingLaneletSequences", lanelet::utils::query::getSucceedingLaneletSequences);
   bp::def(
     "getPrecedingLaneletSequences", lanelet::utils::query::getPrecedingLaneletSequences,

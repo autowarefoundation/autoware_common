@@ -1,9 +1,12 @@
+import math
+
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 import lanelet2
 import lanelet2.geometry
 from lanelet2_extension_python.projection import MGRSProjector
 import lanelet2_extension_python.utility.query as query
-
-# import lanelet2_extension_python.utility.utilities as utility
+import numpy as np
 
 
 def test_projection():
@@ -46,6 +49,37 @@ def test_utility_query(lanelet_map, routing_graph):
     print(f"""{len(query.stopLinesLanelets(lanelets))=}""")
     print(f"""{len(query.stopLinesLanelet(lanelet108))=}""")
     print(f"""{len(query.stopSignStopLines(lanelets))=}""")
+    lanelet56_centerline_basic_points = [p.basicPoint() for p in lanelet56.centerline]
+    lanelet56_centerline_center = np.sum(lanelet56_centerline_basic_points) * (
+        1.0 / len(lanelet56_centerline_basic_points)
+    )
+    search_point = Point()
+    search_point.x = lanelet56_centerline_center.x
+    search_point.y = lanelet56_centerline_center.y
+    search_point.z = lanelet56_centerline_center.z
+    print(f"""{[ll2.id for ll2 in query.getLaneletsWithinRange(lanelets, search_point, 15.0)]=}""")
+    search_point_2d = lanelet2.core.BasicPoint2d()
+    search_point_2d.x = lanelet56_centerline_center.x
+    search_point_2d.y = lanelet56_centerline_center.y
+    print(
+        f"""{[ll2.id for ll2 in query.getLaneletsWithinRange(lanelets, search_point_2d, 15.0)]=}"""
+    )
+    print(f"""{[ll2.id for ll2 in query.getLaneChangeableNeighbors(routing_graph, lanelet108)]=}""")
+    print(f"""{[ll2.id for ll2 in query.getAllNeighbors(routing_graph, lanelet56)]=}""")
+    print(f"""{[ll2.id for ll2 in query.getAllNeighborsLeft(routing_graph, lanelet56)]=}""")
+    print(f"""{[ll2.id for ll2 in query.getAllNeighborsRight(routing_graph, lanelet56)]=}""")
+    search_pose = Pose()
+    search_pose.position = search_point
+    temp_lanelet = lanelet2.core.Lanelet(0, lanelet56.leftBound, lanelet56.rightBound)
+    if (
+        query.getClosestLaneletWithConstrains(lanelets, search_pose, temp_lanelet, 10.0, math.pi)
+        and temp_lanelet is not None
+    ):
+        print(f"""{temp_lanelet.id}""")
+    # lanelet::ConstLaneletsへのpointerだからこの関数は無理
+    temp_lanelets = []
+    if query.getCurrentLanelets(lanelets, search_point, temp_lanelets):
+        print(f"""{[ll2.id for ll2 in temp_lanelets]}""")
 
 
 def test_utility_utilities():

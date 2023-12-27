@@ -1,8 +1,6 @@
-from typing import overload
-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
-from lanelet2.core import BasicPoint2d
+import lanelet2.core
 import lanelet2_extension_python._lanelet2_extension_python_boost_python_utility as _utility_cpp
 
 # from rclpy.serialization import deserialize_message
@@ -38,7 +36,6 @@ getLinkedLanelet = _utility_cpp.getLinkedLanelet
 
 # TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedLanelets = _utility_cpp.getLinkedLanelets
-# help(getLinkedLanelets)
 
 # TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedParkingLot = _utility_cpp.getLinkedParkingLot
@@ -48,37 +45,30 @@ stopLinesLanelet = _utility_cpp.stopLinesLanelet
 stopSignStopLines = _utility_cpp.stopSignStopLines
 
 
-@overload
-def getLaneletsWithinRange(lanelets, point: BasicPoint2d, rng: float):
-    return _utility_cpp.getLaneletsWithinRange(lanelets, point, rng)
+def getLaneletsWithinRange(lanelets, point, rng):
+    if isinstance(point, Point):
+        point_byte = serialize_message(point)
+        return _utility_cpp.getLaneletsWithinRange_point(lanelets, point_byte, rng)
+    if isinstance(point, lanelet2.core.BasicPoint2d):
+        return _utility_cpp.getLaneletsWithinRange(lanelets, point, rng)
+    raise TypeError("argument point is neither BasicPoint2d nor Point")
 
 
-@overload
-def getLaneletsWithinRange(lanelets, point: Point, rng: float):
-    point_byte = serialize_message(point)
-    return _utility_cpp.getLaneletsWithinRange_point(lanelets, point_byte, rng)
+def getLaneChangeableNeighbors(*args):
+    if len(args) == 2 and isinstance(args[1], lanelet2.core.Lanelet):
+        return _utility_cpp.getLaneChangeableNeighbors(args[0], args[1])
+    if len(args) == 3 and isinstance(args[2], Point):
+        point_byte = serialize_message(args[2])
+        return _utility_cpp.getLaneChangeableNeighbor_point(args[0], args[1], point_byte)
+    raise TypeError("argument number does not match or 3rd argument is not Point type")
 
 
-@overload
-def getLaneChangeableNeighbors(routing_graph, lanelet):
-    return _utility_cpp.getLaneChangeableNeighbor(routing_graph, lanelet)
-
-
-@overload
-def getLaneChangeableNeighbors(routing_graph, lanelets, point: Point):
-    point_byte = serialize_message(point)
-    return _utility_cpp.getLaneChangeableNeighbor_point(routing_graph, lanelets, point_byte)
-
-
-@overload
-def getAllNeighbors(routing_graph, lanelet):
-    return _utility_cpp.getAllNeighbors(routing_graph, lanelet)
-
-
-@overload
-def getAllNeighbors(routing_graph, lanelets, point: Point):
-    point_byte = serialize_message(point)
-    return _utility_cpp.getAllNeighbors(routing_graph, lanelets, point_byte)
+def getAllNeighbors(*args):
+    if len(args) == 2 and isinstance(args[1], lanelet2.core.Lanelet):
+        return _utility_cpp.getAllNeighbors(args[0], args[1])
+    if len(args) == 3 and isinstance(args[2], Point):
+        point_byte = serialize_message(args[2])
+        return _utility_cpp.getAllNeighbors(args[0], args[1], point_byte)
 
 
 getAllNeighborsLeft = _utility_cpp.getAllNeighborsLeft
@@ -94,16 +84,14 @@ def getClosestLaneletWithConstrains(
     )
 
 
-@overload
-def getCurrentLanelets(point: Point):
-    point_byte = serialize_message(point)
-    return _utility_cpp.getCurrentLanelets_point(point_byte)
-
-
-@overload
-def getCurrentLanelets(pose: Pose):
-    pose_byte = serialize_message(pose)
-    return _utility_cpp.getCurrentLanelets_pose(pose_byte)
+def getCurrentLanelets(lanelets, point: Point, current_lanelets):
+    if isinstance(point, Point):
+        point_byte = serialize_message(point)
+        return _utility_cpp.getCurrentLanelets_point(lanelets, point_byte, current_lanelets)
+    if isinstance(point, Pose):
+        pose_byte = serialize_message(point)
+        return _utility_cpp.getCurrentLanelets_pose(lanelets, pose_byte, current_lanelets)
+    raise TypeError("argument number does not match or 3rd argument is not Pose type")
 
 
 getSucceedingLaneletSequences = _utility_cpp.getSucceedingLaneletSequences
