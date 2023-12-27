@@ -249,6 +249,13 @@ bool getCurrentLanelets_pose(
   serializer.deserialize_message(&serialized_msg, &pose);
   return lanelet::utils::query::getCurrentLanelets(lanelets, pose, current_lanelets_ptr);
 }
+
+lanelet::ConstLanelets subtypeLanelets(
+  const lanelet::ConstLanelets & lls, const std::string & subtype)
+{
+  return lanelet::utils::query::subtypeLanelets(lls, subtype.c_str());
+}
+
 }  // namespace
 
 // for handling functions with default arguments
@@ -270,12 +277,6 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {
-  /*
-  converters::VectorToListConverter<lanelet::ConstLanelets>();
-  converters::VectorToListConverter<lanelet::ConstLineStrings3d>();
-  converters::VectorToListConverter<lanelet::ConstLanelets>();
-  */
-
   // utilities.cpp
   bp::def("combineLaneletsShape", lanelet::utils::combineLaneletsShape);
   bp::def(
@@ -315,8 +316,21 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     "getLateralDistanceToClosestLanelet", ::getLateralDistanceToClosestLanelet);  // depends ros msg
 
   // query.cpp
+  /// AutowareTrafficLightConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::AutowareTrafficLightConstPtr>>();
+  /// DetectionAreaConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::DetectionAreaConstPtr>>();
+  /// NoParkingAreaConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::NoParkingAreaConstPtr>>();
+  /// NoStoppingAreaConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::NoStoppingAreaConstPtr>>();
+  /// SpeedBumpConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::SpeedBumpConstPtr>>();
+  /// CrosswalkConstPtr
+  converters::VectorToListConverter<std::vector<lanelet::CrosswalkConstPtr>>();
+
   bp::def("laneletLayer", lanelet::utils::query::laneletLayer);
-  bp::def("subtypeLanelets", lanelet::utils::query::subtypeLanelets);
+  bp::def("subtypeLanelets", ::subtypeLanelets);
   bp::def("crosswalkLanelets", lanelet::utils::query::crosswalkLanelets);
   bp::def("walkwayLanelets", lanelet::utils::query::walkwayLanelets);
   bp::def("roadLanelets", lanelet::utils::query::roadLanelets);

@@ -293,6 +293,15 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_regulatory_elements)
       });
   bp::implicitly_convertible<
     std::shared_ptr<lanelet::autoware::VirtualTrafficLight>, lanelet::RegulatoryElementPtr>();
+
+  bp::register_ptr_to_python<lanelet::TrafficSignConstPtr>();
+  bp::register_ptr_to_python<lanelet::TrafficLightConstPtr>();
+  bp::register_ptr_to_python<lanelet::AutowareTrafficLightConstPtr>();
+  bp::register_ptr_to_python<lanelet::DetectionAreaConstPtr>();
+  bp::register_ptr_to_python<lanelet::NoParkingAreaConstPtr>();
+  bp::register_ptr_to_python<lanelet::NoStoppingAreaConstPtr>();
+  bp::register_ptr_to_python<lanelet::SpeedBumpConstPtr>();
+  bp::register_ptr_to_python<lanelet::CrosswalkConstPtr>();
 }
 
 // NOLINTEND(readability-identifier-naming)

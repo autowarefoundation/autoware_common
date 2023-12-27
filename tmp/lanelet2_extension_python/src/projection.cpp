@@ -29,13 +29,6 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_projection)
 {
   namespace bp = boost::python;
 
-  bp::class_<lanelet::Projector, boost::noncopyable, std::shared_ptr<lanelet::Projector>>(
-    "Projector", "Projects point from lat/lon to x/y and back", bp::no_init)
-    .def("forward", &lanelet::Projector::forward, "Convert lat/lon into x/y")
-    .def("reverse", &lanelet::Projector::reverse, "Convert x/y into lat/lon")
-    .def(
-      "origin", &lanelet::Projector::origin, "Global origin of the converter",
-      bp::return_internal_reference<>());
   bp::class_<
     lanelet::projection::MGRSProjector, std::shared_ptr<lanelet::projection::MGRSProjector>,
     bp::bases<lanelet::Projector>>("MGRSProjector", bp::init<lanelet::Origin>("origin"));
