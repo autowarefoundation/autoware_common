@@ -545,31 +545,44 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
 
   for (const auto & tl : tl_reg_elems) {
+    visualization_msgs::msg::Marker marker;
+    marker.header.frame_id = "map";
+    marker.header.stamp = rclcpp::Time();
+    marker.ns = "traffic_light_id";
+    marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+    marker.lifetime = duration;
+    marker.action = visualization_msgs::msg::Marker::ADD;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+    marker.color = c;
+    marker.scale.z = scale;
+    marker.frame_locked = false;
+    std::ostringstream string_stream;
+    string_stream << "TLRegElemId:" << std::to_string(tl->id());
+    marker.text = string_stream.str();
+
+    const auto stop_line = tl->stopLine();
+    if (stop_line.has_value()) {
+      marker.id = static_cast<int32_t>(tl->id());
+      marker.pose.position.x = (stop_line.value().front().x() + stop_line.value().back().x()) / 2;
+      marker.pose.position.y = (stop_line.value().front().y() + stop_line.value().back().y()) / 2;
+      marker.pose.position.z = stop_line.value().front().z();
+      tl_id_marker_array.markers.push_back(marker);
+      continue;
+    }
+
     const auto lights = tl->trafficLights();
     for (const auto & lsp : lights) {
       if (lsp.isLineString()) {  // traffic lights can either polygons or
                                  // linestrings
         lanelet::ConstLineString3d ls = static_cast<lanelet::ConstLineString3d>(lsp);
 
-        visualization_msgs::msg::Marker marker;
-        marker.header.frame_id = "map";
-        marker.header.stamp = rclcpp::Time();
-        marker.ns = "traffic_light_id";
         marker.id = static_cast<int32_t>(ls.id());
-        marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
-        marker.lifetime = duration;
-        marker.action = visualization_msgs::msg::Marker::ADD;
         marker.pose.position.x = (ls.front().x() + ls.back().x()) / 2;
         marker.pose.position.y = (ls.front().y() + ls.back().y()) / 2;
         marker.pose.position.z = ls.front().z() + 1.0;
-        marker.pose.orientation.x = 0.0;
-        marker.pose.orientation.y = 0.0;
-        marker.pose.orientation.z = 0.0;
-        marker.pose.orientation.w = 1.0;
-        marker.color = c;
-        marker.scale.z = scale;
-        marker.frame_locked = false;
-        marker.text = std::to_string(tl->id());
         tl_id_marker_array.markers.push_back(marker);
       }
     }
