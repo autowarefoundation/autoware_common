@@ -538,29 +538,29 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
   return tl_marker_array;
 }
 
-visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
+visualization_msgs::msg::MarkerArray visualization::generateTrafficLightRegulatoryElementIdMaker(
   const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
   const rclcpp::Duration & duration, const double scale)
 {
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
 
   for (const auto & lanelet : lanelets) {
-    visualization_msgs::msg::Marker marker;
-    marker.header.frame_id = "map";
-    marker.header.stamp = rclcpp::Time();
-    marker.ns = "traffic_light_id";
-    marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
-    marker.lifetime = duration;
-    marker.action = visualization_msgs::msg::Marker::ADD;
-    marker.pose.orientation.x = 0.0;
-    marker.pose.orientation.y = 0.0;
-    marker.pose.orientation.z = 0.0;
-    marker.pose.orientation.w = 1.0;
-    marker.color = c;
-    marker.scale.z = scale;
-    marker.frame_locked = false;
-
     for (const auto & element : lanelet.regulatoryElementsAs<lanelet::TrafficLight>()) {
+      visualization_msgs::msg::Marker marker;
+      marker.header.frame_id = "map";
+      marker.header.stamp = rclcpp::Time();
+      marker.ns = "traffic_light_reg_elem_id";
+      marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+      marker.lifetime = duration;
+      marker.action = visualization_msgs::msg::Marker::ADD;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+      marker.color = c;
+      marker.scale.z = scale;
+      marker.frame_locked = false;
+
       std::ostringstream string_stream;
       string_stream << "TLRegElemId:" << std::to_string(element->id());
       marker.text = string_stream.str();
@@ -573,6 +573,58 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
       marker.pose.position.z = lanelet.rightBound().front().z();
       tl_id_marker_array.markers.push_back(marker);
     }
+  }
+
+  return tl_id_marker_array;
+}
+
+visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
+  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
+{
+  visualization_msgs::msg::MarkerArray tl_id_marker_array;
+
+  std::unordered_map<lanelet::Id, visualization_msgs::msg::Marker> traffic_light_map{};
+  for (const auto & element : tl_reg_elems) {
+    for (const auto & light : element->trafficLights()) {
+      if (!light.isLineString()) {
+        continue;
+      }
+      const auto line = static_cast<lanelet::ConstLineString3d>(light);
+      if (traffic_light_map.count(line.id()) == 0) {
+        visualization_msgs::msg::Marker marker;
+        marker.header.frame_id = "map";
+        marker.header.stamp = rclcpp::Time();
+        marker.ns = "traffic_light_id";
+        marker.id = static_cast<int32_t>(line.id());
+        marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+        marker.lifetime = duration;
+        marker.action = visualization_msgs::msg::Marker::ADD;
+        marker.pose.position.x = (line.front().x() + line.back().x()) / 2;
+        marker.pose.position.y = (line.front().y() + line.back().y()) / 2;
+        marker.pose.position.z = line.front().z() + 1.0;
+        marker.pose.orientation.x = 0.0;
+        marker.pose.orientation.y = 0.0;
+        marker.pose.orientation.z = 0.0;
+        marker.pose.orientation.w = 1.0;
+        marker.color = c;
+        marker.scale.z = scale;
+        marker.frame_locked = false;
+
+        std::ostringstream string_stream;
+        string_stream << "Refferer:" << element->id() << ", ";
+        marker.text = string_stream.str();
+        traffic_light_map.emplace(line.id(), marker);
+      } else {
+        std::ostringstream string_stream;
+        string_stream << element->id() << ", ";
+        traffic_light_map.at(line.id()).text += string_stream.str();
+      }
+    }
+  }
+
+  for (const auto & [id, marker] : traffic_light_map) {
+    tl_id_marker_array.markers.push_back(marker);
   }
 
   return tl_id_marker_array;
