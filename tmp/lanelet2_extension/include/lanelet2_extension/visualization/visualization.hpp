@@ -189,15 +189,14 @@ visualization_msgs::msg::MarkerArray autowareTrafficLightsAsMarkerArray(
 /**
  * [generateTrafficLightIdMaker creates marker array to visualize traffic id
  * lights]
- * @param  tl_reg_elems [traffic light regulatory elements]
+ * @param lanelets      [lanelets]
  * @param  c            [color of the marker]
  * @param  duration     [lifetime of the marker]
  * @return              [created marker array]
  */
 visualization_msgs::msg::MarkerArray generateTrafficLightIdMaker(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
-  const double scale = 1.0);
+  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration = rclcpp::Duration(0, 0), const double scale = 1.0);
 
 /**
  * [trafficLightsAsTriangleMarkerArray creates marker array to visualize shape

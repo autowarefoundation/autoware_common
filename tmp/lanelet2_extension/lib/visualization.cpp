@@ -539,12 +539,12 @@ visualization_msgs::msg::MarkerArray visualization::autowareTrafficLightsAsMarke
 }
 
 visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration, const double scale)
+  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration, const double scale)
 {
   visualization_msgs::msg::MarkerArray tl_id_marker_array;
 
-  for (const auto & tl : tl_reg_elems) {
+  for (const auto & lanelet : lanelets) {
     visualization_msgs::msg::Marker marker;
     marker.header.frame_id = "map";
     marker.header.stamp = rclcpp::Time();
@@ -559,32 +559,19 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
     marker.color = c;
     marker.scale.z = scale;
     marker.frame_locked = false;
-    std::ostringstream string_stream;
-    string_stream << "TLRegElemId:" << std::to_string(tl->id());
-    marker.text = string_stream.str();
 
-    const auto stop_line = tl->stopLine();
-    if (stop_line.has_value()) {
-      marker.id = static_cast<int32_t>(tl->id());
-      marker.pose.position.x = (stop_line.value().front().x() + stop_line.value().back().x()) / 2;
-      marker.pose.position.y = (stop_line.value().front().y() + stop_line.value().back().y()) / 2;
-      marker.pose.position.z = stop_line.value().front().z();
+    for (const auto & element : lanelet.regulatoryElementsAs<lanelet::TrafficLight>()) {
+      std::ostringstream string_stream;
+      string_stream << "TLRegElemId:" << std::to_string(element->id());
+      marker.text = string_stream.str();
+
+      marker.id = static_cast<int32_t>(lanelet.id());
+      marker.pose.position.x =
+        (lanelet.rightBound().front().x() + lanelet.leftBound().front().x()) / 2;
+      marker.pose.position.y =
+        (lanelet.rightBound().front().y() + lanelet.leftBound().front().y()) / 2;
+      marker.pose.position.z = lanelet.rightBound().front().z();
       tl_id_marker_array.markers.push_back(marker);
-      continue;
-    }
-
-    const auto lights = tl->trafficLights();
-    for (const auto & lsp : lights) {
-      if (lsp.isLineString()) {  // traffic lights can either polygons or
-                                 // linestrings
-        lanelet::ConstLineString3d ls = static_cast<lanelet::ConstLineString3d>(lsp);
-
-        marker.id = static_cast<int32_t>(ls.id());
-        marker.pose.position.x = (ls.front().x() + ls.back().x()) / 2;
-        marker.pose.position.y = (ls.front().y() + ls.back().y()) / 2;
-        marker.pose.position.z = ls.front().z() + 1.0;
-        tl_id_marker_array.markers.push_back(marker);
-      }
     }
   }
 
