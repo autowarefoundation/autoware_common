@@ -612,12 +612,12 @@ visualization_msgs::msg::MarkerArray visualization::generateTrafficLightIdMaker(
         marker.frame_locked = false;
 
         std::ostringstream string_stream;
-        string_stream << "referrer:" << element->id() << ", ";
+        string_stream << "referrer:" << element->id() << ",";
         marker.text = string_stream.str();
         traffic_light_map.emplace(line.id(), marker);
       } else {
         std::ostringstream string_stream;
-        string_stream << element->id() << ", ";
+        string_stream << element->id() << ",";
         traffic_light_map.at(line.id()).text += string_stream.str();
       }
     }
