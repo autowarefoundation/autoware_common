@@ -1,5 +1,3 @@
-import math
-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
 import lanelet2
@@ -42,44 +40,47 @@ def test_utility_query(lanelet_map, routing_graph):
     print(f"""{len(query.getAllParkingSpaces(lanelet_map))=}""")
     print(f"""{len(query.getAllFences(lanelet_map))=}""")
     print(f"""{len(query.getAllPedestrianMarkings(lanelet_map))=}""")
-    print(f"""{len(query.getLinkedParkingSpaces(lanelet56, lanelet_map))=}""")
-    print(
-        f"""{len(query.getLinkedParkingSpaces(lanelet56, query.getAllParkingSpaces(lanelet_map), query.getAllParkingLots(lanelet_map)))=}"""
-    )
     print(f"""{len(query.stopLinesLanelets(lanelets))=}""")
     print(f"""{len(query.stopLinesLanelet(lanelet108))=}""")
     print(f"""{len(query.stopSignStopLines(lanelets))=}""")
-    lanelet56_centerline_basic_points = [p.basicPoint() for p in lanelet56.centerline]
-    lanelet56_centerline_center = np.sum(lanelet56_centerline_basic_points) * (
-        1.0 / len(lanelet56_centerline_basic_points)
+    lanelet56_centerline_center = np.sum([p.basicPoint() for p in lanelet56.centerline]) * (
+        1.0 / len(lanelet56.centerline)
     )
-    search_point = Point()
-    search_point.x = lanelet56_centerline_center.x
-    search_point.y = lanelet56_centerline_center.y
-    search_point.z = lanelet56_centerline_center.z
+    search_point = Point(
+        x=lanelet56_centerline_center.x,
+        y=lanelet56_centerline_center.y,
+        z=lanelet56_centerline_center.z,
+    )
+    print(f"""{search_point=}""")
     print(f"""{[ll2.id for ll2 in query.getLaneletsWithinRange(lanelets, search_point, 15.0)]=}""")
-    search_point_2d = lanelet2.core.BasicPoint2d()
-    search_point_2d.x = lanelet56_centerline_center.x
-    search_point_2d.y = lanelet56_centerline_center.y
+    search_point_2d = lanelet2.core.BasicPoint2d(
+        x=lanelet56_centerline_center.x, y=lanelet56_centerline_center.y
+    )
     print(
         f"""{[ll2.id for ll2 in query.getLaneletsWithinRange(lanelets, search_point_2d, 15.0)]=}"""
     )
     print(f"""{[ll2.id for ll2 in query.getLaneChangeableNeighbors(routing_graph, lanelet108)]=}""")
+    print(
+        f"""{[ll2.id for ll2 in query.getLaneChangeableNeighbors(routing_graph, query.roadLanelets(lanelets), search_point)]=}"""
+    )
     print(f"""{[ll2.id for ll2 in query.getAllNeighbors(routing_graph, lanelet56)]=}""")
+    print(
+        f"""{[ll2.id for ll2 in query.getAllNeighbors(routing_graph, query.roadLanelets(lanelets), search_point)]=}"""
+    )
     print(f"""{[ll2.id for ll2 in query.getAllNeighborsLeft(routing_graph, lanelet56)]=}""")
     print(f"""{[ll2.id for ll2 in query.getAllNeighborsRight(routing_graph, lanelet56)]=}""")
     search_pose = Pose()
     search_pose.position = search_point
-    temp_lanelet = lanelet2.core.Lanelet(0, lanelet56.leftBound, lanelet56.rightBound)
-    if (
-        query.getClosestLaneletWithConstrains(lanelets, search_pose, temp_lanelet, 10.0, math.pi)
-        and temp_lanelet is not None
-    ):
-        print(f"""{temp_lanelet.id}""")
-    # lanelet::ConstLaneletsへのpointerだからこの関数は無理
-    temp_lanelets = []
-    if query.getCurrentLanelets(lanelets, search_point, temp_lanelets):
-        print(f"""{[ll2.id for ll2 in temp_lanelets]}""")
+    print(
+        f"""{(query.getClosestLanelet(lanelets, search_pose).id if query.getClosestLanelet(lanelets, search_pose) else None)=}"""
+    )
+    print(f"""{[ll2.id for ll2 in query.getCurrentLanelets(lanelets, search_point)]=}""")
+    print(
+        f"""{[[ll2.id for ll2 in ll2s] for ll2s in query.getSucceedingLaneletSequences(routing_graph, lanelet108, 100.0)]}"""
+    )
+    print(
+        f"""{[[ll2.id for ll2 in ll2s] for ll2s in query.getPrecedingLaneletSequences(routing_graph, lanelet108, 100.0)]}"""
+    )
 
 
 def test_utility_utilities():

@@ -1,7 +1,8 @@
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Quaternion
+import lanelet2
 import lanelet2_extension_python._lanelet2_extension_python_boost_python_utility as _utility_cpp
-from rclpy.serialization import deserialize_message
 from rclpy.serialization import serialize_message
 
 combineLaneletsShape = _utility_cpp.combineLaneletsShape
@@ -12,8 +13,29 @@ getLeftBoundWithOffset = _utility_cpp.getLeftBoundWithOffset
 getExpandedLanelet = _utility_cpp.getExpandedLanelet
 getExpandedLanelets = _utility_cpp.getExpandedLanelets
 overwriteLaneletsCenterline = _utility_cpp.overwriteLaneletsCenterline
-getLaneletLength2d = _utility_cpp.getLaneletLength2d
-getLaneletLength3d = _utility_cpp.getLaneletLength3d
+getConflictingLanelets = _utility_cpp.getConflictingLanelets
+lineStringWithWidthToPolygon = _utility_cpp._utility_cpp.lineStringWithWidthToPolygon
+lineStringToPolygon = _utility_cpp._utility_cpp.lineStringToPolygon
+
+
+def getLaneletLength2d(*args):
+    if len(args) == 1 and isinstance(args[0], lanelet2.core.Lanelet):
+        return _utility_cpp.getLaneletLength2d(args[0])
+    if len(args) == 1 and isinstance(args[0], list):
+        return _utility_cpp.getLaneletLength2d(args[0])
+    raise TypeError(
+        "argument number does not match or 1st argument is not Lanelet or [Lanelet] type"
+    )
+
+
+def getLaneletLength3d(*args):
+    if len(args) == 1 and isinstance(args[0], lanelet2.core.Lanelet):
+        return _utility_cpp.getLaneletLength3d(args[0])
+    if len(args) == 1 and isinstance(args[0], list):
+        return _utility_cpp.getLaneletLength3d(args[0])
+    raise TypeError(
+        "argument number does not match or 1st argument is not Lanelet or [Lanelet] type"
+    )
 
 
 def getArcCoordinates(lanelet_sequence, pose: Pose):
@@ -38,21 +60,10 @@ def isInLanelet(pose: Pose, lanelet, radius=0.0):
 def getClosestCenterPose(lanelet, point: Point):
     # https://dev.to/pgradot/sharing-strings-between-c-and-python-through-byte-buffers-1nj0
     point_byte = serialize_message(point)
-    pose_byte = _utility_cpp.getClosestCenterPose(lanelet, point_byte)
-    print(len(pose_byte))  # これは60ある
-    print(pose_byte[0].encode())  # これで b'\x00'と出た
-    byte_array = bytearray()
-    for i in range(len(pose_byte)):
-        # print(pose_byte[i])
-        print(
-            type(pose_byte[i].encode("unicode-escape").decode("unicode-escape")),
-            pose_byte[i].encode("unicode-escape").decode("unicode-escape"),
-        )
-        byte_array.append(
-            pose_byte[i].encode("unicode-escape").decode("unicode-escape")
-        )  # 0xb9で詰まる
-    print(byte_array)
-    return deserialize_message(byte_array, Pose)
+    pose_array = _utility_cpp.getClosestCenterPose(lanelet, point_byte)
+    pos = Point(x=pose_array[0], y=pose_array[1], z=pose_array[2])
+    quat = Quaternion(x=pose_array[3], y=pose_array[4], z=pose_array[5], w=pose_array[6])
+    return Pose(position=pos, quaternion=quat)
 
 
 def getLateralDistanceToCenterline(lanelet, pose: Pose):

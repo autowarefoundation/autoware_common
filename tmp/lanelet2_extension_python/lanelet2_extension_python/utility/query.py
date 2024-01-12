@@ -27,19 +27,10 @@ getAllPartitions = _utility_cpp.getAllPartitions
 getAllFences = _utility_cpp.getAllFences
 getAllPedestrianMarkings = _utility_cpp.getAllPedestrianMarkings
 getAllParkingSpaces = _utility_cpp.getAllParkingSpaces
-
-# TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedParkingSpaces = _utility_cpp.getLinkedParkingSpaces
-
-# TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedLanelet = _utility_cpp.getLinkedLanelet
-
-# TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedLanelets = _utility_cpp.getLinkedLanelets
-
-# TODO(Mamoru Sobue): how to dispatch overloads
 getLinkedParkingLot = _utility_cpp.getLinkedParkingLot
-
 stopLinesLanelets = _utility_cpp.stopLinesLanelets
 stopLinesLanelet = _utility_cpp.stopLinesLanelet
 stopSignStopLines = _utility_cpp.stopSignStopLines
@@ -59,7 +50,7 @@ def getLaneChangeableNeighbors(*args):
         return _utility_cpp.getLaneChangeableNeighbors(args[0], args[1])
     if len(args) == 3 and isinstance(args[2], Point):
         point_byte = serialize_message(args[2])
-        return _utility_cpp.getLaneChangeableNeighbor_point(args[0], args[1], point_byte)
+        return _utility_cpp.getLaneChangeableNeighbors_point(args[0], args[1], point_byte)
     raise TypeError("argument number does not match or 3rd argument is not Point type")
 
 
@@ -68,11 +59,16 @@ def getAllNeighbors(*args):
         return _utility_cpp.getAllNeighbors(args[0], args[1])
     if len(args) == 3 and isinstance(args[2], Point):
         point_byte = serialize_message(args[2])
-        return _utility_cpp.getAllNeighbors(args[0], args[1], point_byte)
+        return _utility_cpp.getAllNeighbors_point(args[0], args[1], point_byte)
 
 
 getAllNeighborsLeft = _utility_cpp.getAllNeighborsLeft
 getAllNeighborsRight = _utility_cpp.getAllNeighborsRight
+
+
+def getClosestLanelet(lanelets, pose: Pose):
+    pose_byte = serialize_message(pose)
+    return _utility_cpp.getClosestLanelet(lanelets, pose_byte)
 
 
 def getClosestLaneletWithConstrains(
@@ -84,14 +80,14 @@ def getClosestLaneletWithConstrains(
     )
 
 
-def getCurrentLanelets(lanelets, point: Point, current_lanelets):
+def getCurrentLanelets(lanelets, point: Point):
     if isinstance(point, Point):
         point_byte = serialize_message(point)
-        return _utility_cpp.getCurrentLanelets_point(lanelets, point_byte, current_lanelets)
+        return _utility_cpp.getCurrentLanelets_point(lanelets, point_byte)
     if isinstance(point, Pose):
         pose_byte = serialize_message(point)
-        return _utility_cpp.getCurrentLanelets_pose(lanelets, pose_byte, current_lanelets)
-    raise TypeError("argument number does not match or 3rd argument is not Pose type")
+        return _utility_cpp.getCurrentLanelets_pose(lanelets, pose_byte)
+    raise TypeError("argument number does not match or 2nd argument is not Point/Pose type")
 
 
 getSucceedingLaneletSequences = _utility_cpp.getSucceedingLaneletSequences
