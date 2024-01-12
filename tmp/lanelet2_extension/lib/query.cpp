@@ -407,38 +407,38 @@ lanelet::ConstLineStrings3d query::getAllParkingSpaces(
   return parking_spaces;
 }
 
-std::optional<lanelet::ConstLanelet> query::getLinkedLanelet(
+bool query::getLinkedLanelet(
   const lanelet::ConstLineString3d & parking_space,
-  const lanelet::LaneletMapConstPtr & lanelet_map_ptr)
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, lanelet::ConstLanelet * linked_lanelet)
 {
   const auto & all_lanelets = query::laneletLayer(lanelet_map_ptr);
   const auto & all_road_lanelets = query::roadLanelets(all_lanelets);
   const auto & all_parking_lots = query::getAllParkingLots(lanelet_map_ptr);
-  return query::getLinkedLanelet(parking_space, all_road_lanelets, all_parking_lots);
+  return query::getLinkedLanelet(
+    parking_space, all_road_lanelets, all_parking_lots, linked_lanelet);
 }
 
-std::optional<lanelet::ConstLanelet> query::getLinkedLanelet(
+bool query::getLinkedLanelet(
   const lanelet::ConstLineString3d & parking_space,
   const lanelet::ConstLanelets & all_road_lanelets,
-  const lanelet::ConstPolygons3d & all_parking_lots)
+  const lanelet::ConstPolygons3d & all_parking_lots, lanelet::ConstLanelet * linked_lanelet)
 {
   const auto & linked_lanelets =
     getLinkedLanelets(parking_space, all_road_lanelets, all_parking_lots);
   if (linked_lanelets.empty()) {
-    return std::nullopt;
+    return false;
   }
 
-  std::optional<lanelet::ConstLanelet> min{std::nullopt};
   double min_distance = std::numeric_limits<double>::max();
   for (const auto & lanelet : linked_lanelets) {
     const double distance = boost::geometry::distance(
       to2D(parking_space).basicLineString(), lanelet.polygon2d().basicPolygon());
     if (distance < min_distance) {
-      min = lanelet;
+      *linked_lanelet = lanelet;
       min_distance = distance;
     }
   }
-  return min;
+  return true;
 }
 
 lanelet::ConstLanelets query::getLinkedLanelets(
@@ -457,15 +457,15 @@ lanelet::ConstLanelets query::getLinkedLanelets(
   const lanelet::ConstLanelets & all_road_lanelets,
   const lanelet::ConstPolygons3d & all_parking_lots)
 {
+  lanelet::ConstLanelets linked_lanelets;
+
   // get lanelets within same parking lot
-  const auto linked_parking_lot_opt = getLinkedParkingLot(parking_space, all_parking_lots);
-  if (!linked_parking_lot_opt) {
-    return {};
+  lanelet::ConstPolygon3d linked_parking_lot;
+  if (!getLinkedParkingLot(parking_space, all_parking_lots, &linked_parking_lot)) {
+    return linked_lanelets;
   }
-  const auto linked_parking_lot = linked_parking_lot_opt.value();
   const auto & candidate_lanelets = getLinkedLanelets(linked_parking_lot, all_road_lanelets);
 
-  lanelet::ConstLanelets linked_lanelets;
   // get lanelets that are close to parking space and facing to parking space
   for (const auto & lanelet : candidate_lanelets) {
     // check if parking space is close to lanelet
@@ -522,16 +522,16 @@ lanelet::ConstLineStrings3d query::getLinkedParkingSpaces(
   const lanelet::ConstLanelet & lanelet, const lanelet::ConstLineStrings3d & all_parking_spaces,
   const lanelet::ConstPolygons3d & all_parking_lots)
 {
+  lanelet::ConstLineStrings3d linked_parking_spaces;
+
   // get parking spaces that are in same parking lot.
-  const auto linked_parking_lot_opt = getLinkedParkingLot(lanelet, all_parking_lots);
-  if (!linked_parking_lot_opt) {
-    return {};
+  lanelet::ConstPolygon3d linked_parking_lot;
+  if (!getLinkedParkingLot(lanelet, all_parking_lots, &linked_parking_lot)) {
+    return linked_parking_spaces;
   }
-  const auto linked_parking_lot = linked_parking_lot_opt.value();
   const auto & possible_parking_spaces =
     getLinkedParkingSpaces(linked_parking_lot, all_parking_spaces);
 
-  lanelet::ConstLineStrings3d linked_parking_spaces;
   // check for parking spaces that are within 5m and facing towards lanelet
   for (const auto & parking_space : possible_parking_spaces) {
     // check if parking space is close to lanelet
@@ -561,46 +561,51 @@ lanelet::ConstLineStrings3d query::getLinkedParkingSpaces(
 }
 
 // get overlapping parking lot
-std::optional<lanelet::ConstPolygon3d> query::getLinkedParkingLot(
-  const lanelet::ConstLanelet & lanelet, const lanelet::ConstPolygons3d & all_parking_lots)
+bool query::getLinkedParkingLot(
+  const lanelet::ConstLanelet & lanelet, const lanelet::ConstPolygons3d & all_parking_lots,
+  lanelet::ConstPolygon3d * linked_parking_lot)
 {
   for (const auto & parking_lot : all_parking_lots) {
     const double distance = boost::geometry::distance(
       lanelet.polygon2d().basicPolygon(), to2D(parking_lot).basicPolygon());
     if (distance < std::numeric_limits<double>::epsilon()) {
-      return parking_lot;
+      *linked_parking_lot = parking_lot;
+      return true;
     }
   }
-  return std::nullopt;
+  return false;
 }
 
 // get overlapping parking lot
-std::optional<lanelet::ConstPolygon3d> query::getLinkedParkingLot(
-  const lanelet::BasicPoint2d & current_position, const lanelet::ConstPolygons3d & all_parking_lots)
+bool query::getLinkedParkingLot(
+  const lanelet::BasicPoint2d & current_position, const lanelet::ConstPolygons3d & all_parking_lots,
+  lanelet::ConstPolygon3d * linked_parking_lot)
 {
   for (const auto & parking_lot : all_parking_lots) {
     const double distance =
       boost::geometry::distance(current_position, to2D(parking_lot).basicPolygon());
     if (distance < std::numeric_limits<double>::epsilon()) {
-      return parking_lot;
+      *linked_parking_lot = parking_lot;
+      return true;
     }
   }
-  return std::nullopt;
+  return false;
 }
 
 // get overlapping parking lot
-std::optional<lanelet::ConstPolygon3d> query::getLinkedParkingLot(
+bool query::getLinkedParkingLot(
   const lanelet::ConstLineString3d & parking_space,
-  const lanelet::ConstPolygons3d & all_parking_lots)
+  const lanelet::ConstPolygons3d & all_parking_lots, lanelet::ConstPolygon3d * linked_parking_lot)
 {
   for (const auto & parking_lot : all_parking_lots) {
     const double distance = boost::geometry::distance(
       to2D(parking_space).basicLineString(), to2D(parking_lot).basicPolygon());
     if (distance < std::numeric_limits<double>::epsilon()) {
-      return parking_lot;
+      *linked_parking_lot = parking_lot;
+      return true;
     }
   }
-  return std::nullopt;
+  return false;
 }
 
 lanelet::ConstLineStrings3d query::getLinkedParkingSpaces(
@@ -822,63 +827,84 @@ ConstLanelets query::getAllNeighbors(
   return road_slices;
 }
 
-std::optional<lanelet::ConstLanelet> query::getClosestLanelet(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose)
+bool query::getClosestLanelet(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelet * closest_lanelet_ptr)
 {
-  if (lanelets.empty()) {
-    return std::nullopt;
+  if (closest_lanelet_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return false;
   }
+
+  if (lanelets.empty()) {
+    return false;
+  }
+
+  bool found = false;
 
   lanelet::BasicPoint2d search_point(search_pose.position.x, search_pose.position.y);
 
   // find by distance
   lanelet::ConstLanelets candidate_lanelets;
+  {
+    double min_distance = std::numeric_limits<double>::max();
+    for (const auto & llt : lanelets) {
+      double distance =
+        boost::geometry::comparable_distance(llt.polygon2d().basicPolygon(), search_point);
 
-  std::optional<lanelet::ConstLanelet> closest_distance{std::nullopt};
-  double min_distance = std::numeric_limits<double>::max();
-  for (const auto & llt : lanelets) {
-    double distance =
-      boost::geometry::comparable_distance(llt.polygon2d().basicPolygon(), search_point);
-
-    if (std::abs(distance - min_distance) <= std::numeric_limits<double>::epsilon()) {
-      candidate_lanelets.push_back(llt);
-    } else if (distance < min_distance) {
-      closest_distance = llt;
-      min_distance = distance;
+      if (std::abs(distance - min_distance) <= std::numeric_limits<double>::epsilon()) {
+        candidate_lanelets.push_back(llt);
+      } else if (distance < min_distance) {
+        found = true;
+        candidate_lanelets.clear();
+        candidate_lanelets.push_back(llt);
+        min_distance = distance;
+      }
     }
   }
 
-  if (closest_distance) {
-    return closest_distance.value();
+  if (candidate_lanelets.size() == 1) {
+    *closest_lanelet_ptr = candidate_lanelets.at(0);
+    return found;
   }
 
   // find by angle
-  std::optional<lanelet::ConstLanelet> closest_angle{std::nullopt};
-  double min_angle = std::numeric_limits<double>::max();
-  double pose_yaw = tf2::getYaw(search_pose.orientation);
-  for (const auto & llt : candidate_lanelets) {
-    lanelet::ConstLineString3d segment = getClosestSegment(search_point, llt.centerline());
-    double angle_diff = M_PI;
-    if (!segment.empty()) {
-      double segment_angle = std::atan2(
-        segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-      angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
-    }
-    if (angle_diff < min_angle) {
-      min_angle = angle_diff;
-      closest_angle = llt;
+  {
+    double min_angle = std::numeric_limits<double>::max();
+    double pose_yaw = tf2::getYaw(search_pose.orientation);
+    for (const auto & llt : candidate_lanelets) {
+      lanelet::ConstLineString3d segment = getClosestSegment(search_point, llt.centerline());
+      double angle_diff = M_PI;
+      if (!segment.empty()) {
+        double segment_angle = std::atan2(
+          segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
+        angle_diff = std::abs(autoware_utils::normalize_radian(segment_angle - pose_yaw));
+      }
+      if (angle_diff < min_angle) {
+        min_angle = angle_diff;
+        *closest_lanelet_ptr = llt;
+      }
     }
   }
 
-  return closest_angle;
+  return found;
 }
 
-std::optional<lanelet::ConstLanelet> query::getClosestLaneletWithConstraints(
+bool query::getClosestLaneletWithConstrains(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
-  const double dist_threshold, const double yaw_threshold)
+  ConstLanelet * closest_lanelet_ptr, const double dist_threshold, const double yaw_threshold)
 {
+  bool found = false;
+
+  if (closest_lanelet_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return found;
+  }
+
   if (lanelets.empty()) {
-    return std::nullopt;
+    return found;
   }
 
   lanelet::BasicPoint2d search_point(search_pose.position.x, search_pose.position.y);
@@ -902,12 +928,11 @@ std::optional<lanelet::ConstLanelet> query::getClosestLaneletWithConstraints(
           const std::pair<lanelet::ConstLanelet, double> & x,
           std::pair<lanelet::ConstLanelet, double> & y) { return x.second < y.second; });
     } else {
-      return std::nullopt;
+      return found;
     }
   }
 
   // find closest lanelet within yaw_threshold
-  std::optional<lanelet::ConstLanelet> closest;
   {
     double min_angle = std::numeric_limits<double>::max();
     double min_distance = std::numeric_limits<double>::max();
@@ -924,48 +949,61 @@ std::optional<lanelet::ConstLanelet> query::getClosestLaneletWithConstraints(
       if (angle_diff < min_angle) {
         min_angle = angle_diff;
         min_distance = distance;
-        closest = llt_pair.first;
+        *closest_lanelet_ptr = llt_pair.first;
+        found = true;
       }
     }
   }
 
-  return closest;
+  return found;
 }
 
-ConstLanelets query::getCurrentLanelets(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point)
+bool query::getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr)
 {
-  if (lanelets.empty()) {
-    return {};
+  if (current_lanelets_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return false;
   }
 
-  ConstLanelets current_lanelets;
+  if (lanelets.empty()) {
+    return false;
+  }
+
   lanelet::BasicPoint2d search_point_2d(search_point.x, search_point.y);
   for (const auto & llt : lanelets) {
     if (lanelet::geometry::inside(llt, search_point_2d)) {
-      current_lanelets.push_back(llt);
+      current_lanelets_ptr->push_back(llt);
     }
   }
 
-  return current_lanelets;
+  return !current_lanelets_ptr->empty();  // return found
 }
 
-ConstLanelets query::getCurrentLanelets(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose)
+bool query::getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelets * current_lanelets_ptr)
 {
-  if (lanelets.empty()) {
-    return {};
+  if (current_lanelets_ptr == nullptr) {
+    std::cerr << "argument closest_lanelet_ptr is null! Failed to find closest lanelet"
+              << std::endl;
+    return false;
   }
 
-  ConstLanelets current_lanelets;
+  if (lanelets.empty()) {
+    return false;
+  }
+
   lanelet::BasicPoint2d search_point(search_pose.position.x, search_pose.position.y);
   for (const auto & llt : lanelets) {
     if (lanelet::geometry::inside(llt, search_point)) {
-      current_lanelets.push_back(llt);
+      current_lanelets_ptr->push_back(llt);
     }
   }
 
-  return current_lanelets;
+  return !current_lanelets_ptr->empty();  // return found
 }
 
 std::vector<std::deque<lanelet::ConstLanelet>> getSucceedingLaneletSequencesRecursive(

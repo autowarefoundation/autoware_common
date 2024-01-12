@@ -523,19 +523,24 @@ lanelet::ConstLanelets getConflictingLanelets(
   return lanelets;
 }
 
-std::optional<lanelet::ConstPolygon3d> lineStringWithWidthToPolygon(
-  const lanelet::ConstLineString3d & linestring)
+bool lineStringWithWidthToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
 {
+  if (polygon == nullptr) {
+    std::cerr << __func__ << ": polygon is null pointer! Failed to convert to polygon."
+              << std::endl;
+    return false;
+  }
   if (linestring.size() != 2) {
     std::cerr << __func__ << ": linestring" << linestring.id() << " must have 2 points! ("
               << linestring.size() << " != 2)" << std::endl
               << "Failed to convert to polygon.";
-    return std::nullopt;
+    return false;
   }
   if (!linestring.hasAttribute("width")) {
     std::cerr << __func__ << ": linestring" << linestring.id()
               << " does not have width tag. Failed to convert to polygon.";
-    return std::nullopt;
+    return false;
   }
 
   const Eigen::Vector3d direction =
@@ -554,12 +559,20 @@ std::optional<lanelet::ConstPolygon3d> lineStringWithWidthToPolygon(
   const lanelet::Point3d p3(lanelet::InvalId, eigen_p3.x(), eigen_p3.y(), eigen_p3.z());
   const lanelet::Point3d p4(lanelet::InvalId, eigen_p4.x(), eigen_p4.y(), eigen_p4.z());
 
-  return lanelet::Polygon3d(lanelet::InvalId, {p1, p2, p3, p4});
+  *polygon = lanelet::Polygon3d(lanelet::InvalId, {p1, p2, p3, p4});
+
+  return true;
 }
 
-std::optional<lanelet::ConstPolygon3d> lineStringToPolygon(
-  const lanelet::ConstLineString3d & linestring)
+bool lineStringToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
 {
+  if (polygon == nullptr) {
+    RCLCPP_ERROR_STREAM(
+      rclcpp::get_logger("lanelet2_extension.visualization"),
+      __func__ << ": polygon is null pointer! Failed to convert to polygon.");
+    return false;
+  }
   if (linestring.size() < 4) {
     if (linestring.size() < 3 || linestring.front().id() == linestring.back().id()) {
       RCLCPP_WARN_STREAM(
@@ -567,7 +580,7 @@ std::optional<lanelet::ConstPolygon3d> lineStringToPolygon(
         __func__ << ": linestring" << linestring.id()
                  << " must have more than different 3 points! (size is " << linestring.size()
                  << "). Failed to convert to polygon.");
-      return std::nullopt;
+      return false;
     }
   }
 
@@ -582,7 +595,9 @@ std::optional<lanelet::ConstPolygon3d> lineStringToPolygon(
     llt_poly.pop_back();
   }
 
-  return llt_poly;
+  *polygon = llt_poly;
+
+  return true;
 }
 
 double getLaneletLength2d(const lanelet::ConstLanelet & lanelet)
@@ -617,14 +632,11 @@ double getLaneletLength3d(const lanelet::ConstLanelets & lanelet_sequence)
 lanelet::ArcCoordinates getArcCoordinates(
   const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
 {
-  const auto closest_lanelet_opt = lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose);
-  lanelet::ArcCoordinates arc_coordinates;
-  if (!closest_lanelet_opt) {
-    return arc_coordinates;
-  }
+  lanelet::ConstLanelet closest_lanelet;
+  lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
 
-  const auto closest_lanelet = closest_lanelet_opt.value();
   double length = 0;
+  lanelet::ArcCoordinates arc_coordinates;
   for (const auto & llt : lanelet_sequence) {
     const auto & centerline_2d = lanelet::utils::to2D(llt.centerline());
     if (llt == closest_lanelet) {
@@ -771,11 +783,9 @@ double getLateralDistanceToCenterline(
 double getLateralDistanceToClosestLanelet(
   const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
 {
-  const auto closest_lanelet_opt = lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose);
-  if (!closest_lanelet_opt) {
-    return 0.0;
-  }
-  return getLateralDistanceToCenterline(closest_lanelet_opt.value(), pose);
+  lanelet::ConstLanelet closest_lanelet;
+  lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
+  return getLateralDistanceToCenterline(closest_lanelet, pose);
 }
 }  // namespace lanelet::utils
 

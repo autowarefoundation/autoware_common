@@ -27,7 +27,6 @@
 #include <lanelet2_routing/Forward.h>
 
 #include <map>
-#include <optional>
 
 namespace lanelet::utils
 {
@@ -63,11 +62,11 @@ void overwriteLaneletsCenterline(
 lanelet::ConstLanelets getConflictingLanelets(
   const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet);
 
-std::optional<lanelet::ConstPolygon3d> lineStringWithWidthToPolygon(
-  const lanelet::ConstLineString3d & linestring);
+bool lineStringWithWidthToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon);
 
-std::optional<lanelet::ConstPolygon3d> lineStringToPolygon(
-  const lanelet::ConstLineString3d & linestring);
+bool lineStringToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon);
 
 double getLaneletLength2d(const lanelet::ConstLanelet & lanelet);
 double getLaneletLength3d(const lanelet::ConstLanelet & lanelet);

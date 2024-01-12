@@ -932,9 +932,9 @@ visualization_msgs::msg::MarkerArray visualization::pedestrianMarkingsAsMarkerAr
 
   visualization_msgs::msg::Marker marker = createPolygonMarker("pedestrian_marking", c);
   for (const auto & linestring : pedestrian_markings) {
-    const auto polygon_opt = utils::lineStringToPolygon(linestring);
-    if (polygon_opt) {
-      pushPolygonMarker(&marker, polygon_opt.value(), c);
+    lanelet::ConstPolygon3d polygon;
+    if (utils::lineStringToPolygon(linestring, &polygon)) {
+      pushPolygonMarker(&marker, polygon, c);
     } else {
       RCLCPP_WARN_STREAM(
         rclcpp::get_logger("lanelet2_extension.visualization"),
@@ -976,9 +976,9 @@ visualization_msgs::msg::MarkerArray visualization::parkingSpacesAsMarkerArray(
 
   visualization_msgs::msg::Marker marker = createPolygonMarker("parking_space", c);
   for (const auto & linestring : parking_spaces) {
-    const auto polygon_opt = utils::lineStringToPolygon(linestring);
-    if (polygon_opt) {
-      pushPolygonMarker(&marker, polygon_opt.value(), c);
+    lanelet::ConstPolygon3d polygon;
+    if (utils::lineStringWithWidthToPolygon(linestring, &polygon)) {
+      pushPolygonMarker(&marker, polygon, c);
     } else {
       std::cerr << "parking space " << linestring.id() << " failed conversion." << std::endl;
     }

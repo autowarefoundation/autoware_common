@@ -34,7 +34,6 @@
 #include <lanelet2_routing/RoutingGraph.h>
 
 #include <limits>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -165,13 +164,13 @@ lanelet::ConstLineStrings3d getLinkedParkingSpaces(
   const lanelet::ConstLanelet & lanelet, const lanelet::ConstLineStrings3d & all_parking_spaces,
   const lanelet::ConstPolygons3d & all_parking_lots);
 // query linked lanelets from parking space
-std::optional<lanelet::ConstLanelet> getLinkedLanelet(
+bool getLinkedLanelet(
   const lanelet::ConstLineString3d & parking_space,
   const lanelet::ConstLanelets & all_road_lanelets,
-  const lanelet::ConstPolygons3d & all_parking_lots);
-std::optional<lanelet::ConstLanelet> getLinkedLanelet(
+  const lanelet::ConstPolygons3d & all_parking_lots, lanelet::ConstLanelet * linked_lanelet);
+bool getLinkedLanelet(
   const lanelet::ConstLineString3d & parking_space,
-  const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, lanelet::ConstLanelet * linked_lanelet);
 lanelet::ConstLanelets getLinkedLanelets(
   const lanelet::ConstLineString3d & parking_space,
   const lanelet::ConstLanelets & all_road_lanelets,
@@ -181,16 +180,17 @@ lanelet::ConstLanelets getLinkedLanelets(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
 
 // get linked parking lot from lanelet
-std::optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
-  const lanelet::ConstLanelet & lanelet, const lanelet::ConstPolygons3d & all_parking_lots);
+bool getLinkedParkingLot(
+  const lanelet::ConstLanelet & lanelet, const lanelet::ConstPolygons3d & all_parking_lots,
+  lanelet::ConstPolygon3d * linked_parking_lot);
 // get linked parking lot from current pose of ego car
-std::optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
-  const lanelet::BasicPoint2d & current_position,
-  const lanelet::ConstPolygons3d & all_parking_lots);
+bool getLinkedParkingLot(
+  const lanelet::BasicPoint2d & current_position, const lanelet::ConstPolygons3d & all_parking_lots,
+  lanelet::ConstPolygon3d * linked_parking_lot);
 // get linked parking lot from parking space
-std::optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
+bool getLinkedParkingLot(
   const lanelet::ConstLineString3d & parking_space,
-  const lanelet::ConstPolygons3d & all_parking_lots);
+  const lanelet::ConstPolygons3d & all_parking_lots, lanelet::ConstPolygon3d * linked_parking_lot);
 
 // query linked parking space from parking lot
 lanelet::ConstLineStrings3d getLinkedParkingSpaces(
@@ -246,19 +246,23 @@ ConstLanelets getAllNeighbors(
   const routing::RoutingGraphPtr & graph, const ConstLanelets & road_lanelets,
   const geometry_msgs::msg::Point & search_point);
 
-std::optional<ConstLanelet> getClosestLanelet(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose);
-
-std::optional<ConstLanelet> getClosestLaneletWithConstraints(
+bool getClosestLanelet(
   const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelet * closest_lanelet_ptr);
+
+bool getClosestLaneletWithConstrains(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelet * closest_lanelet_ptr,
   const double dist_threshold = std::numeric_limits<double>::max(),
   const double yaw_threshold = std::numeric_limits<double>::max());
 
-ConstLanelets getCurrentLanelets(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point);
+bool getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Point & search_point,
+  ConstLanelets * current_lanelets_ptr);
 
-ConstLanelets getCurrentLanelets(
-  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose);
+bool getCurrentLanelets(
+  const ConstLanelets & lanelets, const geometry_msgs::msg::Pose & search_pose,
+  ConstLanelets * current_lanelets_ptr);
 
 /**
  * [getSucceedingLaneletSequences retrieves a sequence of lanelets after the given lanelet.
