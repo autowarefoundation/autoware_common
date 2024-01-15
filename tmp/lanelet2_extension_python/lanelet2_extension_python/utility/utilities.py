@@ -14,8 +14,8 @@ getExpandedLanelet = _utility_cpp.getExpandedLanelet
 getExpandedLanelets = _utility_cpp.getExpandedLanelets
 overwriteLaneletsCenterline = _utility_cpp.overwriteLaneletsCenterline
 getConflictingLanelets = _utility_cpp.getConflictingLanelets
-lineStringWithWidthToPolygon = _utility_cpp._utility_cpp.lineStringWithWidthToPolygon
-lineStringToPolygon = _utility_cpp._utility_cpp.lineStringToPolygon
+lineStringWithWidthToPolygon = _utility_cpp.lineStringWithWidthToPolygon
+lineStringToPolygon = _utility_cpp.lineStringToPolygon
 
 
 def getLaneletLength2d(*args):
@@ -58,12 +58,11 @@ def isInLanelet(pose: Pose, lanelet, radius=0.0):
 
 
 def getClosestCenterPose(lanelet, point: Point):
-    # https://dev.to/pgradot/sharing-strings-between-c-and-python-through-byte-buffers-1nj0
     point_byte = serialize_message(point)
     pose_array = _utility_cpp.getClosestCenterPose(lanelet, point_byte)
     pos = Point(x=pose_array[0], y=pose_array[1], z=pose_array[2])
     quat = Quaternion(x=pose_array[3], y=pose_array[4], z=pose_array[5], w=pose_array[6])
-    return Pose(position=pos, quaternion=quat)
+    return Pose(position=pos, orientation=quat)
 
 
 def getLateralDistanceToCenterline(lanelet, pose: Pose):

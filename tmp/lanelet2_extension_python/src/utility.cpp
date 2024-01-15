@@ -122,7 +122,7 @@ std::vector<double> getClosestCenterPose(
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer_point;
   serializer_point.deserialize_message(&serialized_point_msg, &search_point);
   const geometry_msgs::msg::Pose pose = lanelet::utils::getClosestCenterPose(lanelet, search_point);
-  // NOTE: it was difficult to return the deserialized pose_byte and seriealize the pose_byte on
+  // NOTE: it was difficult to return the deserialized pose_byte and serialize the pose_byte on
   // python-side. So this function returns [*position, *quaternion] as double array
   const auto & xyz = pose.position;
   const auto & quat = pose.orientation;
@@ -429,7 +429,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("isInLanelet", ::isInLanelet, isInLanelet_overload());  // depends ros msg
   bp::def("getClosestCenterPose", ::getClosestCenterPose);        // depends ros msg
   // NOTE: required for the return-value of getClosestCenterPose
-  bp::class_<std::vector<double>>("[position, quarternion]")
+  bp::class_<std::vector<double>>("[position, quaternion]")
     .def(bp::vector_indexing_suite<std::vector<double>>());
   bp::def("getLateralDistanceToCenterline", ::getLateralDistanceToCenterline);  // depends ros msg
   bp::def(
@@ -550,7 +550,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   // NOTE: this is required for iterating getCurrentLanelets return value directly
   bp::class_<lanelet::ConstLanelets>("lanelet::ConstLanelets")
     .def(bp::vector_indexing_suite<lanelet::ConstLanelets>());
-  // NOTE: this is required for return-type of getsucceeding/PrecedingLaneletSequences
+  // NOTE: this is required for return-type of getSucceeding/PrecedingLaneletSequences
   bp::class_<std::vector<lanelet::ConstLanelets>>("std::vector<lanelet::ConstLanelets>")
     .def(bp::vector_indexing_suite<std::vector<lanelet::ConstLanelets>>());
   bp::def("getSucceedingLaneletSequences", lanelet::utils::query::getSucceedingLaneletSequences);
