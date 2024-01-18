@@ -115,6 +115,8 @@ bool SpeedBump::removeSpeedBump(const Polygon3d & primitive)
   return findAndErase(primitive, &parameters().find("speed_bump")->second);
 }
 
+RegisterRegulatoryElement<SpeedBump> regSpeedBump;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

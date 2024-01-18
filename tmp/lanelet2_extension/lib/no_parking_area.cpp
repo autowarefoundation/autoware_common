@@ -126,6 +126,9 @@ bool NoParkingArea::removeNoParkingArea(const Polygon3d & primitive)
 {
   return findAndErase(primitive, &parameters().find("no_parking_area")->second);
 }
+
+RegisterRegulatoryElement<NoParkingArea> regNoParkingArea;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

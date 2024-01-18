@@ -67,22 +67,22 @@ public:
   void addLightBulbs(const LineStringOrPolygon3d & primitive);
 
   /**
-p   * @brief remove a traffic light bulb
+   * @brief remove a traffic light bulb
    * @param primitive the primitive
    * @return true if the traffic light bulb existed and was removed
    */
   bool removeLightBulbs(const LineStringOrPolygon3d & primitive);
 
 private:
-  // the following lines are required so that lanelet2 can create this object
-  // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<AutowareTrafficLight>;
   AutowareTrafficLight(
     Id id, const AttributeMap & attributes, const LineStringsOrPolygons3d & trafficLights,
     const Optional<LineString3d> & stopLine, const LineStrings3d & lightBulbs);
+
+  // the following lines are required so that lanelet2 can create this object
+  // when loading a map with this regulatory element
+  friend class RegisterRegulatoryElement<AutowareTrafficLight>;
   explicit AutowareTrafficLight(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<AutowareTrafficLight> regAutowareTraffic;
 
 }  // namespace lanelet::autoware
 

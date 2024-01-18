@@ -57,13 +57,13 @@ public:
   void removeRoadMarking();
 
 private:
+  RoadMarking(Id id, const AttributeMap & attributes, const LineString3d & road_marking);
+
   // the following lines are required so that lanelet2 can create this object
   // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<RoadMarking>;
-  RoadMarking(Id id, const AttributeMap & attributes, const LineString3d & road_marking);
+  friend class RegisterRegulatoryElement<RoadMarking>;
   explicit RoadMarking(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<RoadMarking> regRoadMarking;
 
 }  // namespace lanelet::autoware
 

@@ -57,13 +57,13 @@ public:
   bool removeNoParkingArea(const Polygon3d & primitive);
 
 private:
+  NoParkingArea(Id id, const AttributeMap & attributes, const Polygons3d & no_parking_area);
+
   // the following lines are required so that lanelet2 can create this object
   // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<NoParkingArea>;
-  NoParkingArea(Id id, const AttributeMap & attributes, const Polygons3d & no_parking_area);
+  friend class RegisterRegulatoryElement<NoParkingArea>;
   explicit NoParkingArea(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<NoParkingArea> regNoParkingArea;
 
 }  // namespace lanelet::autoware
 

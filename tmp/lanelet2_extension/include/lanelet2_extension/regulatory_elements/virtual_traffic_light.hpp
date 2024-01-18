@@ -63,17 +63,14 @@ public:
   }
 
 private:
-  // the following lines are required so that lanelet2 can create this object
-  // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<VirtualTrafficLight>;
-
   VirtualTrafficLight(
     const Id id, const AttributeMap & attributes, const LineString3d & virtual_traffic_light);
 
+  // the following lines are required so that lanelet2 can create this object
+  // when loading a map with this regulatory element
+  friend class RegisterRegulatoryElement<VirtualTrafficLight>;
   explicit VirtualTrafficLight(const lanelet::RegulatoryElementDataPtr & data);
 };
-
-static lanelet::RegisterRegulatoryElement<VirtualTrafficLight> regVirtualTrafficLight;
 
 }  // namespace lanelet::autoware
 
