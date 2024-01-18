@@ -1,0 +1,3 @@
+import lanelet2_extension_python._lanelet2_extension_python_boost_python_projection as _projection_cpp
+
+MGRSProjector = _projection_cpp.MGRSProjector
