@@ -114,13 +114,9 @@ if(BUILD_TESTING)
       ${VALIDATION_NAME}_test
       autoware_lanelet2_validation_lib
     )
-    target_include_directories(${VALIDATION_NAME}_test
-      SYSTEM PRIVATE
-      ${lanelet2_core_INCLUDE_DIRECTORIES}
-    )
   endfunction()
 
-  # add_validation_test(unconnected_relations)
+  add_validation_test(missing_regulatory_elements)
 endif()
 
 ament_auto_package()
