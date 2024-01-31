@@ -118,7 +118,7 @@ MissingRegulatoryElementsChecker::checkMissingReglatoryElementsInCrosswalk(
   for (const auto & cw_id : cw_ids) {
     if (cw_ids_reg_elem.find(cw_id) == cw_ids_reg_elem.end()) {
       issues.emplace_back(
-        lanelet::validation::Severity::Error, lanelet::validation::Primitive::LineString, cw_id,
+        lanelet::validation::Severity::Error, lanelet::validation::Primitive::Lanelet, cw_id,
         "Crosswalk must have a regulatory element.");
     }
   }
