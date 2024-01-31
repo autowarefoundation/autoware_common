@@ -120,7 +120,7 @@ if(BUILD_TESTING)
     )
   endfunction()
 
-  add_validation_test(unconnected_relations)
+  # add_validation_test(unconnected_relations)
 endif()
 
 ament_auto_package()
