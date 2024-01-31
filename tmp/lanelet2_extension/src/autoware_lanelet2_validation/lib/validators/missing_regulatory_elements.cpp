@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <lanelet2_extension/autoware_lanelet2_validation/validators/missing_regulatory_elements.hpp>
+#include "lanelet2_extension/autoware_lanelet2_validation/validators/missing_regulatory_elements.hpp"
 
 namespace lanelet
 {

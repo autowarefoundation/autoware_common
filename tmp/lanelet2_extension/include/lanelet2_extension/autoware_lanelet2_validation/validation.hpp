@@ -13,10 +13,9 @@
 // limitations under the License.
 
 #include "lanelet2_extension/autoware_lanelet2_validation/cli.hpp"
-
-#include <lanelet2_extension/autoware_lanelet2_validation/utils.hpp>
-#include <lanelet2_extension/projection/mgrs_projector.hpp>
-#include <lanelet2_extension/projection/transverse_mercator_projector.hpp>
+#include "lanelet2_extension/autoware_lanelet2_validation/utils.hpp"
+#include "lanelet2_extension/projection/mgrs_projector.hpp"
+#include "lanelet2_extension/projection/transverse_mercator_projector.hpp"
 
 #include <lanelet2_io/Io.h>
 #include <lanelet2_projection/UTM.h>

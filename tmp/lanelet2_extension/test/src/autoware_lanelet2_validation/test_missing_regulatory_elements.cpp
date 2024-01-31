@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <lanelet2_extension/autoware_lanelet2_validation/validators/missing_regulatory_elements.hpp>
+#include "lanelet2_extension/autoware_lanelet2_validation/validators/missing_regulatory_elements.hpp"
 
 #include <gtest/gtest.h>
 
@@ -138,7 +138,7 @@ TEST_F(TestSuite, ValidatorAvailability)  // NOLINT for gtest
 {
   lanelet::validation::Strings validators = lanelet::validation::availabeChecks(
     lanelet::validation::MissingRegulatoryElementsChecker::name());
-  unsigned int expected_num_validators = 1;
+  uint8_t expected_num_validators = 1;
   EXPECT_EQ(expected_num_validators, validators.size());
   for (const auto & v : validators) {
     EXPECT_EQ(lanelet::validation::MissingRegulatoryElementsChecker::name(), v);
@@ -156,7 +156,7 @@ TEST_F(TestSuite, MissingRegulatoryElementOfTrafficLight)  // NOLINT for gtest
 
   const auto & issues = checker_.operator()(*test_map_ptr);
 
-  unsigned int expected_num_issues = 1;
+  uint8_t expected_num_issues = 1;
   static constexpr const char * expected_message = "Traffic light must have a regulatory element.";
   EXPECT_EQ(expected_num_issues, issues.size());
   for (const auto & issue : issues) {
@@ -181,7 +181,7 @@ TEST_F(TestSuite, MissingRegulatoryElementOfCrosswalk)  // NOLINT for gtest
 
   const auto & issues = checker_.operator()(*test_map_ptr);
 
-  unsigned int expected_num_issues = 1;
+  uint8_t expected_num_issues = 1;
   static constexpr const char * expected_message = "Crosswalk must have a regulatory element.";
   EXPECT_EQ(expected_num_issues, issues.size());
   for (const auto & issue : issues) {

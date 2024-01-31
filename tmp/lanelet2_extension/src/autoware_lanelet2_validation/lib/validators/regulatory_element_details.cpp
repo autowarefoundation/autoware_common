@@ -1,4 +1,4 @@
-#include <lanelet2_extension/autoware_lanelet2_validation/validators/regulatory_element_details.hpp>
+#include "lanelet2_extension/autoware_lanelet2_validation/validators/regulatory_element_details.hpp"
 
 namespace lanelet
 {
