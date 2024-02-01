@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "lanelet2_extension/autoware_lanelet2_validation/validators/missing_regulatory_elements.hpp"
+#include "lanelet2_extension/autoware_lanelet2_validation/vals/missing_regulatory_elements.hpp"
 
 namespace lanelet
 {
@@ -56,7 +56,7 @@ MissingRegulatoryElementsChecker::checkMissingReglatoryElementsInTrafficLight(
                        const auto & it = attrs.find(lanelet::AttributeName::Subtype);
                        const auto & params = elem->getParameters();
                        return it != attrs.end() &&
-                              it->second == lanelet::AttributeValueString::TrafficLight and
+                              it->second == lanelet::AttributeValueString::TrafficLight &&
                               params.find(lanelet::RoleNameString::Refers) != params.end();
                      });
   // Get all line strings of traffic light referred by regulatory elements

@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALS__MISSING_REGULATORY_ELEMENTS_HPP_
+#define LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALS__MISSING_REGULATORY_ELEMENTS_HPP_
+
 #include "lanelet2_extension/autoware_lanelet2_validation/utils.hpp"
 #include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
 
@@ -45,3 +48,5 @@ private:
 };
 }  // namespace validation
 }  // namespace lanelet
+
+#endif  // LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALIDATORS__MISSING_REGULATORY_ELEMENTS_HPP_
