@@ -64,6 +64,14 @@ target_link_libraries(lanelet2_extension_sample
   lanelet2_extension_lib
 )
 
+ament_auto_add_executable(simple_lanelet2_validation src/validation.cpp)
+add_dependencies(simple_lanelet2_validation lanelet2_extension_lib)
+target_link_libraries(simple_lanelet2_validation
+  ${catkin_LIBRARIES}
+  ${PUGIXML_LIBRARIES}
+  lanelet2_extension_lib
+)
+
 ament_auto_add_executable(check_right_of_way src/check_right_of_way.cpp)
 add_dependencies(check_right_of_way lanelet2_extension_lib)
 target_link_libraries(check_right_of_way
