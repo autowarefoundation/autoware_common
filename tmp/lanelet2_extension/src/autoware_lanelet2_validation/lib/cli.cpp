@@ -40,7 +40,8 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
        "routing_graph.* to run all checks for the routing graph")
 
         ("projector,p", po::value(&config.projector_type)->composing(),
-         "Participants for which the routing graph will be instanciated (default: vehicle)")
+         "Projector used for loading lanelet map. Available projectors are: mgrs, utm, "
+         "transverse_mercator. (default: mgrs)")
 
           ("location,l",
            po::value(&validation_config.location)->default_value(validation_config.location),
@@ -52,14 +53,16 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
               ("lat",
                po::value(&validation_config.origin.lat)
                  ->default_value(validation_config.origin.lat),
-               "latitude coordinate of map origin")
+               "latitude coordinate of map origin. This is reguired for the transverse mercator "
+               "and utm projector.")
 
                 ("lon",
                  po::value(&validation_config.origin.lon)
                    ->default_value(validation_config.origin.lon),
-                 "longitude coofdinate of map origin")
+                 "longitude coofdinate of map origin. This is reguired for the transverse mercator "
+                 "and utm projector.")
 
-                  ("print", "Only print the checks that will be run, but dont run them");
+                  ("print", "Only print all avalible checker, but dont run them");
   po::variables_map vm;
   po::positional_options_description pos;
   pos.add("map_file", 1);
@@ -74,8 +77,9 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
   if (
     (vm.count("lat") != 0 && vm.count("lon") != 0) &&
     (config.projector_type == "tm" || config.projector_type == "utm")) {
-    std::cerr << "lat and lon were not set, but are required for the " << config.projector_type
-              << " projector\n";
+    throw std::runtime_error(
+      "latitude and longitude were not set, but these are required for " + config.projector_type +
+      " projector. Please refer to the help message.");
   }
   if (config.command_line_config.help) {
     std::cout << '\n' << desc;
