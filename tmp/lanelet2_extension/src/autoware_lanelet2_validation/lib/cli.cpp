@@ -79,7 +79,7 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
     (vm.count("lat") != 0 && vm.count("lon") != 0) &&
     (config.projector_type == "tm" || config.projector_type == "utm")) {
     throw std::runtime_error(
-      "latitude and longitude were not set, but these are required for " + config.projector_type +
+      "Please set latitude and longitude. These are required for " + config.projector_type +
       " projector. Please refer to the help message.");
   }
   if (config.command_line_config.help) {
