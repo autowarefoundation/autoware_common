@@ -91,11 +91,51 @@ Currently it contains following conversions:
 Code for this explains how this lanelet2_extension library is used.
 The executable is not meant to do anything.
 
-### autoware_lanelet2_extension
+### simple_lanelet2_validation
 
 This node checks if an .osm file follows the Autoware version of Lanelet2 format.
 You can check by running:
 
 ```sh
-ros2 run lanelet2_extension autoware_lanelet2_validation --ros-args -p map_file:=<path/to/map.osm>
+ros2 run lanelet2_extension simple_lanelet2_validation --ros-args -p map_file:=<path/to/map.osm>
 ```
+
+### autoware_lanelet2_validation
+
+This node validates if the provided lanelet2 map is usable with Autoware.
+You can check by running:
+
+```sh
+ros2 run lanelet2_extension autoware_lanelet2_validation --map_file <path/to/map.osm> --validator <validator name>
+```
+
+Example:
+```sh
+ros2 run lanelet2_extension autoware_lanelet2_validation --map_file ~/autoware_map/sample-map-planning/lanelet2_map.osm --validator mapping.missing_regulatory_elements
+```
+
+Output of above example:
+```
+Set to default projector: MGRS projector
+Error: linestring 9776 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 9774 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 9771 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 9769 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 340 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 342 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 345 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: linestring 347 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: lanelet 163 Crosswalk must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: lanelet 164 Crosswalk must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: lanelet 165 Crosswalk must have a regulatory element. [mapping.missing_regulatory_elements]
+Error: lanelet 166 Crosswalk must have a regulatory element. [mapping.missing_regulatory_elements]
+```
+
+For more information, please refer to help. You can check by running:
+```sh
+ros2 run lanelet2_extension autoware_lanelet2_validation --help
+```
+
+#### Avalilable validators
+##### mapping.missing_regulatory_elements
+This validate if given lanelet2 map has the traffic light or crosswalk which is not associated with a regulatory element.
