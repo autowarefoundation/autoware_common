@@ -50,5 +50,5 @@ int main(int argc, char * argv[])
 
   auto issues = lanelet::autoware::validation::validateMap(config);
   lanelet::validation::printAllIssues(issues);
-  return int(!issues.empty());
+  return static_cast<int>(!issues.empty());
 }
