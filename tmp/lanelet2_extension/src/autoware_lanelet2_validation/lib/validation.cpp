@@ -42,7 +42,6 @@ std::vector<lanelet::validation::DetectedIssues> validateMap(const MetaConfig & 
   const auto & cm_config = config.command_line_config;
   const auto & val_config = config.command_line_config.validationConfig;
 
-  using namespace std::string_literals;
   const auto & parse_filter = [](const std::string & str) {
     std::vector<std::regex> regexes;
     std::stringstream ss(str);
