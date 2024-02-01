@@ -110,11 +110,13 @@ ros2 run lanelet2_extension autoware_lanelet2_validation --map_file <path/to/map
 ```
 
 Example:
+
 ```sh
 ros2 run lanelet2_extension autoware_lanelet2_validation --map_file ~/autoware_map/sample-map-planning/lanelet2_map.osm --validator mapping.missing_regulatory_elements
 ```
 
 Output of above example:
+
 ```
 Set to default projector: MGRS projector
 Error: linestring 9776 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
@@ -132,10 +134,13 @@ Error: lanelet 166 Crosswalk must have a regulatory element. [mapping.missing_re
 ```
 
 For more information, please refer to help. You can check by running:
+
 ```sh
 ros2 run lanelet2_extension autoware_lanelet2_validation --help
 ```
 
 #### Avalilable validators
+
 ##### mapping.missing_regulatory_elements
+
 This validate if given lanelet2 map has the traffic light or crosswalk which is not associated with a regulatory element.
