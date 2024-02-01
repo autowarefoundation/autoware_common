@@ -32,10 +32,11 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
     "available:");
   desc.add_options()("help,h", "this help message")
 
-    ("map_file", po::value<std::string>(), "Path to the map to be validated")
+    ("map_file,m", po::value<std::string>(), "Path to the map to be validated")
 
-      ("filter,f", po::value(&validation_config.checksFilter),
-       "Comma separated list of regexes to filter the applicable tests. Will run all tests by "
+      ("validator,v", po::value(&validation_config.checksFilter),
+       "Comma separated list of regexes to filter the applicable validators. Will run all "
+       "validators by "
        "default. Example: "
        "routing_graph.* to run all checks for the routing graph")
 
