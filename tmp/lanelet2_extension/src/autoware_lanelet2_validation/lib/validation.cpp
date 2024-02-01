@@ -24,18 +24,16 @@ namespace validation
 std::unique_ptr<lanelet::Projector> getProjector(const MetaConfig & config)
 {
   const auto & val_config = config.command_line_config.validationConfig;
-  if (config.projector_type == projector_names::transverse_mercator) {
+  if (config.projector_type == projector_names::mgrs) {
+    return std::make_unique<lanelet::projection::MGRSProjector>();
+  } else if (config.projector_type == projector_names::transverse_mercator) {
     return std::make_unique<lanelet::projection::TransverseMercatorProjector>(
       lanelet::Origin{val_config.origin});
-  } else if (config.projector_type == projector_names::mgrs) {
-    return std::make_unique<lanelet::projection::MGRSProjector>();
   } else if (config.projector_type == projector_names::utm) {
     return std::make_unique<lanelet::projection::UtmProjector>(lanelet::Origin{val_config.origin});
   } else {
-    std::cerr << "Unknown projector type: " << config.projector_type << "'\n";
-    std::cerr << "Set to default projector: Transverse Mercator projector" << std::endl;
-    return std::make_unique<lanelet::projection::TransverseMercatorProjector>(
-      lanelet::Origin{val_config.origin});
+    std::cerr << "Set to default projector: MGRS projector" << std::endl;
+    return std::make_unique<lanelet::projection::MGRSProjector>();
   }
 }
 

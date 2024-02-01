@@ -71,6 +71,12 @@ MetaConfig parseCommandLine(int argc, const char * argv[])
     config.command_line_config.mapFile =
       vm["map_file"].as<decltype(config.command_line_config.mapFile)>();
   }
+  if (
+    (vm.count("lat") != 0 && vm.count("lon") != 0) &&
+    (config.projector_type == "tm" || config.projector_type == "utm")) {
+    std::cerr << "lat and lon were not set, but are required for the " << config.projector_type
+              << " projector\n";
+  }
   if (config.command_line_config.help) {
     std::cout << '\n' << desc;
   } else if (config.command_line_config.mapFile.empty() && !config.command_line_config.print) {
