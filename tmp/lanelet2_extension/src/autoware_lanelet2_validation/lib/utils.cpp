@@ -27,7 +27,7 @@ void appendIssues(
 }
 void appendIssues(lanelet::validation::Issues & to, lanelet::validation::Issues && from)
 {
-  to.insert(to.end(), from.begin(), from.end());
+  to.insert(to.end(), std::make_move_iterator(from.begin()), std::make_move_iterator(from.end()));
 }
 
 }  // namespace validation
