@@ -12,11 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__CLI_HPP_
+#define LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__CLI_HPP_
+
 #include <boost/program_options.hpp>
 
 #include <lanelet2_validation/Cli.h>
 
 #include <iostream>
+#include <string>
 
 namespace lanelet
 {
@@ -35,3 +39,5 @@ MetaConfig parseCommandLine(int argc, const char * argv[]);
 }  // namespace validation
 }  // namespace autoware
 }  // namespace lanelet
+
+#endif  // LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__CLI_HPP_

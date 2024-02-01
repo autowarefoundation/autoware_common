@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALIDATION_HPP_
+#define LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALIDATION_HPP_
+
 #include "lanelet2_extension/autoware_lanelet2_validation/cli.hpp"
 #include "lanelet2_extension/autoware_lanelet2_validation/utils.hpp"
 #include "lanelet2_extension/projection/mgrs_projector.hpp"
@@ -22,7 +25,9 @@
 #include <lanelet2_validation/Cli.h>
 #include <lanelet2_validation/Validation.h>
 
+#include <memory>
 #include <regex>
+#include <vector>
 
 namespace
 {
@@ -45,3 +50,5 @@ std::vector<lanelet::validation::DetectedIssues> validateMap(const MetaConfig & 
 }  // namespace validation
 }  // namespace autoware
 }  // namespace lanelet
+
+#endif  // LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALIDATION_HPP_

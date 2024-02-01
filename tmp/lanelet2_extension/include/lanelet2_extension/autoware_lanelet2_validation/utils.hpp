@@ -12,8 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__UTILS_HPP_
+#define LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__UTILS_HPP_
+
 #include <lanelet2_validation/Validation.h>
 #include <lanelet2_validation/ValidatorFactory.h>
+
+#include <string>
+#include <vector>
 
 namespace lanelet
 {
@@ -29,3 +35,5 @@ void appendIssues(lanelet::validation::Issues & to, lanelet::validation::Issues 
 
 }  // namespace validation
 }  // namespace lanelet
+
+#endif  // LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__UTILS_HPP_
