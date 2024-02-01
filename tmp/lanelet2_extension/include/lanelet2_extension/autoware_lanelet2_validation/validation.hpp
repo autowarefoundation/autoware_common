@@ -31,7 +31,6 @@ namespace projector_names
 constexpr const char * mgrs = "mgrs";
 constexpr const char * transverse_mercator = "transverse_mercator";
 constexpr const char * utm = "utm";
-constexpr const char * local = "local";
 }  // namespace projector_names
 }  // namespace
 
