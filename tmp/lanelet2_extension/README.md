@@ -117,7 +117,7 @@ ros2 run lanelet2_extension autoware_lanelet2_validation --map_file ~/autoware_m
 
 Output of above example:
 
-```
+```sh
 Set to default projector: MGRS projector
 Error: linestring 9776 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
 Error: linestring 9774 Traffic light must have a regulatory element. [mapping.missing_regulatory_elements]
