@@ -155,6 +155,8 @@ void DetectionArea::removeStopLine()
   parameters()[RoleName::RefLine] = {};
 }
 
+RegisterRegulatoryElement<DetectionArea> regDetectionArea;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

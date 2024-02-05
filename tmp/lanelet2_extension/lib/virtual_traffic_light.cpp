@@ -60,6 +60,8 @@ VirtualTrafficLight::VirtualTrafficLight(
 {
 }
 
+RegisterRegulatoryElement<VirtualTrafficLight> regVirtualTrafficLight;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

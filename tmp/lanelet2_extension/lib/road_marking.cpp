@@ -75,6 +75,8 @@ void RoadMarking::removeRoadMarking()
   parameters()[RoleName::Refers] = {};
 }
 
+RegisterRegulatoryElement<RoadMarking> regRoadMarking;
+
 }  // namespace lanelet::autoware
 
 // NOLINTEND(readability-identifier-naming)

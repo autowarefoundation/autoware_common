@@ -77,15 +77,15 @@ public:
   void removeStopLine();
 
 private:
-  // the following lines are required so that lanelet2 can create this object
-  // when loading a map with this regulatory element
-  friend class lanelet::RegisterRegulatoryElement<NoStoppingArea>;
   NoStoppingArea(
     Id id, const AttributeMap & attributes, const Polygons3d & no_stopping_area,
     const Optional<LineString3d> & stopLine);
+
+  // the following lines are required so that lanelet2 can create this object
+  // when loading a map with this regulatory element
+  friend class RegisterRegulatoryElement<NoStoppingArea>;
   explicit NoStoppingArea(const lanelet::RegulatoryElementDataPtr & data);
 };
-static lanelet::RegisterRegulatoryElement<NoStoppingArea> regNoStoppingArea;
 
 }  // namespace lanelet::autoware
 
