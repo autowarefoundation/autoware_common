@@ -23,6 +23,8 @@
 
 namespace lanelet
 {
+namespace autoware
+{
 namespace validation
 {
 std::vector<std::regex> parseFilterString(const std::string & str);
@@ -34,6 +36,7 @@ void appendIssues(
 void appendIssues(lanelet::validation::Issues & to, lanelet::validation::Issues && from);
 
 }  // namespace validation
+}  // namespace autoware
 }  // namespace lanelet
 
 #endif  // LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__UTILS_HPP_

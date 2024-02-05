@@ -16,6 +16,8 @@
 
 namespace lanelet
 {
+namespace autoware
+{
 namespace validation
 {
 
@@ -31,4 +33,5 @@ void appendIssues(lanelet::validation::Issues & to, lanelet::validation::Issues 
 }
 
 }  // namespace validation
+}  // namespace autoware
 }  // namespace lanelet

@@ -30,8 +30,10 @@ lanelet::validation::Issues MissingRegulatoryElementsChecker::operator()(
   lanelet::validation::Issues issues;
 
   // Append issues found by each validator
-  appendIssues(issues, checkMissingReglatoryElementsInTrafficLight(map));
-  appendIssues(issues, checkMissingReglatoryElementsInCrosswalk(map));
+  lanelet::autoware::validation::appendIssues(
+    issues, checkMissingReglatoryElementsInTrafficLight(map));
+  lanelet::autoware::validation::appendIssues(
+    issues, checkMissingReglatoryElementsInCrosswalk(map));
   return issues;
 }
 
