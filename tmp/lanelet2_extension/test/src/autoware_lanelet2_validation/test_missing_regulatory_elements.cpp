@@ -191,3 +191,25 @@ TEST_F(TestSuite, MissingRegulatoryElementOfCrosswalk)  // NOLINT for gtest
     EXPECT_EQ(lanelet::validation::Primitive::Lanelet, issue.primitive);
   }
 }
+
+TEST_F(TestSuite, MissingRegulatoryElementOfStopLine)  // NOLINT for gtest
+{
+  // Check missing regulatory element of stop line
+
+  const auto & sl_no_reg_elem = LineString3d(
+    99999, {Point3d(getId(), 0.0, 3.0, 5.0), Point3d(getId(), 0.0, 4.0, 5.0)}, sl_attr_);
+  LaneletMapPtr test_map_ptr = lanelet::utils::createMap({sl_no_reg_elem});
+  addTestMap(test_map_ptr);
+
+  const auto & issues = checker_(*test_map_ptr);
+
+  uint8_t expected_num_issues = 1;
+  static constexpr const char * expected_message = "Stop Line must have a regulatory element.";
+  EXPECT_EQ(expected_num_issues, issues.size());
+  for (const auto & issue : issues) {
+    EXPECT_EQ(99999, issue.id);
+    EXPECT_EQ(expected_message, issue.message);
+    EXPECT_EQ(lanelet::validation::Severity::Error, issue.severity);
+    EXPECT_EQ(lanelet::validation::Primitive::LineString, issue.primitive);
+  }
+}

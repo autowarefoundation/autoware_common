@@ -44,6 +44,8 @@ private:
     const lanelet::LaneletMap & map);
   lanelet::validation::Issues checkMissingReglatoryElementsInCrosswalk(
     const lanelet::LaneletMap & map);
+  lanelet::validation::Issues checkMissingReglatoryElementsInStopLine(
+    const lanelet::LaneletMap & map);
   std::set<lanelet::Id> tl_elem_with_cw_;
 };
 }  // namespace validation

@@ -34,6 +34,7 @@ lanelet::validation::Issues MissingRegulatoryElementsChecker::operator()(
     issues, checkMissingReglatoryElementsInTrafficLight(map));
   lanelet::autoware::validation::appendIssues(
     issues, checkMissingReglatoryElementsInCrosswalk(map));
+  lanelet::autoware::validation::appendIssues(issues, checkMissingReglatoryElementsInStopLine(map));
   return issues;
 }
 
@@ -136,6 +137,53 @@ MissingRegulatoryElementsChecker::checkMissingReglatoryElementsInCrosswalk(
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::Lanelet, cw_id,
         "Crosswalk must have a regulatory element.");
+    }
+  }
+
+  return issues;
+}
+
+lanelet::validation::Issues
+MissingRegulatoryElementsChecker::checkMissingReglatoryElementsInStopLine(
+  const lanelet::LaneletMap & map)
+{
+  lanelet::validation::Issues issues;
+
+  // Get all line strings whose type is stop line
+  auto sl_ids = map.lineStringLayer | ranges::views::filter([](auto && ls) {
+                  const auto & attrs = ls.attributes();
+                  const auto & it = attrs.find(lanelet::AttributeName::Type);
+                  return it != attrs.end() && it->second == lanelet::AttributeValueString::StopLine;
+                }) |
+                ranges::views::transform([](auto && ls) { return ls.id(); }) |
+                ranges::views::unique;
+
+  // Filter regulatory elements whose refline type is stop line
+  auto reg_elem_sl = map.regulatoryElementLayer | ranges::views::filter([](auto && elem) {
+                       const auto & params = elem->getParameters();
+                       return params.find(lanelet::RoleNameString::RefLine) != params.end();
+                     });
+
+  // Get all line strings of stop line referred by regulatory elements
+  std::set<lanelet::Id> sl_ids_reg_elem;
+  for (const auto & elem : reg_elem_sl) {
+    const auto & ref_lines =
+      elem->getParameters<lanelet::ConstLineString3d>(lanelet::RoleName::RefLine);
+    for (const auto & ref_line : ref_lines) {
+      const auto & attrs = ref_line.attributes();
+      const auto & it = attrs.find(lanelet::AttributeName::Type);
+      if (it != attrs.end() && it->second == lanelet::AttributeValueString::StopLine) {
+        sl_ids_reg_elem.insert(ref_line.id());
+      }
+    }
+  }
+
+  // Check if all line strings of stop line referred by regulatory elements
+  for (const auto & sl_id : sl_ids) {
+    if (sl_ids_reg_elem.find(sl_id) == sl_ids_reg_elem.end()) {
+      issues.emplace_back(
+        lanelet::validation::Severity::Error, lanelet::validation::Primitive::LineString, sl_id,
+        "Stop Line must have a regulatory element.");
     }
   }
 
