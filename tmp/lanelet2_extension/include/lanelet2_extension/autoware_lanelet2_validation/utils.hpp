@@ -33,6 +33,51 @@ void appendIssues(std::vector<T> & to, std::vector<T> && from)
   to.insert(to.end(), std::make_move_iterator(from.begin()), std::make_move_iterator(from.end()));
 }
 
+template <typename T>
+void checkPrimitivesType(
+  std::vector<T> & in_vec, const std::string & expected_type,
+  const lanelet::validation::Issue & issue, lanelet::validation::Issues & issues)
+{
+  for (auto iter = in_vec.begin(); iter != in_vec.end(); ++iter) {
+    const auto & item = *iter;
+    const auto & attrs = item.attributes();
+    const auto & it = attrs.find(lanelet::AttributeName::Type);
+    if (it == attrs.end() || it->second != expected_type) {
+      issues.emplace_back(issue.severity, issue.primitive, item.id(), issue.message);
+      const auto new_it = in_vec.erase(iter);
+      if (new_it != in_vec.end()) {
+        iter = new_it;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
+template <typename T>
+void checkPrimitivesType(
+  std::vector<T> & in_vec, const std::string & expected_type, const std::string & expected_subtype,
+  const lanelet::validation::Issue & issue, lanelet::validation::Issues & issues)
+{
+  for (auto iter = in_vec.begin(); iter != in_vec.end(); ++iter) {
+    const auto & item = *iter;
+    const auto & attrs = item.attributes();
+    const auto & it = attrs.find(lanelet::AttributeName::Type);
+    const auto & it_sub = attrs.find(lanelet::AttributeName::Subtype);
+    if (
+      it == attrs.end() || it->second != expected_type || it_sub == attrs.end() ||
+      it_sub->second != expected_subtype) {
+      issues.emplace_back(issue.severity, issue.primitive, item.id(), issue.message);
+      const auto new_it = in_vec.erase(iter);
+      if (new_it != in_vec.end()) {
+        iter = new_it;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
 }  // namespace validation
 }  // namespace autoware
 }  // namespace lanelet

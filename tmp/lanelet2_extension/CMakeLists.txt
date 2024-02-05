@@ -125,6 +125,7 @@ if(BUILD_TESTING)
   endfunction()
 
   add_validation_test(missing_regulatory_elements)
+  add_validation_test(regulatory_element_details)
 endif()
 
 ament_auto_package()
