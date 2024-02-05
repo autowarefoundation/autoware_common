@@ -24,7 +24,7 @@ namespace lanelet::localization
 {
 
 std::vector<lanelet::Polygon3d> parseLandmarkPolygons(
-  const autoware_auto_mapping_msgs::msg::HADMapBin::ConstSharedPtr & msg,
+  const autoware_map_msgs::msg::LaneletMapBin::ConstSharedPtr & msg,
   const std::string & target_subtype)
 {
   lanelet::LaneletMapPtr lanelet_map_ptr{std::make_shared<lanelet::LaneletMap>()};

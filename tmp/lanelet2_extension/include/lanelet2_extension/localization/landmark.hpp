@@ -15,7 +15,7 @@
 #ifndef LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
 #define LANELET2_EXTENSION__LOCALIZATION__LANDMARK_HPP_
 
-#include "autoware_auto_mapping_msgs/msg/had_map_bin.hpp"
+#include <autoware_map_msgs/msg/lanelet_map_bin.hpp>
 
 #include <lanelet2_core/primitives/Polygon.h>
 
@@ -28,7 +28,7 @@ namespace lanelet::localization
 {
 
 std::vector<lanelet::Polygon3d> parseLandmarkPolygons(
-  const autoware_auto_mapping_msgs::msg::HADMapBin::ConstSharedPtr & msg,
+  const autoware_map_msgs::msg::LaneletMapBin::ConstSharedPtr & msg,
   const std::string & target_subtype);
 
 }  // namespace lanelet::localization
