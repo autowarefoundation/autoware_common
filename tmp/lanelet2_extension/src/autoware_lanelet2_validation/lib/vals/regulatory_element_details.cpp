@@ -72,7 +72,7 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of traffic light must have a traffic light(refers).");
     }
-    // TODO: Check correct behavior if regulatory element has two or more traffic light
+    // TODO(sgk-000): Check correct behavior if regulatory element has two or more traffic light
     //  else if (refers.size() != 1) {
     //   issues.emplace_back(
     //     lanelet::validation::Severity::Error,
@@ -138,9 +138,8 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
       issues.emplace_back(
         lanelet::validation::Severity::Warning, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of cross walk is nice to have crosswalk_polygon.");
-    }
-    // Report warning if regulatory element has two or more crosswalk polygon
-    else if (crosswalk_polygons.size() > 1) {
+    } else if (crosswalk_polygons.size() > 1) {  // Report warning if regulatory element has two or
+                                                 // more crosswalk polygon
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of cross walk must have only one crosswalk_polygon.");
@@ -156,9 +155,8 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of cross walk must have lanelet of crosswalk(refers).");
-    }
-    // Report error if regulatory element has two or more lanelet of crosswalk
-    else if (refers.size() > 1) {
+    } else if (refers.size() > 1) {  // Report error if regulatory element has two or more lanelet
+                                     // of crosswalk
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(),

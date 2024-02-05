@@ -30,9 +30,6 @@ namespace validation
 #ifndef LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALS__REGULATORY_ELEMENT_DETAILS_HPP_
 #define LANELET2_EXTENSION__AUTOWARE_LANELET2_VALIDATION__VALS__REGULATORY_ELEMENT_DETAILS_HPP_
 
-// TODO: update description
-//! This check looks for points within linestrings or polygons that appear two times in succession.
-//! These are not allowed because they often confuse geometry algorithms.
 class RegulatoryElementDetailsChecker : public lanelet::validation::MapValidator
 {
 public:
