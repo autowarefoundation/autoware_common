@@ -27,13 +27,11 @@ namespace autoware
 {
 namespace validation
 {
-std::vector<std::regex> parseFilterString(const std::string & str);
-
-void appendIssues(
-  std::vector<lanelet::validation::DetectedIssues> & to,
-  std::vector<lanelet::validation::DetectedIssues> && from);
-
-void appendIssues(lanelet::validation::Issues & to, lanelet::validation::Issues && from);
+template <typename T>
+void appendIssues(std::vector<T> & to, std::vector<T> && from)
+{
+  to.insert(to.end(), std::make_move_iterator(from.begin()), std::make_move_iterator(from.end()));
+}
 
 }  // namespace validation
 }  // namespace autoware
