@@ -65,7 +65,7 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
       lanelet::utils::getId(),
       "Refline of traffic light regulatory element must have type of stop_line.");
     lanelet::autoware::validation::checkPrimitivesType(
-      ref_lines, lanelet::AttributeValueString::StopLine, issue_tl, issues);
+      ref_lines, lanelet::AttributeValueString::StopLine, issue_sl, issues);
 
     if (refers.empty()) {
       issues.emplace_back(
@@ -94,7 +94,7 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
   const lanelet::LaneletMap & map)
 {
   lanelet::validation::Issues issues;
-  // filter elem whose Subtype is crosswalk and has crosswalk polygon
+  // filter elem whose Subtype is crosswalk
   auto elems = map.regulatoryElementLayer | ranges::views::filter([](auto && elem) {
                  const auto & attrs = elem->attributes();
                  const auto & it = attrs.find(lanelet::AttributeName::Subtype);
@@ -138,7 +138,7 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
       issues.emplace_back(
         lanelet::validation::Severity::Warning, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of cross walk is nice to have crosswalk_polygon.");
-    } else if (crosswalk_polygons.size() > 1) {  // Report warning if regulatory element has two or
+    } else if (crosswalk_polygons.size() > 1) {  // Report error if regulatory element has two or
                                                  // more crosswalk polygon
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
