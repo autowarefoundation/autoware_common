@@ -80,6 +80,7 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
     //     traffic light must have only one traffic light(refers).");
     // }
 
+    // TODO(sgk-000): Check if regulatory element of traffic light must have stop line or crosswalk
     // Report error if regulatory element does not have stop line and crosswalk
     if (ref_lines.empty() && tl_elem_with_cw_.find(elem->id()) == tl_elem_with_cw_.end()) {
       issues.emplace_back(
