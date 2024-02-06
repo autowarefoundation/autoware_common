@@ -150,10 +150,13 @@ TEST_F(TestSuite, RegulatoryElementofTrafficLightWithoutTrafficLight)  // NOLINT
   // Check regulatory element of traffic light without traffic light
 
   RegulatoryElementPtr tl_reg_elem_no_tl;
-  const auto & tl = LineString3d(99998, {});
-  LaneletMapPtr test_map_ptr = lanelet::utils::createMap({tl});
+  // Line string without traffic light attribute
+  const auto & ls = LineString3d(99998, {});
+  LaneletMapPtr test_map_ptr = lanelet::utils::createMap({ls});
+  // Traffic light regulatory element without traffic light. It refers to the line string without
+  // traffic light attribute.
   tl_reg_elem_no_tl = TrafficLight::make(
-    99999, tl_re_attr, {tl},
+    99999, tl_re_attr, {ls},
     {LineString3d(
       getId(), {Point3d(getId(), 3.0, 3.0, 0.1), Point3d(getId(), 3.0, 4.0, 0.1)}, sl_attr)});
   test_map_ptr->add(tl_reg_elem_no_tl);
@@ -187,24 +190,37 @@ TEST_F(TestSuite, RegulatoryElementofTrafficLightWithoutStopLine)  // NOLINT for
   // Check regulatory element of traffic light without stop line
 
   RegulatoryElementPtr tl_reg_elem_no_sl;
+  // Line string without stop line attribute
+  const auto & ls = LineString3d(99998, {});
   const auto & tl = LineString3d(
     getId(), {Point3d(getId(), 0.0, 3.0, 5.0), Point3d(getId(), 0.0, 4.0, 5.0)}, tl_attr);
   LaneletMapPtr test_map_ptr = lanelet::utils::createMap({tl});
-  tl_reg_elem_no_sl = TrafficLight::make(99999, tl_re_attr, {tl}, {});
+  // Traffic light regulatory element without stop line. It refers to the line string without stop
+  // line attribute.
+  tl_reg_elem_no_sl = TrafficLight::make(99999, tl_re_attr, {tl}, {ls});
   test_map_ptr->add(tl_reg_elem_no_sl);
   addTestMap(test_map_ptr);
 
   const auto & issues = checker_(*test_map_ptr);
 
-  uint8_t expected_num_issues = 1;
-  static constexpr const char * expected_message =
+  uint8_t expected_num_issues = 2;
+  static constexpr const char * expected_message1 =
+    "Refline of traffic light regulatory element must have type of stop_line.";
+  static constexpr const char * expected_message2 =
     "Regulatory element of traffic light must have a stop line(ref_line).";
   EXPECT_EQ(expected_num_issues, issues.size());
   for (const auto & issue : issues) {
-    EXPECT_EQ(expected_message, issue.message);
-    EXPECT_EQ(99999, issue.id);
-    EXPECT_EQ(lanelet::validation::Severity::Error, issue.severity);
-    EXPECT_EQ(lanelet::validation::Primitive::RegulatoryElement, issue.primitive);
+    if (issue.id == 99998) {
+      EXPECT_EQ(expected_message1, issue.message);
+      EXPECT_EQ(lanelet::validation::Severity::Error, issue.severity);
+      EXPECT_EQ(lanelet::validation::Primitive::LineString, issue.primitive);
+    } else if (issue.id == 99999) {
+      EXPECT_EQ(expected_message2, issue.message);
+      EXPECT_EQ(lanelet::validation::Severity::Error, issue.severity);
+      EXPECT_EQ(lanelet::validation::Primitive::RegulatoryElement, issue.primitive);
+    } else {
+      FAIL() << "Unexpected issue id: " << issue.id;
+    }
   }
 }
 
@@ -219,6 +235,8 @@ TEST_F(TestSuite, RegulatoryElementOfCrosswalkWithoutPolygon)  // NOLINT for gte
     LineString3d(getId(), {Point3d(getId(), 3.0, 1.0, 0.1), Point3d(getId(), 3.0, 2.0, 0.1)}),
     cw_attr);
 
+  // Crosswalk regulatory element without cross walk polygon. It refers to the polygon without cross
+  // walk polygon attribute.
   RegulatoryElementPtr reg_elem = Crosswalk::make(
     99999, cw_re_attr, cw_no_poly, Polygon3d(99998),
     {LineString3d(
@@ -254,13 +272,13 @@ TEST_F(TestSuite, RegulatoryElementOfCrosswalkWithoutStopline)  // NOLINT for gt
 {
   // Check regulatory element of crosswalk without stop line
 
-  RegulatoryElementPtr cw_reg_elem_no_sl;
   Lanelet cw_no_sl = Lanelet(
     getId(),
     LineString3d(getId(), {Point3d(getId(), 3.0, 0.0, 0.1), Point3d(getId(), 3.0, 1.0, 0.1)}),
     LineString3d(getId(), {Point3d(getId(), 3.0, 1.0, 0.1), Point3d(getId(), 3.0, 2.0, 0.1)}),
     cw_attr);
 
+  // Crosswalk regulatory element without stop line.
   RegulatoryElementPtr reg_elem = Crosswalk::make(
     99999, cw_re_attr, cw_no_sl,
     Polygon3d(getId(), {Point3d(getId(), 3.0, 3.0, 0.1)}, cw_poly_attr), {});
@@ -286,17 +304,18 @@ TEST_F(TestSuite, RegulatoryElementOfCrosswalkWithoutCrosswalk)  // NOLINT for g
 {
   // Check regulatory element of crosswalk without crosswalk
 
-  const auto poly_no_cw = Polygon3d(getId(), {Point3d(getId(), 3.0, 3.0, 0.1)}, cw_poly_attr);
+  const auto poly = Polygon3d(getId(), {Point3d(getId(), 3.0, 3.0, 0.1)}, cw_poly_attr);
+  // Lanelet without crosswalk attribute
   const auto ll = Lanelet(
     99998,
     LineString3d(getId(), {Point3d(getId(), 3.0, 0.0, 0.1), Point3d(getId(), 3.0, 1.0, 0.1)}),
     LineString3d(getId(), {Point3d(getId(), 3.0, 1.0, 0.1), Point3d(getId(), 3.0, 2.0, 0.1)}));
-
+  // Crosswalk regulatory element without crosswalk. It refers to the lanelet without crosswalk
   RegulatoryElementPtr reg_elem = Crosswalk::make(
-    99999, cw_re_attr, ll, poly_no_cw,
+    99999, cw_re_attr, ll, poly,
     {LineString3d(
       getId(), {Point3d(getId(), 3.0, 3.0, 0.1), Point3d(getId(), 3.0, 4.0, 0.1)}, sl_attr)});
-  LaneletMapPtr test_map_ptr = lanelet::utils::createMap({poly_no_cw});
+  LaneletMapPtr test_map_ptr = lanelet::utils::createMap({poly});
   addTestMap(test_map_ptr);
   test_map_ptr->add(reg_elem);
 
