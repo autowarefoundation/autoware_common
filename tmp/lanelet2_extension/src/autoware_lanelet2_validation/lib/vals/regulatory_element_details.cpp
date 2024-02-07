@@ -35,6 +35,19 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::operator()(
   return issues;
 }
 
+bool RegulatoryElementDetailsChecker::isPedestrianTrafficLight(
+  const std::vector<lanelet::ConstLineString3d> & traffic_lights)
+{
+  for (const auto & tl : traffic_lights) {
+    const auto & attrs = tl.attributes();
+    const auto & it = attrs.find(lanelet::AttributeName::Subtype);
+    if (it == attrs.end() || it->second != "red_green") {
+      return false;
+    }
+  }
+  return true;
+}
+
 lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElementOfTrafficLight(
   const lanelet::LaneletMap & map)
 {
@@ -52,7 +65,6 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
     auto refers = elem->getParameters<lanelet::ConstLineString3d>(lanelet::RoleName::Refers);
     // Get stop line referred by regulatory element
     auto ref_lines = elem->getParameters<lanelet::ConstLineString3d>(lanelet::RoleName::RefLine);
-
     const auto & issue_tl = lanelet::validation::Issue(
       lanelet::validation::Severity::Error, lanelet::validation::Primitive::LineString,
       lanelet::utils::getId(),
@@ -80,9 +92,9 @@ lanelet::validation::Issues RegulatoryElementDetailsChecker::checkRegulatoryElem
     //     traffic light must have only one traffic light(refers).");
     // }
 
-    // TODO(sgk-000): Check if regulatory element of traffic light must have stop line or crosswalk
-    // Report error if regulatory element does not have stop line and crosswalk
-    if (ref_lines.empty() && tl_elem_with_cw_.find(elem->id()) == tl_elem_with_cw_.end()) {
+    // Report error if regulatory element does not have stop line and this is not a pedestrian
+    // traffic light
+    if (ref_lines.empty() && !isPedestrianTrafficLight(refers)) {
       issues.emplace_back(
         lanelet::validation::Severity::Error, lanelet::validation::Primitive::RegulatoryElement,
         elem->id(), "Regulatory element of traffic light must have a stop line(ref_line).");

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "lanelet2_extension/autoware_lanelet2_validation/utils.hpp"
+#include "lanelet2_extension/regulatory_elements/autoware_traffic_light.hpp"
 #include "lanelet2_extension/regulatory_elements/crosswalk.hpp"
 
 #include <range/v3/view/filter.hpp>
@@ -21,6 +22,7 @@
 #include <lanelet2_validation/Validation.h>
 
 #include <set>
+#include <vector>
 
 namespace lanelet
 {
@@ -38,10 +40,9 @@ public:
   lanelet::validation::Issues operator()(const lanelet::LaneletMap & map) override;
 
 private:
+  bool isPedestrianTrafficLight(const std::vector<lanelet::ConstLineString3d> & traffic_lights);
   lanelet::validation::Issues checkRegulatoryElementOfTrafficLight(const lanelet::LaneletMap & map);
   lanelet::validation::Issues checkRegulatoryElementOfCrosswalk(const lanelet::LaneletMap & map);
-
-  std::set<lanelet::Id> tl_elem_with_cw_;
 };
 }  // namespace validation
 }  // namespace lanelet
