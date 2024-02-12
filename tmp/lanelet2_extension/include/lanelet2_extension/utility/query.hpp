@@ -149,8 +149,12 @@ lanelet::ConstLineStrings3d getAllPartitions(const lanelet::LaneletMapConstPtr &
 // query all fences in lanelet2 map
 lanelet::ConstLineStrings3d getAllFences(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
 
-// query all pedestrian markings in lanelet2 map
-lanelet::ConstLineStrings3d getAllPedestrianMarkings(
+// query all pedestrian polygon markings in lanelet2 map
+lanelet::ConstLineStrings3d getAllPedestrianPolygonMarkings(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
+
+// query all pedestrian line markings in lanelet2 map
+lanelet::ConstLineStrings3d getAllPedestrianLineMarkings(
   const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
 
 // query all parking spaces in lanelet2 map
