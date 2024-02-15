@@ -37,7 +37,7 @@ inline unique_identifier_msgs::msg::UUID generate_uuid()
 }
 inline unique_identifier_msgs::msg::UUID generate_default_uuid()
 {
-  // Generate UUID with all zeros 
+  // Generate UUID with all zeros
   unique_identifier_msgs::msg::UUID default_uuid;
   // Use std::generate to fill the UUID with zeros
   std::generate(default_uuid.uuid.begin(), default_uuid.uuid.end(), []() { return 0; });
