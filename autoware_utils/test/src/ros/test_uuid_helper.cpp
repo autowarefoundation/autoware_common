@@ -29,6 +29,17 @@ TEST(UUIDHelperTest, generate_uuid)
                                << autoware_utils::to_hex_string(uuid2);
 }
 
+TEST(UUIDHelperTest, generate_default_uuid)
+{
+  // Generate two UUIDs and ensure they are all different
+
+  unique_identifier_msgs::msg::UUID default_uuid = autoware_utils::generate_default_uuid();
+  unique_identifier_msgs::msg::UUID zero_uuid;
+  std::fill(zero_uuid.uuid.begin(), zero_uuid.uuid.end(), 0x00);
+
+  EXPECT_EQ(default_uuid, zero_uuid);
+}
+
 TEST(UUIDHelperTest, to_hex_string)
 {
   unique_identifier_msgs::msg::UUID uuid;
