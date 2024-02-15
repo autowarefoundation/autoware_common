@@ -12,54 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #include "autoware_utils/ros/uuid_helper.hpp"
 
-#include <boost/uuid/uuid_generators.hpp> 
-#include <gtest/gtest.h>
+#include <boost/uuid/uuid_generators.hpp>
 
+#include <gtest/gtest.h>
 
 TEST(UUIDHelperTest, generate_uuid)
 {
-    // Generate two UUIDs and ensure they are all different
+  // Generate two UUIDs and ensure they are all different
 
-    unique_identifier_msgs::msg::UUID uuid1 = autoware_utils::generate_uuid();
-    unique_identifier_msgs::msg::UUID uuid2 = autoware_utils::generate_uuid();
+  unique_identifier_msgs::msg::UUID uuid1 = autoware_utils::generate_uuid();
+  unique_identifier_msgs::msg::UUID uuid2 = autoware_utils::generate_uuid();
 
-    EXPECT_FALSE(uuid1 == uuid2) << "Duplicate UUID generated: " << autoware_utils::to_hex_string(uuid2);
+  EXPECT_FALSE(uuid1 == uuid2) << "Duplicate UUID generated: "
+                               << autoware_utils::to_hex_string(uuid2);
 }
 
 TEST(UUIDHelperTest, to_hex_string)
 {
-    unique_identifier_msgs::msg::UUID uuid;
-    // Populate the UUID with some values
-    std::fill(uuid.uuid.begin(), uuid.uuid.end(), 0x42);
+  unique_identifier_msgs::msg::UUID uuid;
+  // Populate the UUID with some values
+  std::fill(uuid.uuid.begin(), uuid.uuid.end(), 0x42);
 
-    std::string hex_string = autoware_utils::to_hex_string(uuid);
+  std::string hex_string = autoware_utils::to_hex_string(uuid);
 
-    // Check if the generated hex string is correct
-    EXPECT_EQ(hex_string, "42424242424242424242424242424242");
+  // Check if the generated hex string is correct
+  EXPECT_EQ(hex_string, "42424242424242424242424242424242");
 }
 
 TEST(UUIDHelperTest, to_boost_uuid)
 {
-    unique_identifier_msgs::msg::UUID uuid;
-    // Populate the UUID with some values
-    std::fill(uuid.uuid.begin(), uuid.uuid.end(), 0x42);
+  unique_identifier_msgs::msg::UUID uuid;
+  // Populate the UUID with some values
+  std::fill(uuid.uuid.begin(), uuid.uuid.end(), 0x42);
 
-    boost::uuids::uuid boost_uuid{};
-    std::fill(boost_uuid.begin(), boost_uuid.end(), 0x42);
+  boost::uuids::uuid boost_uuid{};
+  std::fill(boost_uuid.begin(), boost_uuid.end(), 0x42);
 
-    // Check if the conversion from ROS UUID to Boost UUID is correct
-    EXPECT_TRUE(boost_uuid == autoware_utils::to_boost_uuid(uuid));
+  // Check if the conversion from ROS UUID to Boost UUID is correct
+  EXPECT_TRUE(boost_uuid == autoware_utils::to_boost_uuid(uuid));
 }
 
 TEST(UUIDHelperTest, to_uuid_msg)
 {
-    boost::uuids::random_generator generator;
-    boost::uuids::uuid boost_uuid = generator();
-    unique_identifier_msgs::msg::UUID ros_uuid = autoware_utils::to_uuid_msg(boost_uuid);
+  boost::uuids::random_generator generator;
+  boost::uuids::uuid boost_uuid = generator();
+  unique_identifier_msgs::msg::UUID ros_uuid = autoware_utils::to_uuid_msg(boost_uuid);
 
-    // Check if the conversion from Boost UUID to ROS UUID is correct
-    EXPECT_TRUE(std::equal(boost_uuid.begin(), boost_uuid.end(), ros_uuid.uuid.begin()));
+  // Check if the conversion from Boost UUID to ROS UUID is correct
+  EXPECT_TRUE(std::equal(boost_uuid.begin(), boost_uuid.end(), ros_uuid.uuid.begin()));
 }
