@@ -25,7 +25,7 @@
 
 namespace autoware_utils
 {
-inline unique_identifier_msgs::msg::UUID generateUUID()
+inline unique_identifier_msgs::msg::UUID generate_uuid()
 {
   // Generate random number
   unique_identifier_msgs::msg::UUID uuid;
@@ -35,7 +35,7 @@ inline unique_identifier_msgs::msg::UUID generateUUID()
 
   return uuid;
 }
-inline std::string toHexString(const unique_identifier_msgs::msg::UUID & id)
+inline std::string to_hex_string(const unique_identifier_msgs::msg::UUID & id)
 {
   std::stringstream ss;
   for (auto i = 0; i < 16; ++i) {
@@ -44,14 +44,14 @@ inline std::string toHexString(const unique_identifier_msgs::msg::UUID & id)
   return ss.str();
 }
 
-inline boost::uuids::uuid toBoostUUID(const unique_identifier_msgs::msg::UUID & id)
+inline boost::uuids::uuid to_boost_uuid(const unique_identifier_msgs::msg::UUID & id)
 {
   boost::uuids::uuid boost_uuid{};
   std::copy(id.uuid.begin(), id.uuid.end(), boost_uuid.begin());
   return boost_uuid;
 }
 
-inline unique_identifier_msgs::msg::UUID toUUIDMsg(const boost::uuids::uuid & id)
+inline unique_identifier_msgs::msg::UUID to_uuid_msg(const boost::uuids::uuid & id)
 {
   unique_identifier_msgs::msg::UUID ros_uuid{};
   std::copy(id.begin(), id.end(), ros_uuid.uuid.begin());
