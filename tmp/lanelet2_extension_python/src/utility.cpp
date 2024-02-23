@@ -470,7 +470,9 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
   bp::def("getAllParkingLots", lanelet::utils::query::getAllParkingLots);
   bp::def("getAllPartitions", lanelet::utils::query::getAllPartitions);
   bp::def("getAllFences", lanelet::utils::query::getAllFences);
-  bp::def("getAllPedestrianMarkings", lanelet::utils::query::getAllPedestrianMarkings);
+  bp::def(
+    "getAllPedestrianPolygonMarkings", lanelet::utils::query::getAllPedestrianPolygonMarkings);
+  bp::def("getAllPedestrianLineMarkings", lanelet::utils::query::getAllPedestrianLineMarkings);
   bp::def("getAllParkingSpaces", lanelet::utils::query::getAllParkingSpaces);
 
   bp::def<lanelet::ConstLineStrings3d(
