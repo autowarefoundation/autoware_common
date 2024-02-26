@@ -19,5 +19,6 @@
 #include "autoware_utils/math/normalization.hpp"
 #include "autoware_utils/math/range.hpp"
 #include "autoware_utils/math/unit_conversion.hpp"
+#include "autoware_utils/ros/uuid_helper.hpp"
 
 #endif  // AUTOWARE_UTILS__AUTOWARE_UTILS_HPP_

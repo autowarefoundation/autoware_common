@@ -974,19 +974,21 @@ visualization_msgs::msg::MarkerArray visualization::crosswalkAreasAsMarkerArray(
   return marker_array;
 }
 
-visualization_msgs::msg::MarkerArray visualization::pedestrianMarkingsAsMarkerArray(
-  const lanelet::ConstLineStrings3d & pedestrian_markings, const std_msgs::msg::ColorRGBA & c)
+visualization_msgs::msg::MarkerArray visualization::pedestrianPolygonMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings,
+  const std_msgs::msg::ColorRGBA & c)
 {
   visualization_msgs::msg::MarkerArray marker_array;
-  if (pedestrian_markings.empty()) {
+  if (pedestrian_polygon_markings.empty()) {
     return marker_array;
   }
 
-  visualization_msgs::msg::Marker marker = createPolygonMarker("pedestrian_marking", c);
-  for (const auto & linestring : pedestrian_markings) {
+  visualization_msgs::msg::Marker polygon_marker =
+    createPolygonMarker("pedestrian_polygon_marking", c);
+  for (const auto & linestring : pedestrian_polygon_markings) {
     lanelet::ConstPolygon3d polygon;
     if (utils::lineStringToPolygon(linestring, &polygon)) {
-      pushPolygonMarker(&marker, polygon, c);
+      pushPolygonMarker(&polygon_marker, polygon, c);
     } else {
       RCLCPP_WARN_STREAM(
         rclcpp::get_logger("lanelet2_extension.visualization"),
@@ -994,9 +996,35 @@ visualization_msgs::msg::MarkerArray visualization::pedestrianMarkingsAsMarkerAr
     }
   }
 
-  if (!marker.points.empty()) {
-    marker_array.markers.push_back(marker);
+  if (!polygon_marker.points.empty()) {
+    marker_array.markers.push_back(polygon_marker);
   }
+
+  return marker_array;
+}
+
+visualization_msgs::msg::MarkerArray visualization::pedestrianLineMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_line_markings, const std_msgs::msg::ColorRGBA & c)
+{
+  visualization_msgs::msg::MarkerArray marker_array;
+  if (pedestrian_line_markings.empty()) {
+    return marker_array;
+  }
+
+  const float lss = 0.1;  // line string size
+  visualization_msgs::msg::Marker line_marker;
+  visualization::initLineStringMarker(&line_marker, "map", "pedestrian_line_marking", c);
+
+  for (const auto & linestring : pedestrian_line_markings) {
+    if ((linestring.size() < 3) && (linestring.front().id() != linestring.back().id())) {
+      pushLineStringMarker(&line_marker, linestring, c, lss);
+    }
+  }
+
+  if (!line_marker.points.empty()) {
+    marker_array.markers.push_back(line_marker);
+  }
+
   return marker_array;
 }
 
