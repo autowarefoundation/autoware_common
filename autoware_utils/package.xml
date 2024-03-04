@@ -12,6 +12,7 @@
   <buildtool_depend>autoware_cmake</buildtool_depend>
 
   <depend>builtin_interfaces</depend>
+  <depend>libboost-system-dev</depend>
   <depend>rclcpp</depend>
   <depend>unique_identifier_msgs</depend>
 
