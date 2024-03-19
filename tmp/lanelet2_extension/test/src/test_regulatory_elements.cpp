@@ -20,6 +20,7 @@
 #include <lanelet2_core/Attribute.h>
 #include <lanelet2_core/LaneletMap.h>
 
+#include <boost/optional/optional_io.hpp>
 #include <cmath>
 #include <vector>
 
