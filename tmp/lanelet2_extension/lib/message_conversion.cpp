@@ -58,6 +58,25 @@ void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_auto_mapping_msgs::ms
   msg->data.assign(data_str.begin(), data_str.end());
 }
 
+void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_map_msgs::msg::LaneletMapBin * msg)
+{
+  if (msg == nullptr) {
+    std::cerr << __FUNCTION__ << "msg is null pointer!";
+    return;
+  }
+
+  std::stringstream ss;
+  boost::archive::binary_oarchive oa(ss);
+  oa << *map;
+  auto id_counter = lanelet::utils::getId();
+  oa << id_counter;
+
+  std::string data_str(ss.str());
+
+  msg->data.clear();
+  msg->data.assign(data_str.begin(), data_str.end());
+}
+
 void fromBinMsg(const autoware_auto_mapping_msgs::msg::HADMapBin & msg, lanelet::LaneletMapPtr map)
 {
   if (!map) {
