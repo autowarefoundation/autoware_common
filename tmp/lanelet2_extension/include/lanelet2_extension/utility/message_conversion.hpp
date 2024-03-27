@@ -39,6 +39,14 @@ namespace lanelet::utils::conversion
 void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_map_msgs::msg::LaneletMapBin * msg);
 
 /**
+ * [toBinMsg converts lanelet2 map to ROS message. Similar implementation to
+ * lanelet::io_handlers::BinHandler::write()]
+ * @param map [lanelet map data]
+ * @param msg [converted ROS message. Only "data" field is filled]
+ */
+void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_map_msgs::msg::LaneletMapBin * msg);
+
+/**
  * [fromBinMsg converts ROS message into lanelet2 data. Similar implementation
  * to lanelet::io_handlers::BinHandler::parse()]
  * @param msg [ROS message for lanelet map]
