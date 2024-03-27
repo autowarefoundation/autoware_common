@@ -20,6 +20,7 @@
 // NOLINTBEGIN(readability-identifier-naming)
 
 #include <autoware_auto_mapping_msgs/msg/had_map_bin.hpp>
+#include <autoware_map_msgs/msg/lanelet_map_bin.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/point32.hpp>
 #include <geometry_msgs/msg/polygon.hpp>
@@ -37,6 +38,14 @@ namespace lanelet::utils::conversion
  * @param msg [converted ROS message. Only "data" field is filled]
  */
 void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_auto_mapping_msgs::msg::HADMapBin * msg);
+
+/**
+ * [toBinMsg converts lanelet2 map to ROS message. Similar implementation to
+ * lanelet::io_handlers::BinHandler::write()]
+ * @param map [lanelet map data]
+ * @param msg [converted ROS message. Only "data" field is filled]
+ */
+void toBinMsg(const lanelet::LaneletMapPtr & map, autoware_map_msgs::msg::LaneletMapBin * msg);
 
 /**
  * [fromBinMsg converts ROS message into lanelet2 data. Similar implementation
