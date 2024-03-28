@@ -46,8 +46,7 @@ TEST(TestSuite, ForwardMGRSProjection)  // NOLINT for gtest
   // https://www.movable-type.co.uk/scripts/latlong-utm-mgrs.html
   // round the projected value to mm since the above reference only gives value
   // in mm precision
-  ASSERT_EQ(projector.getProjectedMGRSGrid(), "54SUE") << "Projected grid should be "
-                                                       << "54SUE";
+  ASSERT_EQ(projector.getProjectedMGRSGrid(), "54SUE") << "Projected grid should be " << "54SUE";
   double rounded_x_mm = round(mgrs_point.x() * 1000) / 1000.0;
   ASSERT_DOUBLE_EQ(rounded_x_mm, 94946.081) << "Forward projected x value should be " << 94946.081;
   double rounded_y_mm = round(mgrs_point.y() * 1000) / 1000.0;
