@@ -506,6 +506,15 @@ void overwriteLaneletsCenterline(
   for (auto & lanelet_obj : lanelet_map->laneletLayer) {
     if (force_overwrite || !lanelet_obj.hasCustomCenterline()) {
       const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+
+      // TODO(someone): Ideally, the following code is required when writing a map after
+      //                this function is called. However, since the number of points' IDs
+      //                will increase a lot, the computation cost may increase as well.
+      //                We cannot estimate the impact, so we comment out the code for now.
+      // for (const auto & fine_center_point : fine_center_line) {
+      //   lanelet_map->add(static_cast<lanelet::Point3d>(fine_center_point));
+      // }
+      // lanelet_map->add(fine_center_line);
       lanelet_obj.setCenterline(fine_center_line);
     }
   }
