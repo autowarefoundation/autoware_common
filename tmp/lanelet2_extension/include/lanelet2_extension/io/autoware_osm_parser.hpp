@@ -19,6 +19,8 @@
 
 // NOLINTBEGIN(readability-identifier-naming)
 
+#include <lanelet2_extension/version.hpp>
+
 #include <lanelet2_io/io_handlers/OsmHandler.h>
 
 #include <memory>

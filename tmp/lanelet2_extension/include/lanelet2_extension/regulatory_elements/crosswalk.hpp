@@ -25,6 +25,9 @@
 
 namespace lanelet::autoware
 {
+
+inline namespace v1
+{
 class Crosswalk : public lanelet::RegulatoryElement
 {
 public:
@@ -84,6 +87,7 @@ private:
   friend class RegisterRegulatoryElement<Crosswalk>;
   explicit Crosswalk(const lanelet::RegulatoryElementDataPtr & data);
 };
+}  // namespace v1
 
 }  // namespace lanelet::autoware
 

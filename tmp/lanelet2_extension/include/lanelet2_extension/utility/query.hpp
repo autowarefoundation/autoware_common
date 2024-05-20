@@ -39,37 +39,9 @@
 
 namespace lanelet::utils::query
 {
-/**
- * [laneletLayer converts laneletLayer into lanelet vector]
- * @param  ll_Map [input lanelet map]
- * @return        [all lanelets in the map]
- */
-lanelet::ConstLanelets laneletLayer(const lanelet::LaneletMapConstPtr & ll_Map);
 
-/**
- * [subtypeLanelets extracts Lanelet that has given subtype attribute]
- * @param  lls     [input lanelets with various subtypes]
- * @param  subtype [subtype of lanelets to be retrieved (e.g.
- * lanelet::AttributeValueString::Road)]
- * @return         [lanelets with given subtype]
- */
-lanelet::ConstLanelets subtypeLanelets(const lanelet::ConstLanelets & lls, const char subtype[]);
-
-/**
- * [crosswalkLanelets extracts crosswalk lanelets]
- * @param  lls [input lanelets with various subtypes]
- * @return     [crosswalk lanelets]
- */
-lanelet::ConstLanelets crosswalkLanelets(const lanelet::ConstLanelets & lls);
-lanelet::ConstLanelets walkwayLanelets(const lanelet::ConstLanelets & lls);
-
-/**
- * [roadLanelets extracts road lanelets]
- * @param  lls [input lanelets with subtype road]
- * @return     [road lanelets]
- */
-lanelet::ConstLanelets roadLanelets(const lanelet::ConstLanelets & lls);
-
+inline namespace v1
+{
 /**
  * [shoulderLanelets extracts shoulder lanelets]
  * @param  lls [input lanelets with subtype shoulder]
@@ -129,12 +101,16 @@ std::vector<lanelet::SpeedBumpConstPtr> speedBumps(const lanelet::ConstLanelets 
  */
 std::vector<lanelet::CrosswalkConstPtr> crosswalks(const lanelet::ConstLanelets & lanelets);
 
+/**
+ * [crosswalkLanelets extracts crosswalk lanelets]
+ * @param  lls [input lanelets with various subtypes]
+ * @return     [crosswalk lanelets]
+ */
+lanelet::ConstLanelets crosswalkLanelets(const lanelet::ConstLanelets & lls);
+lanelet::ConstLanelets walkwayLanelets(const lanelet::ConstLanelets & lls);
+
 // query all curbstones in lanelet2 map
 lanelet::ConstLineStrings3d curbstones(const lanelet::LaneletMapConstPtr & lanelet_map_ptr);
-
-// query all polygons that has given type in lanelet2 map
-lanelet::ConstPolygons3d getAllPolygonsByType(
-  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type);
 
 // query all obstacle polygons in lanelet2 map
 lanelet::ConstPolygons3d getAllObstaclePolygons(
@@ -227,6 +203,34 @@ std::vector<lanelet::ConstLineString3d> stopLinesLanelet(const lanelet::ConstLan
  */
 std::vector<lanelet::ConstLineString3d> stopSignStopLines(
   const lanelet::ConstLanelets & lanelets, const std::string & stop_sign_id = "stop_sign");
+}  // namespace v1
+
+/**
+ * [laneletLayer converts laneletLayer into lanelet vector]
+ * @param  ll_Map [input lanelet map]
+ * @return        [all lanelets in the map]
+ */
+lanelet::ConstLanelets laneletLayer(const lanelet::LaneletMapConstPtr & ll_Map);
+
+/**
+ * [subtypeLanelets extracts Lanelet that has given subtype attribute]
+ * @param  lls     [input lanelets with various subtypes]
+ * @param  subtype [subtype of lanelets to be retrieved (e.g.
+ * lanelet::AttributeValueString::Road)]
+ * @return         [lanelets with given subtype]
+ */
+lanelet::ConstLanelets subtypeLanelets(const lanelet::ConstLanelets & lls, const char subtype[]);
+
+/**
+ * [roadLanelets extracts road lanelets]
+ * @param  lls [input lanelets with subtype road]
+ * @return     [road lanelets]
+ */
+lanelet::ConstLanelets roadLanelets(const lanelet::ConstLanelets & lls);
+
+// query all polygons that has given type in lanelet2 map
+lanelet::ConstPolygons3d getAllPolygonsByType(
+  const lanelet::LaneletMapConstPtr & lanelet_map_ptr, const std::string & polygon_type);
 
 ConstLanelets getLaneletsWithinRange(
   const lanelet::ConstLanelets & lanelets, const lanelet::BasicPoint2d & search_point,

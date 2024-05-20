@@ -30,6 +30,9 @@
 
 namespace lanelet::projection
 {
+
+inline namespace v1
+{
 class MGRSProjector : public Projector
 {
 public:
@@ -108,6 +111,7 @@ private:
    */
   mutable std::string projected_grid_;
 };
+}  // namespace v1
 
 }  // namespace lanelet::projection
 

@@ -37,6 +37,188 @@
 
 namespace lanelet::visualization
 {
+
+inline namespace v1
+{
+/**
+ * [autowareTrafficLightsAsMarkerArray creates marker array to visualize traffic
+ * lights]
+ * @param  tl_reg_elems [traffic light regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ * @return              [created marker array]
+ */
+visualization_msgs::msg::MarkerArray autowareTrafficLightsAsMarkerArray(
+  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
+  const double scale = 1.0);
+
+/**
+ * [generateTrafficLightRegulatoryElementIdMaker creates marker array to visualize traffic
+ * light regulatory element ids]
+ * @param lanelets      [lanelets]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ * @return              [created marker array]
+ */
+visualization_msgs::msg::MarkerArray generateTrafficLightRegulatoryElementIdMaker(
+  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration = rclcpp::Duration(0, 0), const double scale = 0.5);
+
+/**
+ * [generateTrafficLightIdMarkerArray creates marker array to visualize traffic
+ * light ids]
+ * @param  tl_reg_elems [traffic light regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ * @return              [created marker array]
+ */
+visualization_msgs::msg::MarkerArray generateTrafficLightIdMaker(
+  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
+  const double scale = 0.5);
+
+/**
+ * [trafficLightsAsTriangleMarkerArray creates marker array to visualize shape
+ * of traffic lights]
+ * @param  tl_reg_elems [traffic light regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ * @return              [created marker array]
+ */
+visualization_msgs::msg::MarkerArray trafficLightsAsTriangleMarkerArray(
+  const std::vector<lanelet::TrafficLightConstPtr> & tl_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
+  const double scale = 1.0);
+
+/**
+ * [detectionAreasAsMarkerArray creates marker array to visualize detection areas]
+ * @param  da_reg_elems [detection area regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ */
+visualization_msgs::msg::MarkerArray detectionAreasAsMarkerArray(
+  const std::vector<lanelet::DetectionAreaConstPtr> & da_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
+
+/**
+ * [noParkingAreasAsMarkerArray creates marker array to visualize detection areas]
+ * @param  no_reg_elems [no parking area regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ */
+visualization_msgs::msg::MarkerArray noParkingAreasAsMarkerArray(
+  const std::vector<lanelet::NoParkingAreaConstPtr> & no_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
+
+/**
+ * [noStoppingAreasAsMarkerArray creates marker array to visualize detection areas]
+ * @param  no_reg_elems [mp stopping area regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ */
+visualization_msgs::msg::MarkerArray noStoppingAreasAsMarkerArray(
+  const std::vector<lanelet::NoStoppingAreaConstPtr> & no_reg_elems,
+  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
+
+/**
+ * [speedBumpsAsMarkerArray creates marker array to visualize speed bumps]
+ * @param  sb_reg_elems [speed bump regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ */
+visualization_msgs::msg::MarkerArray speedBumpsAsMarkerArray(
+  const std::vector<lanelet::SpeedBumpConstPtr> & sb_reg_elems, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
+
+/**
+ * [crosswalkAreasAsMarkerArray creates marker array to visualize crosswalk regulatory element]
+ * @param  sb_reg_elems [crosswalk regulatory elements]
+ * @param  c            [color of the marker]
+ * @param  duration     [lifetime of the marker]
+ */
+visualization_msgs::msg::MarkerArray crosswalkAreasAsMarkerArray(
+  const std::vector<lanelet::CrosswalkConstPtr> & cw_reg_elems, const std_msgs::msg::ColorRGBA & c,
+  const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
+
+/**
+ * [pedestrianPolygonMarkingsAsMarkerArray creates marker array to visualize pedestrian polygon
+ * markings]
+ * @param  pedestrian_polygon_markings [pedestrian marking polygon]
+ * @param  c            [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray pedestrianPolygonMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings,
+  const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [pedestrianLineMarkingsAsMarkerArray creates marker array to visualize pedestrian line markings]
+ * @param  pedestrian_line_markings [pedestrian marking line]
+ * @param  c            [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray pedestrianLineMarkingsAsMarkerArray(
+  const lanelet::ConstLineStrings3d & pedestrian_line_markings, const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [parkingLotsAsMarkerArray creates marker array to visualize parking lots]
+ * @param  parking_lots [parking lot polygon]
+ * @param  c            [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray parkingLotsAsMarkerArray(
+  const lanelet::ConstPolygons3d & parking_lots, const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [parkingSpacesAsMarkerArray creates marker array to visualize parking spaces]
+ * @param  parking_spaces [parking space line string]
+ * @param  c            [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray parkingSpacesAsMarkerArray(
+  const lanelet::ConstLineStrings3d & parking_spaces, const std_msgs::msg::ColorRGBA & c);
+
+visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
+  const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [intersectionAreaAsMarkerArray creates marker array to visualize intersection area]
+ * @param  intersection_areas [intersection area polygon]
+ * @param  c                  [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray intersectionAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & intersection_areas, const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area]
+ * @param  no_obstacle_segmentation_area [no obstacle segmentation area polygon]
+ * @param  c                             [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
+  const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [noObstacleSegmentationAreaForRunOutAsMarkerArray creates marker array to visualize no obstacle
+ * segmentation area for run out]
+ * @param  no_obstacle_segmentation_area_for_run_out [no obstacle segmentation area for run out
+ * polygon]
+ * @param  c                                         [color of the marker]
+ */
+visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarkerArray(
+  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
+  const std_msgs::msg::ColorRGBA & c);
+
+/**
+ * [hatchedRoadMarkingsAreaAsMarkerArray creates marker array to visualize hatched road markings
+ * area]
+ * @param  hatched_road_markings_area [hatched road markings area polygon]
+ * @param  area_color                 [color of the area marker]
+ * @param  line_color                 [color of the line marker]
+ */
+visualization_msgs::msg::MarkerArray hatchedRoadMarkingsAreaAsMarkerArray(
+  const lanelet::ConstPolygons3d & hatched_road_markings_area,
+  const std_msgs::msg::ColorRGBA & area_color, const std_msgs::msg::ColorRGBA & line_color);
+}  // namespace v1
+
 /**
  * [lanelet2Triangle converts lanelet into vector of triangles. Used for
  * triangulation]
@@ -174,141 +356,6 @@ visualization_msgs::msg::MarkerArray lineStringsAsMarkerArray(
   const std_msgs::msg::ColorRGBA & c, const float lss);
 
 /**
- * [autowareTrafficLightsAsMarkerArray creates marker array to visualize traffic
- * lights]
- * @param  tl_reg_elems [traffic light regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- * @return              [created marker array]
- */
-visualization_msgs::msg::MarkerArray autowareTrafficLightsAsMarkerArray(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
-  const double scale = 1.0);
-
-/**
- * [generateTrafficLightRegulatoryElementIdMaker creates marker array to visualize traffic
- * light regulatory element ids]
- * @param lanelets      [lanelets]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- * @return              [created marker array]
- */
-visualization_msgs::msg::MarkerArray generateTrafficLightRegulatoryElementIdMaker(
-  const lanelet::ConstLanelets & lanelets, const std_msgs::msg::ColorRGBA & c,
-  const rclcpp::Duration & duration = rclcpp::Duration(0, 0), const double scale = 0.5);
-
-/**
- * [generateTrafficLightIdMarkerArray creates marker array to visualize traffic
- * light ids]
- * @param  tl_reg_elems [traffic light regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- * @return              [created marker array]
- */
-visualization_msgs::msg::MarkerArray generateTrafficLightIdMaker(
-  const std::vector<lanelet::AutowareTrafficLightConstPtr> & tl_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
-  const double scale = 0.5);
-
-/**
- * [trafficLightsAsTriangleMarkerArray creates marker array to visualize shape
- * of traffic lights]
- * @param  tl_reg_elems [traffic light regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- * @return              [created marker array]
- */
-visualization_msgs::msg::MarkerArray trafficLightsAsTriangleMarkerArray(
-  const std::vector<lanelet::TrafficLightConstPtr> & tl_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0),
-  const double scale = 1.0);
-
-/**
- * [detectionAreasAsMarkerArray creates marker array to visualize detection areas]
- * @param  da_reg_elems [detection area regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray detectionAreasAsMarkerArray(
-  const std::vector<lanelet::DetectionAreaConstPtr> & da_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
- * [noParkingAreasAsMarkerArray creates marker array to visualize detection areas]
- * @param  no_reg_elems [no parking area regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray noParkingAreasAsMarkerArray(
-  const std::vector<lanelet::NoParkingAreaConstPtr> & no_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
- * [noStoppingAreasAsMarkerArray creates marker array to visualize detection areas]
- * @param  no_reg_elems [mp stopping area regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray noStoppingAreasAsMarkerArray(
-  const std::vector<lanelet::NoStoppingAreaConstPtr> & no_reg_elems,
-  const std_msgs::msg::ColorRGBA & c, const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
- * [speedBumpsAsMarkerArray creates marker array to visualize speed bumps]
- * @param  sb_reg_elems [speed bump regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray speedBumpsAsMarkerArray(
-  const std::vector<lanelet::SpeedBumpConstPtr> & sb_reg_elems, const std_msgs::msg::ColorRGBA & c,
-  const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
- * [crosswalkAreasAsMarkerArray creates marker array to visualize crosswalk regulatory element]
- * @param  sb_reg_elems [crosswalk regulatory elements]
- * @param  c            [color of the marker]
- * @param  duration     [lifetime of the marker]
- */
-visualization_msgs::msg::MarkerArray crosswalkAreasAsMarkerArray(
-  const std::vector<lanelet::CrosswalkConstPtr> & cw_reg_elems, const std_msgs::msg::ColorRGBA & c,
-  const rclcpp::Duration & duration = rclcpp::Duration(0, 0));
-
-/**
- * [pedestrianPolygonMarkingsAsMarkerArray creates marker array to visualize pedestrian polygon
- * markings]
- * @param  pedestrian_polygon_markings [pedestrian marking polygon]
- * @param  c            [color of the marker]
- */
-visualization_msgs::msg::MarkerArray pedestrianPolygonMarkingsAsMarkerArray(
-  const lanelet::ConstLineStrings3d & pedestrian_polygon_markings,
-  const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [pedestrianLineMarkingsAsMarkerArray creates marker array to visualize pedestrian line markings]
- * @param  pedestrian_line_markings [pedestrian marking line]
- * @param  c            [color of the marker]
- */
-visualization_msgs::msg::MarkerArray pedestrianLineMarkingsAsMarkerArray(
-  const lanelet::ConstLineStrings3d & pedestrian_line_markings, const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [parkingLotsAsMarkerArray creates marker array to visualize parking lots]
- * @param  parking_lots [parking lot polygon]
- * @param  c            [color of the marker]
- */
-visualization_msgs::msg::MarkerArray parkingLotsAsMarkerArray(
-  const lanelet::ConstPolygons3d & parking_lots, const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [parkingSpacesAsMarkerArray creates marker array to visualize parking spaces]
- * @param  parking_spaces [parking space line string]
- * @param  c            [color of the marker]
- */
-visualization_msgs::msg::MarkerArray parkingSpacesAsMarkerArray(
-  const lanelet::ConstLineStrings3d & parking_spaces, const std_msgs::msg::ColorRGBA & c);
-
-/**
  * [detectionAreasAsMarkerArray creates marker array to visualize lanelet_id]
  * @param road_lanelets [road lanelets]
  * @param c [color of the marker]
@@ -320,49 +367,6 @@ visualization_msgs::msg::MarkerArray parkingSpacesAsMarkerArray(
 visualization_msgs::msg::MarkerArray generateLaneletIdMarker(
   const lanelet::ConstLanelets & road_lanelets, const std_msgs::msg::ColorRGBA & c,
   const std::string & ns = "lanelet_id", const double scale = 0.5);
-
-visualization_msgs::msg::MarkerArray obstaclePolygonsAsMarkerArray(
-  const lanelet::ConstPolygons3d & obstacle_polygons, const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [intersectionAreaAsMarkerArray creates marker array to visualize intersection area]
- * @param  intersection_areas [intersection area polygon]
- * @param  c                  [color of the marker]
- */
-visualization_msgs::msg::MarkerArray intersectionAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & intersection_areas, const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [noObstacleSegmentationAreaAsMarkerArray creates marker array to visualize no obstacle
- * segmentation area]
- * @param  no_obstacle_segmentation_area [no obstacle segmentation area polygon]
- * @param  c                             [color of the marker]
- */
-visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area,
-  const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [noObstacleSegmentationAreaForRunOutAsMarkerArray creates marker array to visualize no obstacle
- * segmentation area for run out]
- * @param  no_obstacle_segmentation_area_for_run_out [no obstacle segmentation area for run out
- * polygon]
- * @param  c                                         [color of the marker]
- */
-visualization_msgs::msg::MarkerArray noObstacleSegmentationAreaForRunOutAsMarkerArray(
-  const lanelet::ConstPolygons3d & no_obstacle_segmentation_area_for_run_out,
-  const std_msgs::msg::ColorRGBA & c);
-
-/**
- * [hatchedRoadMarkingsAreaAsMarkerArray creates marker array to visualize hatched road markings
- * area]
- * @param  hatched_road_markings_area [hatched road markings area polygon]
- * @param  area_color                 [color of the area marker]
- * @param  line_color                 [color of the line marker]
- */
-visualization_msgs::msg::MarkerArray hatchedRoadMarkingsAreaAsMarkerArray(
-  const lanelet::ConstPolygons3d & hatched_road_markings_area,
-  const std_msgs::msg::ColorRGBA & area_color, const std_msgs::msg::ColorRGBA & line_color);
 
 }  // namespace lanelet::visualization
 
