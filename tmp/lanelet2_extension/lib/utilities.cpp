@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <limits>
 #include <map>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -263,6 +264,42 @@ lanelet::LineString3d getLineStringFromArcLength(
     points.push_back(end_point);
   }
   return lanelet::LineString3d{lanelet::InvalId, points};
+}
+
+lanelet::LineString3d toLineString3d(const std::vector<geometry_msgs::msg::Point> & points)
+{
+  lanelet::LineString3d ls(lanelet::utils::getId());
+  for (const auto & point : points) {
+    ls.push_back(lanelet::Point3d(lanelet::utils::getId(), point.x, point.y, point.z));
+  }
+  return ls;
+}
+
+std::vector<geometry_msgs::msg::Point> toGeometryPoints(
+  const lanelet::ConstLineString3d & llt_points)
+{
+  std::vector<geometry_msgs::msg::Point> points;
+  for (const auto & llt_point : llt_points) {
+    points.push_back(lanelet::utils::conversion::toGeomMsgPt(llt_point));
+  }
+  return points;
+}
+
+// sort target_vec by the order or order_vec
+template <typename T>
+T sortByVector(const T & target_vec, const std::vector<double> & order_vec)
+{
+  std::vector<size_t> index_vec(order_vec.size());
+  std::iota(index_vec.begin(), index_vec.end(), 0);
+  std::sort(index_vec.begin(), index_vec.end(), [&](size_t i1, size_t i2) {
+    return order_vec.at(i1) < order_vec.at(i2);
+  });
+
+  T sorted_target_vec;
+  for (const size_t index : index_vec) {
+    sorted_target_vec.push_back(target_vec.at(index));
+  }
+  return sorted_target_vec;
 }
 }  // namespace
 
@@ -503,10 +540,197 @@ lanelet::ConstLanelets getExpandedLanelets(
 void overwriteLaneletsCenterline(
   lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool force_overwrite)
 {
-  for (auto & lanelet_obj : lanelet_map->laneletLayer) {
-    if (force_overwrite || !lanelet_obj.hasCustomCenterline()) {
-      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-      lanelet_obj.setCenterline(fine_center_line);
+  const double centerline_arc_margin_ratio = 20.0;
+
+  using lanelet::utils::conversion::toGeomMsgPt;
+
+  // genereate geometric centerlines with key of lanelet ID
+  // NOTE: std::vector is unsed instead of a vector type of the lanelet since the iterator does not
+  //       work as expected.
+  const auto geometric_centerline_map = [&]() {
+    std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> centerline_map;
+    for (const auto & lanelet_obj : lanelet_map->laneletLayer) {
+      // check if the same lanelet IDs do not exist in the lanelet map.
+      if (centerline_map.find(lanelet_obj.id()) != centerline_map.end()) {
+        throw std::invalid_argument("The lanelet map has multiple lanelets with the same id.");
+      }
+
+      const auto llt_centerline = generateFineCenterline(lanelet_obj, resolution);
+      centerline_map.emplace(lanelet_obj.id(), toGeometryPoints(llt_centerline));
+    }
+    return centerline_map;
+  }();
+
+  // remove invalid center points
+  // NOTE: "invalid" means the geometric center points is inside or close to the custom centerline,
+  // and have to be removed.
+  const auto cropped_centerline_map =
+    cropInvalidCenterPoints(lanelet_map, geometric_centerline_map, centerline_arc_margin_ratio);
+
+  // overwrite centerline in lanelet map
+  overwriteLaneletsCenterline(
+    lanelet_map, geometric_centerline_map, cropped_centerline_map, force_overwrite);
+}
+
+std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> cropInvalidCenterPoints(
+  lanelet::LaneletMapPtr lanelet_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    geometric_centerline_map,
+  const double centerline_arc_margin_ratio)
+{
+  using lanelet::geometry::toArcCoordinates;
+  using lanelet::utils::to2D;
+  using lanelet::utils::conversion::toGeomMsgPt;
+  using lanelet::utils::conversion::toLaneletPoint;
+
+  // create routing graph
+  const lanelet::routing::RoutingGraphPtr routing_graph = [&]() {
+    const auto traffic_rules = lanelet::traffic_rules::TrafficRulesFactory::create(
+      lanelet::Locations::Germany, lanelet::Participants::Vehicle);
+    return lanelet::routing::RoutingGraph::build(*lanelet_map, *traffic_rules);
+  }();
+
+  // crop invalid center points
+  auto cropped_centerline_map = geometric_centerline_map;
+  for (auto lanelet_itr = lanelet_map->laneletLayer.begin();
+       lanelet_itr != lanelet_map->laneletLayer.end(); ++lanelet_itr) {
+    if (!lanelet_itr->hasCustomCenterline()) {
+      continue;
+    }
+    const auto llt_geometric_centerline =
+      toLineString3d(geometric_centerline_map.at(lanelet_itr->id()));
+
+    // calculate custom centerline's range (closest and farthest arc length)
+    const auto & [custom_centerline_closest_arc_length, custom_centerline_farthest_arc_length] =
+      [&]() -> std::pair<double, double> {
+      std::vector<double> custom_centerline_arc_length_vec;
+      for (const auto & custom_center_point : lanelet_itr->centerline()) {
+        const auto arc_coordinates =
+          toArcCoordinates(to2D(llt_geometric_centerline), to2D(custom_center_point).basicPoint());
+        custom_centerline_arc_length_vec.push_back(arc_coordinates.length);
+      }
+      return std::make_pair(
+        *std::min_element(
+          custom_centerline_arc_length_vec.begin(), custom_centerline_arc_length_vec.end()),
+        *std::max_element(
+          custom_centerline_arc_length_vec.begin(), custom_centerline_arc_length_vec.end()));
+    }();
+
+    // define a function to crop invalid center points
+    const auto crop_invalid_center_points = [&](
+                                              const auto & lanelet, const bool is_forward,
+                                              const double arc_length_offset,
+                                              const double invalid_arc_length_margin) {
+      const double front_arc_length =
+        custom_centerline_closest_arc_length + (is_forward ? 0.0 : -invalid_arc_length_margin);
+      const double back_arc_length =
+        custom_centerline_farthest_arc_length + (is_forward ? invalid_arc_length_margin : 0.0);
+
+      const auto current_geometric_centerline =
+        toLineString3d(geometric_centerline_map.at(lanelet.id()));
+      auto & cropped_centerline = cropped_centerline_map.at(lanelet.id());
+      cropped_centerline.erase(
+        std::remove_if(
+          cropped_centerline.begin(), cropped_centerline.end(),
+          [&](const auto & cropped_center_point) {
+            const auto cropped_arc_coordinates = toArcCoordinates(
+              to2D(current_geometric_centerline),
+              to2D(toLaneletPoint(cropped_center_point)).basicPoint());
+            return front_arc_length <= arc_length_offset + cropped_arc_coordinates.length &&
+                   arc_length_offset + cropped_arc_coordinates.length <= back_arc_length;
+          }),
+        cropped_centerline.end());
+
+      // If all the center points are cropped and the custom centerline does not exist, the first or
+      // last center point is used since the dense centerline will be automatically generated and
+      // used.
+      if (!lanelet.hasCustomCenterline() && cropped_centerline.empty()) {
+        const auto single_center_point = is_forward
+                                           ? (lanelet_itr->leftBound().back().basicPoint() +
+                                              lanelet_itr->rightBound().back().basicPoint()) /
+                                               2.0
+                                           : (lanelet_itr->leftBound().front().basicPoint() +
+                                              lanelet_itr->rightBound().front().basicPoint()) /
+                                               2.0;
+        cropped_centerline.push_back(toGeomMsgPt(single_center_point));
+      }
+    };
+
+    // crop center points in the following lanelets
+    const double front_invalid_arc_length_margin = [&]() {
+      const double front_custom_centerline_lat_distance =
+        toArcCoordinates(
+          to2D(llt_geometric_centerline), to2D(lanelet_itr->centerline().front()).basicPoint())
+          .distance;
+      return std::abs(front_custom_centerline_lat_distance) * centerline_arc_margin_ratio;
+    }();
+    crop_invalid_center_points(*lanelet_itr, true, 0.0, front_invalid_arc_length_margin);
+    const double arc_length_offset =
+      boost::geometry::length(lanelet::utils::to2D(llt_geometric_centerline).basicLineString());
+    for (const auto & following_lanelet : routing_graph->following(*lanelet_itr)) {
+      crop_invalid_center_points(
+        following_lanelet, true, arc_length_offset, front_invalid_arc_length_margin);
+    }
+
+    // crop center points in the previous lanelets
+    const double back_invalid_arc_length_margin = [&]() {
+      const double back_custom_centerline_lat_distance =
+        toArcCoordinates(
+          to2D(llt_geometric_centerline), to2D(lanelet_itr->centerline().back()).basicPoint())
+          .distance;
+      return std::abs(back_custom_centerline_lat_distance) * centerline_arc_margin_ratio;
+    }();
+    crop_invalid_center_points(*lanelet_itr, false, 0.0, back_invalid_arc_length_margin);
+    for (const auto & previous_lanelet : routing_graph->previous(*lanelet_itr)) {
+      const auto llt_previous_geometric_centerline =
+        toLineString3d(geometric_centerline_map.at(previous_lanelet.id()));
+      const double arc_length_offset = boost::geometry::length(
+        lanelet::utils::to2D(llt_previous_geometric_centerline).basicLineString());
+      crop_invalid_center_points(
+        previous_lanelet, false, -arc_length_offset, back_invalid_arc_length_margin);
+    }
+  }
+
+  return cropped_centerline_map;
+}
+
+void overwriteLaneletsCenterline(
+  lanelet::LaneletMapPtr lanelet_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    geometric_centerline_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    cropped_centerline_map,
+  const bool force_overwrite)
+{
+  using lanelet::geometry::toArcCoordinates;
+  using lanelet::utils::conversion::toLaneletPoint;
+
+  for (auto lanelet_itr = lanelet_map->laneletLayer.begin();
+       lanelet_itr != lanelet_map->laneletLayer.end(); ++lanelet_itr) {
+    const auto & cropped_centerline = cropped_centerline_map.at(lanelet_itr->id());
+    if (force_overwrite || !lanelet_itr->hasCustomCenterline()) {
+      // register centerline
+      lanelet_itr->setCenterline(toLineString3d(cropped_centerline));
+    } else {
+      // concatenate custom centerline and geometric centerline
+      auto concat_centerline = toGeometryPoints(lanelet_itr->centerline());
+      concat_centerline.insert(
+        concat_centerline.end(), cropped_centerline.begin(), cropped_centerline.end());
+
+      // sort center points by longitudinal length
+      std::vector<double> arc_length_vec;
+      const auto lanelet_geometric_centerline =
+        toLineString3d(geometric_centerline_map.at(lanelet_itr->id()));
+      for (const auto & concat_center_point : concat_centerline) {
+        const auto arc_coordinates = toArcCoordinates(
+          to2D(lanelet_geometric_centerline),
+          to2D(toLaneletPoint(concat_center_point)).basicPoint());
+        arc_length_vec.push_back(arc_coordinates.length);
+      }
+      const auto sorted_concat_centerline = sortByVector(concat_centerline, arc_length_vec);
+
+      // register centerline
+      lanelet_itr->setCenterline(toLineString3d(sorted_concat_centerline));
     }
   }
 }

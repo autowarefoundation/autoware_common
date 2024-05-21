@@ -27,6 +27,8 @@
 #include <lanelet2_routing/Forward.h>
 
 #include <map>
+#include <unordered_map>
+#include <vector>
 
 namespace lanelet::utils
 {
@@ -58,6 +60,18 @@ lanelet::ConstLanelets getExpandedLanelets(
 void overwriteLaneletsCenterline(
   lanelet::LaneletMapPtr lanelet_map, const double resolution = 5.0,
   const bool force_overwrite = false);
+std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> cropInvalidCenterPoints(
+  lanelet::LaneletMapPtr lanelet_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    geometric_centerline_map,
+  const double centerline_arc_margin_ratio);
+void overwriteLaneletsCenterline(
+  lanelet::LaneletMapPtr lanelet_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    geometric_centerline_map,
+  const std::unordered_map<lanelet::Id, std::vector<geometry_msgs::msg::Point>> &
+    cropped_centerline_map,
+  const bool force_overwrite);
 
 lanelet::ConstLanelets getConflictingLanelets(
   const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet);
