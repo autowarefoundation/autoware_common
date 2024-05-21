@@ -40,7 +40,7 @@ namespace
 template <typename T>
 bool exists(const std::unordered_set<T> & set, const T & element)
 {
-  return std::find(set.begin(), set.end(), element) != set.end();
+  return set.find(element) != set.end();
 }
 
 void adjacentPoints(
