@@ -209,11 +209,11 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
-  const lanelet::BasicPoint2d & current_position, const lanelet::ConstPolygons3d & all_parking_lots)
+  const lanelet::BasicPoint2d & current_position, const lanelet::LaneletMapPtr lanelet_map_ptr)
 {
   lanelet::ConstPolygon3d linked_parking_lot;
   if (lanelet::utils::query::getLinkedParkingLot(
-        current_position, all_parking_lots, &linked_parking_lot)) {
+        current_position, lanelet_map_ptr, &linked_parking_lot)) {
     return linked_parking_lot;
   } else {
     return {};
@@ -506,7 +506,7 @@ BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
     const lanelet::ConstLanelet &, const lanelet::ConstPolygons3d &)>(
     "getLinkedParkingLot", ::getLinkedParkingLot);
   bp::def<lanelet::Optional<lanelet::ConstPolygon3d>(
-    const lanelet::BasicPoint2d &, const lanelet::ConstPolygons3d &)>(
+    const lanelet::BasicPoint2d &, const lanelet::LaneletMapPtr)>(
     "getLinkedParkingLot", ::getLinkedParkingLot);
   bp::def<lanelet::Optional<lanelet::ConstPolygon3d>(
     const lanelet::ConstLineString3d &, const lanelet::ConstPolygons3d &)>(

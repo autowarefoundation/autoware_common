@@ -591,15 +591,20 @@ bool query::getLinkedParkingLot(
 
 // get overlapping parking lot
 bool query::getLinkedParkingLot(
-  const lanelet::BasicPoint2d & current_position, const lanelet::ConstPolygons3d & all_parking_lots,
+  const lanelet::BasicPoint2d & current_position, const lanelet::LaneletMapPtr & lanelet_map_ptr,
   lanelet::ConstPolygon3d * linked_parking_lot)
 {
-  for (const auto & parking_lot : all_parking_lots) {
-    const double distance =
-      boost::geometry::distance(current_position, to2D(parking_lot).basicPolygon());
-    if (distance < std::numeric_limits<double>::epsilon()) {
-      *linked_parking_lot = parking_lot;
-      return true;
+  const auto candidates =
+    lanelet_map_ptr->polygonLayer.search(lanelet::geometry::boundingBox2d(current_position));
+  for (const auto & candidate : candidates) {
+    const std::string type = candidate.attributeOr(lanelet::AttributeName::Type, "none");
+    if (type == "parking_lot") {
+      const double distance =
+        boost::geometry::distance(current_position, to2D(candidate).basicPolygon());
+      if (distance < std::numeric_limits<double>::epsilon()) {
+        *linked_parking_lot = candidate;
+        return true;
+      }
     }
   }
   return false;
