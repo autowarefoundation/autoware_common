@@ -67,7 +67,7 @@ private:
 
 TEST_F(TestSuite, BinMsgConversion)  // NOLINT for gtest
 {
-  autoware_auto_mapping_msgs::msg::HADMapBin bin_msg;
+  autoware_map_msgs::msg::LaneletMapBin bin_msg;
   lanelet::LaneletMapPtr regenerated_map(new lanelet::LaneletMap);
 
   lanelet::utils::conversion::toBinMsg(single_lanelet_map_ptr, &bin_msg);
