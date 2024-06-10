@@ -1,14 +1,16 @@
-name: build-and-test
+name: build-and-test-differential
 
 on:
-  push:
-  schedule:
-    - cron: 0 0 * * *
-  workflow_dispatch:
+  pull_request:
 
 jobs:
-  build-and-test:
-    if: ${{ github.event_name != 'push' || github.ref_name == github.event.repository.default_branch }}
+  prevent-no-label-execution:
+    uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
+    with:
+      label: tag:run-build-and-test-differential
+
+  build-and-test-differential:
+    needs: prevent-no-label-execution
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}
     strategy:
@@ -32,25 +34,25 @@ jobs:
       - name: Remove exec_depend
         uses: autowarefoundation/autoware-github-actions/remove-exec-depend@v1
 
-      - name: Get self packages
-        id: get-self-packages
-        uses: autowarefoundation/autoware-github-actions/get-self-packages@v1
+      - name: Get modified packages
+        id: get-modified-packages
+        uses: autowarefoundation/autoware-github-actions/get-modified-packages@v1
 
       - name: Build
-        if: ${{ steps.get-self-packages.outputs.self-packages != '' }}
+        if: ${{ steps.get-modified-packages.outputs.modified-packages != '' }}
         uses: autowarefoundation/autoware-github-actions/colcon-build@v1
         with:
           rosdistro: ${{ matrix.rosdistro }}
-          target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
+          target-packages: ${{ steps.get-modified-packages.outputs.modified-packages }}
           build-depends-repos: ${{ matrix.build-depends-repos }}
 
       - name: Test
-        if: ${{ steps.get-self-packages.outputs.self-packages != '' }}
         id: test
+        if: ${{ steps.get-modified-packages.outputs.modified-packages != '' }}
         uses: autowarefoundation/autoware-github-actions/colcon-test@v1
         with:
           rosdistro: ${{ matrix.rosdistro }}
-          target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
+          target-packages: ${{ steps.get-modified-packages.outputs.modified-packages }}
           build-depends-repos: ${{ matrix.build-depends-repos }}
 
       - name: Upload coverage to CodeCov
@@ -60,7 +62,7 @@ jobs:
           files: ${{ steps.test.outputs.coverage-report-files }}
           fail_ci_if_error: false
           verbose: true
-          flags: total
+          flags: differential
 
       - name: Show disk space after the tasks
         run: df -h
