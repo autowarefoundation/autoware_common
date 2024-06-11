@@ -24,6 +24,7 @@
 #include <lanelet2_io/io_handlers/OsmHandler.h>
 
 #include <memory>
+#include <regex>
 #include <string>
 
 namespace lanelet::io_handlers
@@ -73,6 +74,63 @@ void AutowareOsmParser::parseVersions(
   if (metainfo.attribute("map_version")) {
     *map_version = metainfo.attribute("map_version").value();
   }
+}
+
+std::optional<uint64_t> parseMajorVersion(const std::string & format_version)
+{
+  std::regex re(R"(^(\d+\.)?(\d+\.)?(\d+)$)");
+  // NOTE(Mamoru Sobue): matches `1`, `1.10`, `1.10.100`
+  // `1` ==> [`1`, ``, ``]
+  // `1.10` ==> [`1.`, ``, `10`]
+  // `1.10.100` ==> [`1.`, `10.`, `100`]
+  std::smatch match;
+  if (!std::regex_match(format_version, match, re)) {
+    return std::nullopt;
+  }
+  std::string major = match[1].str();
+  major.erase(std::remove(major.begin(), major.end(), '.'), major.end());
+  return std::stoi(major);
+}
+
+std::optional<uint64_t> parseMinorVersion(const std::string & format_version)
+{
+  std::regex re(R"(^(\d+\.)?(\d+\.)?(\d+)$)");
+  // NOTE(Mamoru Sobue): matches `1`, `1.10`, `1.10.100`
+  // `1` ==> [`1`, ``, ``]
+  // `1.10` ==> [`1.`, ``, `10`]
+  // `1.10.100` ==> [`1.`, `10.`, `100`]
+  std::smatch match;
+  if (!std::regex_match(format_version, match, re)) {
+    return std::nullopt;
+  }
+  std::string minor = match[2].str();
+  if (minor == "") {
+    if (match[3].str() == "") {
+      return std::nullopt;
+    }
+    minor = match[3].str();
+  }
+  minor.erase(std::remove(minor.begin(), minor.end(), '.'), minor.end());
+  return std::stoi(minor);
+}
+
+std::optional<uint64_t> parsePatchVersion(const std::string & format_version)
+{
+  std::regex re(R"(^(\d+\.)?(\d+\.)?(\d+)$)");
+  // NOTE(Mamoru Sobue): matches `1`, `1.10`, `1.10.100`
+  // `1` ==> [`1`, ``, ``]
+  // `1.10` ==> [`1.`, ``, `10`]
+  // `1.10.100` ==> [`1.`, `10.`, `100`]
+  std::smatch match;
+  if (!std::regex_match(format_version, match, re)) {
+    return std::nullopt;
+  }
+  std::string patch = match[3].str();
+  if (patch == "") {
+    return std::nullopt;
+  }
+  patch.erase(std::remove(patch.begin(), patch.end(), '.'), patch.end());
+  return std::stoi(patch);
 }
 
 }  // namespace lanelet::io_handlers

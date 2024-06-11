@@ -24,6 +24,7 @@
 #include <lanelet2_io/io_handlers/OsmHandler.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace lanelet::io_handlers
@@ -57,6 +58,12 @@ public:
 
   static constexpr const char * name() { return "autoware_osm_handler"; }
 };
+
+std::optional<uint64_t> parseMajorVersion(const std::string & format_version);
+
+std::optional<uint64_t> parseMinorVersion(const std::string & format_version);
+
+std::optional<uint64_t> parsePatchVersion(const std::string & format_version);
 
 }  // namespace lanelet::io_handlers
 

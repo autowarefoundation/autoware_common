@@ -21,11 +21,15 @@
 
 namespace lanelet::autoware
 {
+/*
+ * @brief denotes the major format_version
+ */
 enum class Version : int {
   none = 0,
   v1,
 };
 
+// current format_version
 static constexpr Version version = Version::v1;
 }  // namespace lanelet::autoware
 
