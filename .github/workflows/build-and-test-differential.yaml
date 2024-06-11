@@ -4,9 +4,14 @@ on:
   pull_request:
 
 jobs:
+  prevent-no-label-execution:
+    uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
+    with:
+      label: tag:run-build-and-test-differential
+
   build-and-test-differential:
+    needs: prevent-no-label-execution
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}
     strategy:
       fail-fast: false
       matrix:
