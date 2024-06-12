@@ -2,6 +2,10 @@ name: build-and-test-differential
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - labeled
 
 jobs:
   prevent-no-label-execution-build-and-test-differential:
@@ -11,6 +15,7 @@ jobs:
 
   build-and-test-differential:
     needs: prevent-no-label-execution-build-and-test-differential
+    if: ${{ needs.prevent-no-label-execution-build-and-test-differential.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

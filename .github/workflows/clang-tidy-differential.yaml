@@ -15,7 +15,7 @@ jobs:
 
   clang-tidy-differential:
     needs: prevent-no-label-execution-clang-tidy-differential
-    if: ${{ needs.prevent-no-label-execution.outputs.run == 'true' }}
+    if: ${{ needs.prevent-no-label-execution-clang-tidy-differential.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     container: ros:humble
     steps:
