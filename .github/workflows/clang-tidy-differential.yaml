@@ -8,13 +8,13 @@ on:
       - labeled
 
 jobs:
-  prevent-no-label-execution:
+  prevent-no-label-execution-clang-tidy-differential:
     uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
     with:
       label: tag:run-clang-tidy-differential
 
   clang-tidy-differential:
-    needs: prevent-no-label-execution
+    needs: prevent-no-label-execution-clang-tidy-differential
     if: ${{ needs.prevent-no-label-execution.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     container: ros:humble

@@ -4,13 +4,13 @@ on:
   pull_request:
 
 jobs:
-  prevent-no-label-execution:
+  prevent-no-label-execution-build-and-test-differential:
     uses: autowarefoundation/autoware-github-actions/.github/workflows/prevent-no-label-execution.yaml@v1
     with:
       label: tag:run-build-and-test-differential
 
   build-and-test-differential:
-    needs: prevent-no-label-execution
+    needs: prevent-no-label-execution-build-and-test-differential
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
