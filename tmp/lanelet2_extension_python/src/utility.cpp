@@ -377,7 +377,7 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   getLeftBoundWithOffset_overload, lanelet::utils::getLeftBoundWithOffset, 2, 3)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
-  overwriteLaneletsCenterline_overload, lanelet::utils::overwriteLaneletsCenterline, 1, 3)
+  overwriteLaneletsCenterline_overload, lanelet::utils::overwriteLaneletsCenterline, 3, 4)
 BOOST_PYTHON_FUNCTION_OVERLOADS(isInLanelet_overload, ::isInLanelet, 2, 3)
 
 /// query.cpp
