@@ -56,7 +56,7 @@ lanelet::ConstLanelets getExpandedLanelets(
  * doesn't have enough quality
  */
 void overwriteLaneletsCenterline(
-  lanelet::LaneletMapPtr lanelet_map, const double resolution = 5.0,
+  lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool use_waypoints,
   const bool force_overwrite = false);
 
 lanelet::ConstLanelets getConflictingLanelets(
