@@ -368,6 +368,7 @@ lanelet::ConstLanelets getCurrentLanelets_pose(
 
 // for handling functions with default arguments
 /// utilities.cpp
+// clang-tidy off
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   generateFineCenterline_overload, lanelet::utils::generateFineCenterline, 1, 2)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
@@ -387,6 +388,7 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
   getClosestLaneletWithConstrains_overload, ::getClosestLaneletWithConstrains, 2, 4)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   getPrecedingLaneletSequences_overload, lanelet::utils::query::getPrecedingLaneletSequences, 3, 4)
+// clang-tidy on
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {
