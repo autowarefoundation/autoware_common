@@ -25,6 +25,9 @@
 
 namespace lanelet::autoware
 {
+
+inline namespace v1
+{
 class NoStoppingArea : public lanelet::RegulatoryElement
 {
 public:
@@ -86,6 +89,7 @@ private:
   friend class RegisterRegulatoryElement<NoStoppingArea>;
   explicit NoStoppingArea(const lanelet::RegulatoryElementDataPtr & data);
 };
+}  // namespace v1
 
 }  // namespace lanelet::autoware
 

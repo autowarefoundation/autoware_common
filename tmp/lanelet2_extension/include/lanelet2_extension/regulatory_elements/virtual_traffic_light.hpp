@@ -25,6 +25,9 @@
 
 namespace lanelet::autoware
 {
+
+inline namespace v1
+{
 class VirtualTrafficLight : public lanelet::RegulatoryElement
 {
 public:
@@ -71,6 +74,7 @@ private:
   friend class RegisterRegulatoryElement<VirtualTrafficLight>;
   explicit VirtualTrafficLight(const lanelet::RegulatoryElementDataPtr & data);
 };
+}  // namespace v1
 
 }  // namespace lanelet::autoware
 

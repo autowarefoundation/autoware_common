@@ -27,6 +27,9 @@
 
 namespace lanelet::autoware
 {
+
+inline namespace v1
+{
 class DetectionArea : public lanelet::RegulatoryElement
 {
 public:
@@ -88,6 +91,7 @@ private:
   friend class RegisterRegulatoryElement<DetectionArea>;
   explicit DetectionArea(const lanelet::RegulatoryElementDataPtr & data);
 };
+}  // namespace v1
 
 }  // namespace lanelet::autoware
 
