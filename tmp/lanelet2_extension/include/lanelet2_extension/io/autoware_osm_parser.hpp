@@ -61,10 +61,6 @@ public:
 
 std::optional<uint64_t> parseMajorVersion(const std::string & format_version);
 
-std::optional<uint64_t> parseMinorVersion(const std::string & format_version);
-
-std::optional<uint64_t> parsePatchVersion(const std::string & format_version);
-
 }  // namespace lanelet::io_handlers
 
 // NOLINTEND(readability-identifier-naming)
