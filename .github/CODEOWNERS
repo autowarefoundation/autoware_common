@@ -1,7 +1,8 @@
-### Copied from .github/CODEOWNERS-manual ###
-
 ### Automatically generated from package.xml ###
 autoware_cmake/** esteve.fernandez@tier4.jp ryohsuke.mitsudome@tier4.jp
 autoware_lint_common/** esteve.fernandez@tier4.jp ryohsuke.mitsudome@tier4.jp
 autoware_utils/** esteve.fernandez@tier4.jp ryohsuke.mitsudome@tier4.jp
 tmp/lanelet2_extension/** kosuke.takeuchi@tier4.jp mamoru.sobue@tier4.jp masahiro.sakamoto@tier4.jp ryohsuke.mitsudome@tier4.jp takayuki.murooka@tier4.jp
+tmp/lanelet2_extension_python/** mamoru.sobue@tier4.jp
+
+### Copied from .github/CODEOWNERS-manual ###
