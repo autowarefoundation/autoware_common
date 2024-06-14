@@ -694,7 +694,7 @@ visualization_msgs::msg::MarkerArray visualization::detectionAreasAsMarkerArray(
           marker.colors.push_back(c);
         }
       }  // for triangles0
-    }    // for detection areas
+    }  // for detection areas
     marker_array.markers.push_back(marker);
 
     // stop line visualization
@@ -761,7 +761,7 @@ visualization_msgs::msg::MarkerArray visualization::noParkingAreasAsMarkerArray(
           marker.colors.push_back(c);
         }
       }  // for triangles0
-    }    // for no_parking areas
+    }  // for no_parking areas
     marker_array.markers.push_back(marker);
   }  // for regulatory elements
   return marker_array;
@@ -831,7 +831,7 @@ visualization_msgs::msg::MarkerArray visualization::noStoppingAreasAsMarkerArray
           marker.colors.push_back(c);
         }
       }  // for triangles0
-    }    // for no_stopping areas
+    }  // for no_stopping areas
     marker_array.markers.push_back(marker);
     const auto & stop_line = no_reg_elem->stopLine();
     // stop line visualization
