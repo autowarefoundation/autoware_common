@@ -45,9 +45,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> lineStringWithWidthToPolygon(
   lanelet::ConstPolygon3d poly{};
   if (lanelet::utils::lineStringWithWidthToPolygon(linestring, &poly)) {
     return poly;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> lineStringToPolygon(
@@ -56,9 +55,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> lineStringToPolygon(
   lanelet::ConstPolygon3d poly{};
   if (lanelet::utils::lineStringToPolygon(linestring, &poly)) {
     return poly;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ArcCoordinates getArcCoordinates(
@@ -180,9 +178,8 @@ lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
   if (lanelet::utils::query::getLinkedLanelet(
         parking_space, all_road_lanelets, all_parking_lots, &linked_lanelet)) {
     return linked_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
@@ -192,9 +189,8 @@ lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
   lanelet::ConstLanelet linked_lanelet;
   if (lanelet::utils::query::getLinkedLanelet(parking_space, lanelet_map_ptr, &linked_lanelet)) {
     return linked_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -203,9 +199,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   lanelet::ConstPolygon3d linked_parking_lot;
   if (lanelet::utils::query::getLinkedParkingLot(lanelet, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -215,9 +210,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   if (lanelet::utils::query::getLinkedParkingLot(
         current_position, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -228,9 +222,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   if (lanelet::utils::query::getLinkedParkingLot(
         parking_space, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ConstLanelets getLaneletsWithinRange_point(
@@ -299,9 +292,8 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLanelet(
   lanelet::ConstLanelet closest_lanelet{};
   if (lanelet::utils::query::getClosestLanelet(lanelets, pose, &closest_lanelet)) {
     return closest_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstLanelet> getClosestLaneletWithConstrains(
@@ -323,9 +315,8 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLaneletWithConstrains(
   if (lanelet::utils::query::getClosestLaneletWithConstrains(
         lanelets, pose, &closest_lanelet, dist_threshold, yaw_threshold)) {
     return closest_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ConstLanelets getCurrentLanelets_point(
