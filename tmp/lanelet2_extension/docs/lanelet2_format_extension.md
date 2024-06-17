@@ -479,3 +479,23 @@ _An example:_
 ...
 
 ```
+
+### Centerline
+
+Note that the following explanation is not related to the Lanelet2 map format but how the Autoware handles the centerline in the Lanelet2 map.
+
+Centerline is defined in Lanelet2 to guide the vehicle. By explicitly setting the centerline in the Lanelet2 map, the ego's planned path follows the centerline.
+However, based on the current Autoware's usage of the centerline, there are several limitations.
+
+- The object's predicted path also follows the centerline.
+  - This may adversely affect the decision making of planning modules since the centerline is supposed to be used only by the ego's path planning.
+- The coordinate transformation on the lane's frenet frame cannot be calculated correctly.
+  - For example, when the lateral distance between the actual road's centerline and a parked vehicle is calculated, actually the result will be the lateral distance between the (explicit) centerline and the vehicle.
+
+To solve above limitations, the `overwriteLaneletsCenterlineWithWaypoints` was implemented in addition to `overwriteLaneletsCenterline` where the centerline in all the lanes is calculated.
+
+- `overwriteLaneletsCenterlineWithWaypoints`
+  - The (explicit) centerline in the Lanelet2 map is converted to the new `waypoints` tag. This `waypoints` is only applied to the ego's path planning.
+  - Therefore, the above limitations can be solved, but the Autoware's usage of the centerline may be hard to understand.
+- `overwriteLaneletsCenterline`
+  - The (explicit) centerline in the Lanelet2 map is used as it is. Easy to understand the Autoware's usage of the centerline, but we still have above limitations.

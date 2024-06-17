@@ -511,6 +511,25 @@ void overwriteLaneletsCenterline(
   }
 }
 
+void overwriteLaneletsCenterlineWithWaypoints(
+  lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool force_overwrite)
+{
+  for (auto & lanelet_obj : lanelet_map->laneletLayer) {
+    if (force_overwrite) {
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
+    } else {
+      if (lanelet_obj.hasCustomCenterline()) {
+        const auto & centerline = lanelet_obj.centerline();
+        lanelet_obj.setAttribute("waypoints", centerline.id());
+      }
+
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
+    }
+  }
+}
+
 lanelet::ConstLanelets getConflictingLanelets(
   const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet)
 {

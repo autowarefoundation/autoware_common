@@ -45,9 +45,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> lineStringWithWidthToPolygon(
   lanelet::ConstPolygon3d poly{};
   if (lanelet::utils::lineStringWithWidthToPolygon(linestring, &poly)) {
     return poly;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> lineStringToPolygon(
@@ -56,9 +55,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> lineStringToPolygon(
   lanelet::ConstPolygon3d poly{};
   if (lanelet::utils::lineStringToPolygon(linestring, &poly)) {
     return poly;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ArcCoordinates getArcCoordinates(
@@ -69,7 +67,9 @@ lanelet::ArcCoordinates getArcCoordinates(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -84,7 +84,9 @@ double getLaneletAngle(const lanelet::ConstLanelet & lanelet, const std::string 
   serialized_msg.reserve(message_header_length + point_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
   for (size_t i = 0; i < point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
@@ -100,7 +102,9 @@ bool isInLanelet(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -116,7 +120,9 @@ std::vector<double> getClosestCenterPose(
   serialized_point_msg.reserve(message_header_length + search_point_byte.size());
   serialized_point_msg.get_rcl_serialized_message().buffer_length = search_point_byte.size();
   for (size_t i = 0; i < search_point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_point_msg.get_rcl_serialized_message().buffer[i] = search_point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point search_point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer_point;
@@ -137,7 +143,9 @@ double getLateralDistanceToCenterline(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -153,7 +161,9 @@ double getLateralDistanceToClosestLanelet(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -180,9 +190,8 @@ lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
   if (lanelet::utils::query::getLinkedLanelet(
         parking_space, all_road_lanelets, all_parking_lots, &linked_lanelet)) {
     return linked_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
@@ -192,9 +201,8 @@ lanelet::Optional<lanelet::ConstLanelet> getLinkedLanelet(
   lanelet::ConstLanelet linked_lanelet;
   if (lanelet::utils::query::getLinkedLanelet(parking_space, lanelet_map_ptr, &linked_lanelet)) {
     return linked_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -203,9 +211,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   lanelet::ConstPolygon3d linked_parking_lot;
   if (lanelet::utils::query::getLinkedParkingLot(lanelet, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -215,9 +222,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   if (lanelet::utils::query::getLinkedParkingLot(
         current_position, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
@@ -228,9 +234,8 @@ lanelet::Optional<lanelet::ConstPolygon3d> getLinkedParkingLot(
   if (lanelet::utils::query::getLinkedParkingLot(
         parking_space, all_parking_lots, &linked_parking_lot)) {
     return linked_parking_lot;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ConstLanelets getLaneletsWithinRange_point(
@@ -241,7 +246,9 @@ lanelet::ConstLanelets getLaneletsWithinRange_point(
   serialized_msg.reserve(message_header_length + point_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
   for (size_t i = 0; i < point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
@@ -258,7 +265,9 @@ lanelet::ConstLanelets getLaneChangeableNeighbors_point(
   serialized_msg.reserve(message_header_length + point_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
   for (size_t i = 0; i < point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
@@ -275,7 +284,9 @@ lanelet::ConstLanelets getAllNeighbors_point(
   serialized_msg.reserve(message_header_length + point_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
   for (size_t i = 0; i < point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
@@ -291,7 +302,9 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLanelet(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -299,9 +312,8 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLanelet(
   lanelet::ConstLanelet closest_lanelet{};
   if (lanelet::utils::query::getClosestLanelet(lanelets, pose, &closest_lanelet)) {
     return closest_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::Optional<lanelet::ConstLanelet> getClosestLaneletWithConstrains(
@@ -314,7 +326,9 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLaneletWithConstrains(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -323,9 +337,8 @@ lanelet::Optional<lanelet::ConstLanelet> getClosestLaneletWithConstrains(
   if (lanelet::utils::query::getClosestLaneletWithConstrains(
         lanelets, pose, &closest_lanelet, dist_threshold, yaw_threshold)) {
     return closest_lanelet;
-  } else {
-    return {};
   }
+  return {};
 }
 
 lanelet::ConstLanelets getCurrentLanelets_point(
@@ -336,7 +349,9 @@ lanelet::ConstLanelets getCurrentLanelets_point(
   serialized_msg.reserve(message_header_length + point_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = point_byte.size();
   for (size_t i = 0; i < point_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = point_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Point point;
   static rclcpp::Serialization<geometry_msgs::msg::Point> serializer;
@@ -354,7 +369,9 @@ lanelet::ConstLanelets getCurrentLanelets_pose(
   serialized_msg.reserve(message_header_length + pose_byte.size());
   serialized_msg.get_rcl_serialized_message().buffer_length = pose_byte.size();
   for (size_t i = 0; i < pose_byte.size(); ++i) {
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     serialized_msg.get_rcl_serialized_message().buffer[i] = pose_byte[i];
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
   geometry_msgs::msg::Pose pose;
   static rclcpp::Serialization<geometry_msgs::msg::Pose> serializer;
@@ -368,6 +385,7 @@ lanelet::ConstLanelets getCurrentLanelets_pose(
 
 // for handling functions with default arguments
 /// utilities.cpp
+// NOLINTBEGIN
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   generateFineCenterline_overload, lanelet::utils::generateFineCenterline, 1, 2)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
@@ -387,6 +405,7 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(
   getClosestLaneletWithConstrains_overload, ::getClosestLaneletWithConstrains, 2, 4)
 BOOST_PYTHON_FUNCTION_OVERLOADS(
   getPrecedingLaneletSequences_overload, lanelet::utils::query::getPrecedingLaneletSequences, 3, 4)
+// NOLINTEND
 
 BOOST_PYTHON_MODULE(_lanelet2_extension_python_boost_python_utility)
 {

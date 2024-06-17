@@ -59,6 +59,16 @@ void overwriteLaneletsCenterline(
   lanelet::LaneletMapPtr lanelet_map, const double resolution = 5.0,
   const bool force_overwrite = false);
 
+/**
+ * @brief  Apply another patch for centerline because the overwriteLaneletsCenterline
+ * has several limitations. See the following document in detail.
+ * https://github.com/autowarefoundation/autoware_common/blob/main/tmp/lanelet2_extension/docs/lanelet2_format_extension.md#centerline
+ * // NOLINT
+ */
+void overwriteLaneletsCenterlineWithWaypoints(
+  lanelet::LaneletMapPtr lanelet_map, const double resolution = 5.0,
+  const bool force_overwrite = false);
+
 lanelet::ConstLanelets getConflictingLanelets(
   const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet);
 
