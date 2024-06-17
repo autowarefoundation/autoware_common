@@ -501,310 +501,314 @@ lanelet::ConstLanelets getExpandedLanelets(
 }
 
 void overwriteLaneletsCenterline(
-  lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool use_waypoints,
-  const bool force_overwrite)
+  lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool force_overwrite)
+{
+  for (auto & lanelet_obj : lanelet_map->laneletLayer) {
+    if (force_overwrite || !lanelet_obj.hasCustomCenterline()) {
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
+    }
+  }
+}
+
+void overwriteLaneletsCenterlineWithWaypoints(
+  lanelet::LaneletMapPtr lanelet_map, const double resolution, const bool force_overwrite)
 {
   for (auto & lanelet_obj : lanelet_map->laneletLayer) {
     if (force_overwrite) {
       const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
       lanelet_obj.setCenterline(fine_center_line);
-      if (force_overwrite) {
-        const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-        lanelet_obj.setCenterline(fine_center_line);
-      } else if (use_waypoints) {
-        if (lanelet_obj.hasCustomCenterline()) {
-          const auto & centerline = lanelet_obj.centerline();
-          lanelet_obj.setAttribute("waypoints", centerline.id());
-        }
-
-        const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-        lanelet_obj.setCenterline(fine_center_line);
-      } else if (!lanelet_obj.hasCustomCenterline()) {
-        const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-        lanelet_obj.setCenterline(fine_center_line);
+    } else {
+      if (lanelet_obj.hasCustomCenterline()) {
+        const auto & centerline = lanelet_obj.centerline();
+        lanelet_obj.setAttribute("waypoints", centerline.id());
       }
+
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
     }
   }
+}
 
-  lanelet::ConstLanelets getConflictingLanelets(
-    const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet)
-  {
-    const auto & llt_or_areas = graph->conflicting(lanelet);
-    lanelet::ConstLanelets lanelets;
-    lanelets.reserve(llt_or_areas.size());
-    for (const auto & l_or_a : llt_or_areas) {
-      auto llt_opt = l_or_a.lanelet();
-      if (!!llt_opt) {
-        lanelets.push_back(llt_opt.get());
-      }
+lanelet::ConstLanelets getConflictingLanelets(
+  const lanelet::routing::RoutingGraphConstPtr & graph, const lanelet::ConstLanelet & lanelet)
+{
+  const auto & llt_or_areas = graph->conflicting(lanelet);
+  lanelet::ConstLanelets lanelets;
+  lanelets.reserve(llt_or_areas.size());
+  for (const auto & l_or_a : llt_or_areas) {
+    auto llt_opt = l_or_a.lanelet();
+    if (!!llt_opt) {
+      lanelets.push_back(llt_opt.get());
     }
-    return lanelets;
+  }
+  return lanelets;
+}
+
+bool lineStringWithWidthToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
+{
+  if (polygon == nullptr) {
+    std::cerr << __func__ << ": polygon is null pointer! Failed to convert to polygon."
+              << std::endl;
+    return false;
+  }
+  if (linestring.size() != 2) {
+    std::cerr << __func__ << ": linestring" << linestring.id() << " must have 2 points! ("
+              << linestring.size() << " != 2)" << std::endl
+              << "Failed to convert to polygon.";
+    return false;
+  }
+  if (!linestring.hasAttribute("width")) {
+    std::cerr << __func__ << ": linestring" << linestring.id()
+              << " does not have width tag. Failed to convert to polygon.";
+    return false;
   }
 
-  bool lineStringWithWidthToPolygon(
-    const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
-  {
-    if (polygon == nullptr) {
-      std::cerr << __func__ << ": polygon is null pointer! Failed to convert to polygon."
-                << std::endl;
-      return false;
-    }
-    if (linestring.size() != 2) {
-      std::cerr << __func__ << ": linestring" << linestring.id() << " must have 2 points! ("
-                << linestring.size() << " != 2)" << std::endl
-                << "Failed to convert to polygon.";
-      return false;
-    }
-    if (!linestring.hasAttribute("width")) {
-      std::cerr << __func__ << ": linestring" << linestring.id()
-                << " does not have width tag. Failed to convert to polygon.";
-      return false;
-    }
+  const Eigen::Vector3d direction =
+    linestring.back().basicPoint() - linestring.front().basicPoint();
+  const double width = linestring.attributeOr("width", 0.0);
+  const Eigen::Vector3d direction_left =
+    (Eigen::AngleAxisd(M_PI_2, Eigen::Vector3d::UnitZ()) * direction).normalized();
 
-    const Eigen::Vector3d direction =
-      linestring.back().basicPoint() - linestring.front().basicPoint();
-    const double width = linestring.attributeOr("width", 0.0);
-    const Eigen::Vector3d direction_left =
-      (Eigen::AngleAxisd(M_PI_2, Eigen::Vector3d::UnitZ()) * direction).normalized();
+  const Eigen::Vector3d eigen_p1 = linestring.front().basicPoint() + direction_left * width / 2;
+  const Eigen::Vector3d eigen_p2 = linestring.back().basicPoint() + direction_left * width / 2;
+  const Eigen::Vector3d eigen_p3 = linestring.back().basicPoint() - direction_left * width / 2;
+  const Eigen::Vector3d eigen_p4 = linestring.front().basicPoint() - direction_left * width / 2;
 
-    const Eigen::Vector3d eigen_p1 = linestring.front().basicPoint() + direction_left * width / 2;
-    const Eigen::Vector3d eigen_p2 = linestring.back().basicPoint() + direction_left * width / 2;
-    const Eigen::Vector3d eigen_p3 = linestring.back().basicPoint() - direction_left * width / 2;
-    const Eigen::Vector3d eigen_p4 = linestring.front().basicPoint() - direction_left * width / 2;
+  const lanelet::Point3d p1(lanelet::InvalId, eigen_p1.x(), eigen_p1.y(), eigen_p1.z());
+  const lanelet::Point3d p2(lanelet::InvalId, eigen_p2.x(), eigen_p2.y(), eigen_p2.z());
+  const lanelet::Point3d p3(lanelet::InvalId, eigen_p3.x(), eigen_p3.y(), eigen_p3.z());
+  const lanelet::Point3d p4(lanelet::InvalId, eigen_p4.x(), eigen_p4.y(), eigen_p4.z());
 
-    const lanelet::Point3d p1(lanelet::InvalId, eigen_p1.x(), eigen_p1.y(), eigen_p1.z());
-    const lanelet::Point3d p2(lanelet::InvalId, eigen_p2.x(), eigen_p2.y(), eigen_p2.z());
-    const lanelet::Point3d p3(lanelet::InvalId, eigen_p3.x(), eigen_p3.y(), eigen_p3.z());
-    const lanelet::Point3d p4(lanelet::InvalId, eigen_p4.x(), eigen_p4.y(), eigen_p4.z());
+  *polygon = lanelet::Polygon3d(lanelet::InvalId, {p1, p2, p3, p4});
 
-    *polygon = lanelet::Polygon3d(lanelet::InvalId, {p1, p2, p3, p4});
+  return true;
+}
 
-    return true;
+bool lineStringToPolygon(
+  const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
+{
+  if (polygon == nullptr) {
+    RCLCPP_ERROR_STREAM(
+      rclcpp::get_logger("lanelet2_extension.visualization"),
+      __func__ << ": polygon is null pointer! Failed to convert to polygon.");
+    return false;
   }
-
-  bool lineStringToPolygon(
-    const lanelet::ConstLineString3d & linestring, lanelet::ConstPolygon3d * polygon)
-  {
-    if (polygon == nullptr) {
-      RCLCPP_ERROR_STREAM(
+  if (linestring.size() < 4) {
+    if (linestring.size() < 3 || linestring.front().id() == linestring.back().id()) {
+      RCLCPP_WARN_STREAM(
         rclcpp::get_logger("lanelet2_extension.visualization"),
-        __func__ << ": polygon is null pointer! Failed to convert to polygon.");
+        __func__ << ": linestring" << linestring.id()
+                 << " must have more than different 3 points! (size is " << linestring.size()
+                 << "). Failed to convert to polygon.");
       return false;
     }
-    if (linestring.size() < 4) {
-      if (linestring.size() < 3 || linestring.front().id() == linestring.back().id()) {
-        RCLCPP_WARN_STREAM(
-          rclcpp::get_logger("lanelet2_extension.visualization"),
-          __func__ << ": linestring" << linestring.id()
-                   << " must have more than different 3 points! (size is " << linestring.size()
-                   << "). Failed to convert to polygon.");
-        return false;
-      }
-    }
-
-    lanelet::Polygon3d llt_poly;
-
-    for (const auto & lp : linestring) {
-      llt_poly.push_back(lanelet::Point3d(
-        lanelet::InvalId, lp.basicPoint().x(), lp.basicPoint().y(), lp.basicPoint().z()));
-    }
-
-    if (linestring.front().id() == linestring.back().id()) {
-      llt_poly.pop_back();
-    }
-
-    *polygon = llt_poly;
-
-    return true;
   }
 
-  double getLaneletLength2d(const lanelet::ConstLanelet & lanelet)
-  {
-    return static_cast<double>(
-      boost::geometry::length(lanelet::utils::to2D(lanelet.centerline()).basicLineString()));
+  lanelet::Polygon3d llt_poly;
+
+  for (const auto & lp : linestring) {
+    llt_poly.push_back(lanelet::Point3d(
+      lanelet::InvalId, lp.basicPoint().x(), lp.basicPoint().y(), lp.basicPoint().z()));
   }
 
-  double getLaneletLength3d(const lanelet::ConstLanelet & lanelet)
-  {
-    return static_cast<double>(boost::geometry::length(lanelet.centerline().basicLineString()));
+  if (linestring.front().id() == linestring.back().id()) {
+    llt_poly.pop_back();
   }
 
-  double getLaneletLength2d(const lanelet::ConstLanelets & lanelet_sequence)
-  {
-    double length = 0;
-    for (const auto & llt : lanelet_sequence) {
-      length += getLaneletLength2d(llt);
+  *polygon = llt_poly;
+
+  return true;
+}
+
+double getLaneletLength2d(const lanelet::ConstLanelet & lanelet)
+{
+  return static_cast<double>(
+    boost::geometry::length(lanelet::utils::to2D(lanelet.centerline()).basicLineString()));
+}
+
+double getLaneletLength3d(const lanelet::ConstLanelet & lanelet)
+{
+  return static_cast<double>(boost::geometry::length(lanelet.centerline().basicLineString()));
+}
+
+double getLaneletLength2d(const lanelet::ConstLanelets & lanelet_sequence)
+{
+  double length = 0;
+  for (const auto & llt : lanelet_sequence) {
+    length += getLaneletLength2d(llt);
+  }
+  return length;
+}
+
+double getLaneletLength3d(const lanelet::ConstLanelets & lanelet_sequence)
+{
+  double length = 0;
+  for (const auto & llt : lanelet_sequence) {
+    length += getLaneletLength3d(llt);
+  }
+  return length;
+}
+
+lanelet::ArcCoordinates getArcCoordinates(
+  const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
+{
+  lanelet::ConstLanelet closest_lanelet;
+  lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
+
+  double length = 0;
+  lanelet::ArcCoordinates arc_coordinates;
+  for (const auto & llt : lanelet_sequence) {
+    const auto & centerline_2d = lanelet::utils::to2D(llt.centerline());
+    if (llt == closest_lanelet) {
+      const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
+      arc_coordinates = lanelet::geometry::toArcCoordinates(
+        centerline_2d, lanelet::utils::to2D(lanelet_point).basicPoint());
+      arc_coordinates.length += length;
+      break;
     }
-    return length;
+    length += static_cast<double>(boost::geometry::length(centerline_2d));
+  }
+  return arc_coordinates;
+}
+
+lanelet::ConstLineString3d getClosestSegment(
+  const lanelet::BasicPoint2d & search_pt, const lanelet::ConstLineString3d & linestring)
+{
+  if (linestring.size() < 2) {
+    return lanelet::LineString3d();
   }
 
-  double getLaneletLength3d(const lanelet::ConstLanelets & lanelet_sequence)
-  {
-    double length = 0;
-    for (const auto & llt : lanelet_sequence) {
-      length += getLaneletLength3d(llt);
+  lanelet::ConstLineString3d closest_segment;
+  double min_distance = std::numeric_limits<double>::max();
+
+  for (size_t i = 1; i < linestring.size(); i++) {
+    lanelet::BasicPoint3d prev_basic_pt = linestring[i - 1].basicPoint();
+    lanelet::BasicPoint3d current_basic_pt = linestring[i].basicPoint();
+
+    lanelet::Point3d prev_pt(
+      lanelet::InvalId, prev_basic_pt.x(), prev_basic_pt.y(), prev_basic_pt.z());
+    lanelet::Point3d current_pt(
+      lanelet::InvalId, current_basic_pt.x(), current_basic_pt.y(), current_basic_pt.z());
+
+    lanelet::LineString3d current_segment(lanelet::InvalId, {prev_pt, current_pt});
+    double distance = lanelet::geometry::distance2d(
+      lanelet::utils::to2D(current_segment).basicLineString(), search_pt);
+    if (distance < min_distance) {
+      closest_segment = current_segment;
+      min_distance = distance;
     }
-    return length;
   }
+  return closest_segment;
+}
 
-  lanelet::ArcCoordinates getArcCoordinates(
-    const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
-  {
-    lanelet::ConstLanelet closest_lanelet;
-    lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
+lanelet::CompoundPolygon3d getPolygonFromArcLength(
+  const lanelet::ConstLanelets & lanelets, const double s1, const double s2)
+{
+  const auto combined_lanelet = combineLaneletsShape(lanelets);
+  const auto total_length = getLaneletLength2d(combined_lanelet);
 
-    double length = 0;
-    lanelet::ArcCoordinates arc_coordinates;
-    for (const auto & llt : lanelet_sequence) {
-      const auto & centerline_2d = lanelet::utils::to2D(llt.centerline());
-      if (llt == closest_lanelet) {
-        const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
-        arc_coordinates = lanelet::geometry::toArcCoordinates(
-          centerline_2d, lanelet::utils::to2D(lanelet_point).basicPoint());
-        arc_coordinates.length += length;
-        break;
-      }
-      length += static_cast<double>(boost::geometry::length(centerline_2d));
-    }
-    return arc_coordinates;
-  }
+  // make sure that s1, and s2 are between [0, lane_length]
+  const auto s1_saturated = std::max(0.0, std::min(s1, total_length));
+  const auto s2_saturated = std::max(0.0, std::min(s2, total_length));
 
-  lanelet::ConstLineString3d getClosestSegment(
-    const lanelet::BasicPoint2d & search_pt, const lanelet::ConstLineString3d & linestring)
-  {
-    if (linestring.size() < 2) {
-      return lanelet::LineString3d();
-    }
+  const auto ratio_s1 = s1_saturated / total_length;
+  const auto ratio_s2 = s2_saturated / total_length;
 
-    lanelet::ConstLineString3d closest_segment;
-    double min_distance = std::numeric_limits<double>::max();
+  const auto s1_left = static_cast<double>(
+    ratio_s1 * boost::geometry::length(combined_lanelet.leftBound().basicLineString()));
+  const auto s2_left = static_cast<double>(
+    ratio_s2 * boost::geometry::length(combined_lanelet.leftBound().basicLineString()));
+  const auto s1_right = static_cast<double>(
+    ratio_s1 * boost::geometry::length(combined_lanelet.rightBound().basicLineString()));
+  const auto s2_right = static_cast<double>(
+    ratio_s2 * boost::geometry::length(combined_lanelet.rightBound().basicLineString()));
 
-    for (size_t i = 1; i < linestring.size(); i++) {
-      lanelet::BasicPoint3d prev_basic_pt = linestring[i - 1].basicPoint();
-      lanelet::BasicPoint3d current_basic_pt = linestring[i].basicPoint();
+  const auto left_bound =
+    getLineStringFromArcLength(combined_lanelet.leftBound(), s1_left, s2_left);
+  const auto right_bound =
+    getLineStringFromArcLength(combined_lanelet.rightBound(), s1_right, s2_right);
 
-      lanelet::Point3d prev_pt(
-        lanelet::InvalId, prev_basic_pt.x(), prev_basic_pt.y(), prev_basic_pt.z());
-      lanelet::Point3d current_pt(
-        lanelet::InvalId, current_basic_pt.x(), current_basic_pt.y(), current_basic_pt.z());
+  const auto & lanelet = lanelet::Lanelet(lanelet::InvalId, left_bound, right_bound);
+  return lanelet.polygon3d();
+}
 
-      lanelet::LineString3d current_segment(lanelet::InvalId, {prev_pt, current_pt});
-      double distance = lanelet::geometry::distance2d(
-        lanelet::utils::to2D(current_segment).basicLineString(), search_pt);
-      if (distance < min_distance) {
-        closest_segment = current_segment;
-        min_distance = distance;
-      }
-    }
-    return closest_segment;
-  }
+double getLaneletAngle(
+  const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point)
+{
+  lanelet::BasicPoint2d llt_search_point(search_point.x, search_point.y);
+  lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
+  return std::atan2(
+    segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
+}
 
-  lanelet::CompoundPolygon3d getPolygonFromArcLength(
-    const lanelet::ConstLanelets & lanelets, const double s1, const double s2)
-  {
-    const auto combined_lanelet = combineLaneletsShape(lanelets);
-    const auto total_length = getLaneletLength2d(combined_lanelet);
+bool isInLanelet(
+  const geometry_msgs::msg::Pose & current_pose, const lanelet::ConstLanelet & lanelet,
+  const double radius)
+{
+  constexpr double eps = 1.0e-9;
+  const lanelet::BasicPoint2d p(current_pose.position.x, current_pose.position.y);
+  return boost::geometry::distance(p, lanelet.polygon2d().basicPolygon()) < radius + eps;
+}
 
-    // make sure that s1, and s2 are between [0, lane_length]
-    const auto s1_saturated = std::max(0.0, std::min(s1, total_length));
-    const auto s2_saturated = std::max(0.0, std::min(s2, total_length));
+geometry_msgs::msg::Pose getClosestCenterPose(
+  const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point)
+{
+  lanelet::BasicPoint2d llt_search_point(search_point.x, search_point.y);
 
-    const auto ratio_s1 = s1_saturated / total_length;
-    const auto ratio_s2 = s2_saturated / total_length;
-
-    const auto s1_left = static_cast<double>(
-      ratio_s1 * boost::geometry::length(combined_lanelet.leftBound().basicLineString()));
-    const auto s2_left = static_cast<double>(
-      ratio_s2 * boost::geometry::length(combined_lanelet.leftBound().basicLineString()));
-    const auto s1_right = static_cast<double>(
-      ratio_s1 * boost::geometry::length(combined_lanelet.rightBound().basicLineString()));
-    const auto s2_right = static_cast<double>(
-      ratio_s2 * boost::geometry::length(combined_lanelet.rightBound().basicLineString()));
-
-    const auto left_bound =
-      getLineStringFromArcLength(combined_lanelet.leftBound(), s1_left, s2_left);
-    const auto right_bound =
-      getLineStringFromArcLength(combined_lanelet.rightBound(), s1_right, s2_right);
-
-    const auto & lanelet = lanelet::Lanelet(lanelet::InvalId, left_bound, right_bound);
-    return lanelet.polygon3d();
-  }
-
-  double getLaneletAngle(
-    const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point)
-  {
-    lanelet::BasicPoint2d llt_search_point(search_point.x, search_point.y);
-    lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
-    return std::atan2(
-      segment.back().y() - segment.front().y(), segment.back().x() - segment.front().x());
-  }
-
-  bool isInLanelet(
-    const geometry_msgs::msg::Pose & current_pose, const lanelet::ConstLanelet & lanelet,
-    const double radius)
-  {
-    constexpr double eps = 1.0e-9;
-    const lanelet::BasicPoint2d p(current_pose.position.x, current_pose.position.y);
-    return boost::geometry::distance(p, lanelet.polygon2d().basicPolygon()) < radius + eps;
-  }
-
-  geometry_msgs::msg::Pose getClosestCenterPose(
-    const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Point & search_point)
-  {
-    lanelet::BasicPoint2d llt_search_point(search_point.x, search_point.y);
-
-    if (lanelet.centerline().size() == 1) {
-      geometry_msgs::msg::Pose closest_pose;
-      closest_pose.position.x = lanelet.centerline().front().x();
-      closest_pose.position.y = lanelet.centerline().front().y();
-      closest_pose.position.z = search_point.z;
-      closest_pose.orientation.x = 0.0;
-      closest_pose.orientation.y = 0.0;
-      closest_pose.orientation.z = 0.0;
-      closest_pose.orientation.w = 1.0;
-      return closest_pose;
-    }
-
-    lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
-    if (segment.empty()) {
-      return geometry_msgs::msg::Pose{};
-    }
-
-    const Eigen::Vector2d direction(
-      (segment.back().basicPoint2d() - segment.front().basicPoint2d()).normalized());
-    const Eigen::Vector2d xf(segment.front().basicPoint2d());
-    const Eigen::Vector2d x(search_point.x, search_point.y);
-    const Eigen::Vector2d p = xf + (x - xf).dot(direction) * direction;
-
+  if (lanelet.centerline().size() == 1) {
     geometry_msgs::msg::Pose closest_pose;
-    closest_pose.position.x = p.x();
-    closest_pose.position.y = p.y();
+    closest_pose.position.x = lanelet.centerline().front().x();
+    closest_pose.position.y = lanelet.centerline().front().y();
     closest_pose.position.z = search_point.z;
-
-    const double lane_yaw = getLaneletAngle(lanelet, search_point);
-    tf2::Quaternion q;
-    q.setRPY(0, 0, lane_yaw);
-    closest_pose.orientation = tf2::toMsg(q);
-
+    closest_pose.orientation.x = 0.0;
+    closest_pose.orientation.y = 0.0;
+    closest_pose.orientation.z = 0.0;
+    closest_pose.orientation.w = 1.0;
     return closest_pose;
   }
 
-  double getLateralDistanceToCenterline(
-    const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Pose & pose)
-  {
-    const auto & centerline_2d = lanelet::utils::to2D(lanelet.centerline());
-    const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
-    return lanelet::geometry::signedDistance(
-      centerline_2d, lanelet::utils::to2D(lanelet_point).basicPoint());
+  lanelet::ConstLineString3d segment = getClosestSegment(llt_search_point, lanelet.centerline());
+  if (segment.empty()) {
+    return geometry_msgs::msg::Pose{};
   }
 
-  double getLateralDistanceToClosestLanelet(
-    const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
-  {
-    lanelet::ConstLanelet closest_lanelet;
-    lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
-    return getLateralDistanceToCenterline(closest_lanelet, pose);
-  }
+  const Eigen::Vector2d direction(
+    (segment.back().basicPoint2d() - segment.front().basicPoint2d()).normalized());
+  const Eigen::Vector2d xf(segment.front().basicPoint2d());
+  const Eigen::Vector2d x(search_point.x, search_point.y);
+  const Eigen::Vector2d p = xf + (x - xf).dot(direction) * direction;
+
+  geometry_msgs::msg::Pose closest_pose;
+  closest_pose.position.x = p.x();
+  closest_pose.position.y = p.y();
+  closest_pose.position.z = search_point.z;
+
+  const double lane_yaw = getLaneletAngle(lanelet, search_point);
+  tf2::Quaternion q;
+  q.setRPY(0, 0, lane_yaw);
+  closest_pose.orientation = tf2::toMsg(q);
+
+  return closest_pose;
+}
+
+double getLateralDistanceToCenterline(
+  const lanelet::ConstLanelet & lanelet, const geometry_msgs::msg::Pose & pose)
+{
+  const auto & centerline_2d = lanelet::utils::to2D(lanelet.centerline());
+  const auto lanelet_point = lanelet::utils::conversion::toLaneletPoint(pose.position);
+  return lanelet::geometry::signedDistance(
+    centerline_2d, lanelet::utils::to2D(lanelet_point).basicPoint());
+}
+
+double getLateralDistanceToClosestLanelet(
+  const lanelet::ConstLanelets & lanelet_sequence, const geometry_msgs::msg::Pose & pose)
+{
+  lanelet::ConstLanelet closest_lanelet;
+  lanelet::utils::query::getClosestLanelet(lanelet_sequence, pose, &closest_lanelet);
+  return getLateralDistanceToCenterline(closest_lanelet, pose);
+}
 }  // namespace lanelet::utils
 
 // NOLINTEND(readability-identifier-naming)

@@ -116,7 +116,6 @@ TEST_F(TestSuite, OverwriteLaneletsCenterlineWithWaypoints)  // NOLINT for gtest
 {
   double resolution = 5.0;
   bool force_overwrite = false;
-  bool use_waypoints = true;
 
   // memorize the original information of the centerline
   std::unordered_map<lanelet::Id, lanelet::Id> lanelet_centerline_map{};
@@ -127,8 +126,8 @@ TEST_F(TestSuite, OverwriteLaneletsCenterlineWithWaypoints)  // NOLINT for gtest
   }
 
   // convert centerline to waypoints
-  lanelet::utils::overwriteLaneletsCenterline(
-    sample_map_ptr, resolution, use_waypoints, force_overwrite);
+  lanelet::utils::overwriteLaneletsCenterlineWithWaypoints(
+    sample_map_ptr, resolution, force_overwrite);
 
   for (const auto & lanelet : sample_map_ptr->laneletLayer) {
     if (lanelet_centerline_map.find(lanelet.id()) != lanelet_centerline_map.end()) {
@@ -147,13 +146,11 @@ TEST_F(TestSuite, OverwriteLaneletsCenterlineWithWaypoints)  // NOLINT for gtest
   }
 }
 
-TEST_F(TestSuite, OverwriteLaneletsCenterlineWithoutWaypoints)  // NOLINT for gtest
+TEST_F(TestSuite, OverwriteLaneletsCenterline)  // NOLINT for gtest
 {
   double resolution = 5.0;
   bool force_overwrite = false;
-  bool use_waypoints = false;
-  lanelet::utils::overwriteLaneletsCenterline(
-    sample_map_ptr, resolution, use_waypoints, force_overwrite);
+  lanelet::utils::overwriteLaneletsCenterline(sample_map_ptr, resolution, force_overwrite);
 
   // check if all the lanelets have a centerline
   for (const auto & lanelet : sample_map_ptr->laneletLayer) {

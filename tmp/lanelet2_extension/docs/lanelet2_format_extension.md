@@ -492,10 +492,10 @@ However, based on the current Autoware's usage of the centerline, there are seve
 - The coordinate transformation on the lane's frenet frame cannot be calculated correctly.
   - For example, when the lateral distance between the actual road's centerline and a parked vehicle is calculated, actually the result will be the lateral distance between the (explicit) centerline and the vehicle.
 
-To solve above limitations, the `overwriteLaneletsCenterline` has a `use_waypoints` flag where the centerline in all the lanes is calculated.
+To solve above limitations, the `overwriteLaneletsCenterlineWithWaypoints` was implemented in addition to `overwriteLaneletsCenterline` where the centerline in all the lanes is calculated.
 
-- `use_waypoints` is True
+- `overwriteLaneletsCenterlineWithWaypoints`
   - The (explicit) centerline in the Lanelet2 map is converted to the new `waypoints` tag. This `waypoints` is only applied to the ego's path planning.
   - Therefore, the above limitations can be solved, but the Autoware's usage of the centerline may be hard to understand.
-- `use_waypoints` is False
+- `overwriteLaneletsCenterline`
   - The (explicit) centerline in the Lanelet2 map is used as it is. Easy to understand the Autoware's usage of the centerline, but we still have above limitations.
