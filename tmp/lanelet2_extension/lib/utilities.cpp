@@ -508,21 +508,20 @@ void overwriteLaneletsCenterline(
     if (force_overwrite) {
       const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
       lanelet_obj.setCenterline(fine_center_line);
-    } else {
-      if (use_waypoints) {
-        if (lanelet_obj.hasCustomCenterline()) {
-          const auto & centerline = lanelet_obj.centerline();
-          lanelet_obj.setAttribute("waypoints", centerline.id());
-        }
-
-        const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-        lanelet_obj.setCenterline(fine_center_line);
-      } else {
-        if (!lanelet_obj.hasCustomCenterline()) {
-          const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
-          lanelet_obj.setCenterline(fine_center_line);
-        }
+    if (force_overwrite) {
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
+    } else if (use_waypoints) {
+      if (lanelet_obj.hasCustomCenterline()) {
+        const auto & centerline = lanelet_obj.centerline();
+        lanelet_obj.setAttribute("waypoints", centerline.id());
       }
+
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
+    } else if (!lanelet_obj.hasCustomCenterline()) {
+      const auto fine_center_line = generateFineCenterline(lanelet_obj, resolution);
+      lanelet_obj.setCenterline(fine_center_line);
     }
   }
 }
