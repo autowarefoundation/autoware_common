@@ -1,5 +1,5 @@
 > [!NOTE]
-> This repository is an archived repository. The further developement of the packages in this repositories will be done in the following repositories:
+> This repository is an archived repository. The further development of the packages in this repositories will be done in the following repositories:
 >
 > - <https://github.com/autowarefoundation/autoware_cmake>
 > - <https://github.com/autowarefoundation/autoware_lanelet2_extension>
